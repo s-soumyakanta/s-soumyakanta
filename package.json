@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/gtag.js": "^0.0.18",
     "@vercel/analytics": "^1.1.1",
     "next": "14.0.3",
     "react": "^18",
