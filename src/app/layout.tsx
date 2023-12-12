@@ -31,8 +31,6 @@ export default function RootLayout({
           })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_GTM_ID}')`
          }}
         />
-        <meta name='robots' content='all' />
-      
       </head>
       <GoogleAnalytics GA_MEASUREMENT_ID={`${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
       <body className={inter.className}>
