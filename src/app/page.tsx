@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import Newsletter from "@/components/Newsletter"
 const page = () => {
   return (
    <>
@@ -15,7 +16,11 @@ const page = () => {
       </div>
     </div>
   </div>
+  
 </section>
+<div>
+  <Newsletter />
+</div>
    </>
   )
 }
