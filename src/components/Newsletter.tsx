@@ -7,10 +7,8 @@ const Newsletter = () => {
         className='block ml-auto mr-auto max-w-full scroll-auto'
         width="540" 
         height="540" 
-        allowFullScreen
-        src="https://3885edd1.sibforms.com/serve/MUIFAHlCUNkPpvY6Mzq8WpLjwndqJEowQOh45btHqnze74td8AFASwm6nnlxCuRzB1R_GwgcKA4zzB9K069X6w1d9PqR-hxzJ8kPvDy_GaZceDh9lkmAhzG2FJiQj1bY6IX2A_xZcuLm-BJpTBw9YaQ1DFJ2AlywNqoKfbxQWsjiUVNh1z5NeUVA31NLmtT4l7K-RTChLHdZ8cQ2" 
-        >
-      </iframe>
+        src="https://3885edd1.sibforms.com/serve/MUIFANxuFKVRokIAmLzTsHFHzrE-SaFnXwK3_uLRKH_x2I8R66eiwuOSzzJpEd5Erh1XcXtJbvyS6CHuStlk8zb4owyswn2zr6g4QsORvF2WbOlBnPDHvBLT6Q48jv5PTCQXCCSFWPidVGiSbLTQHknUOAjWQNmAPQgmNQm5HzQASv3tnLctnU9L5VRegiyD2DEDbnyeHfSeH_Iv">
+        </iframe>
     </div>
   )
 }
