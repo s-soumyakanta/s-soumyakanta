@@ -1,8 +1,8 @@
-import { Navbar } from "@/components/Navbar"
+
 const page = () => {
   return (
-    <div className="bg-gray-600 min-h-screen relative">
-      <Navbar />
+    <div>
+      Hellow
     </div>
   )
 }
