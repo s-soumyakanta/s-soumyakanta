@@ -1,4 +1,4 @@
-### <div align="center">I'm Soumya, a Front-End Developer 👨‍💻 </div>  
+### <div align="center">Hi there👋 - I'm Soumya, a Front-End Developer 👨‍💻 </div>  
   
 
 - 🔭 I’m currently working on my [Portfolio](https://github.com/s-soumyakanta/s-soumyakanta)  
@@ -72,8 +72,9 @@
 
 ## Github Stats  
 <div align="center"><img src="https://github-readme-stats.vercel.app/api?username=s-soumyakanta&show_icons=true&count_private=true&hide_border=true" align="center" /></div>  
+<br />
 
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=s-soumyakanta&hide_border=true&layout=compact" align="center" />  
+<div align="center"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=s-soumyakanta&hide_border=true&layout=compact" align="center" /></div> 
 
 <br/>  
 
