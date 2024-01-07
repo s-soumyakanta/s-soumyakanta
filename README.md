@@ -7,7 +7,7 @@
 - 🌱 I’m currently learning NextJs14  
   
 
-- ❓ Ask me about anything related to JavaScritpt  
+- ❓ Ask me about anything related to JavaScritpt!
   
 
 - ⚡ Fun fact: I search JF to set my fingers  
