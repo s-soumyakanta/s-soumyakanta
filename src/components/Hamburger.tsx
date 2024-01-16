@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
 import { NavList } from "./Navbar";
 
 export default function Hamburger() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const hamburgerLineClass = `h-1 w-full my-0.5 rounded-md bg-black transition ease transform duration-300 dark:bg-white`;
   return (
     <>
