@@ -47,11 +47,11 @@ export default function RootLayout({
       </head>
       <GoogleAnalytics GA_MEASUREMENT_ID={`${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`} />
       <body className={inter.className}>
-        
       <iframe src={`https://www.googletagmanager.com/ns.html?id=${process.env.NEXT_PUBLIC_GTM_ID}`}
               height="0" 
-              width="0"
-      > </iframe>
+              width="0">
+
+      </iframe>
         {children}
         <CookieBanner />
       </body>
