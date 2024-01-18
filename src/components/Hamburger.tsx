@@ -29,7 +29,7 @@ export default function Hamburger() {
         createPortal(
           <div
             onClick={() => setIsOpen(false)}
-            className="absolute top-0 bg-white h-full w-full dark:bg-black "
+            className="absolute top-0 bg-white h-full w-full dark:bg-black lg:hidden "
           >
             <div className="w-3/5 pt-12 bg-slate-300 h-full dark:bg-slate-950 dark:text-white">
               <NavList />
