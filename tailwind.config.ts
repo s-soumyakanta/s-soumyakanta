@@ -10,12 +10,12 @@ const config: Config = {
   theme: {
     extend: {
       colors:{
-        "dm-bg": " #18171D",
-        "dm-heading":"#E4E3E8",
-        "dm-subheading":"#D5D4D9",
-        "lm-bg": "#F4F4F6",
-        "lm-heading":"#18171D",
-        "lm-subheading":"#27262B"
+        "dm-bg": "#111827",
+        "dm-heading":"#E6E7EB",
+        "dm-subheading":"#D2D5DC",
+        "lm-bg": "#F3F4F6",
+        "lm-heading":"#111827",
+        "lm-subheading":"#202937"
       }
     },
   },
