@@ -9,11 +9,14 @@ const config: Config = {
   darkMode:"class",
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
+      colors:{
+        "dm-bg": " #18171D",
+        "dm-heading":"#E4E3E8",
+        "dm-subheading":"#D5D4D9",
+        "lm-bg": "#F4F4F6",
+        "lm-heading":"#18171D",
+        "lm-subheading":"#27262B"
+      }
     },
   },
   plugins: [],
