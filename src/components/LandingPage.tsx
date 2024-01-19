@@ -20,7 +20,7 @@ const LandingPage = () => {
               S Soumyakanta
             </h2>
           </div>
-          <div className="lg:flex center lg:items-center">
+          <div className="lg:flex lg:justify-center lg:items-center">
             <p className=" md:text-xl lg:text-2xl lg:w-4/5 lg:text-center">A Passionate <span className="font-semibold">Front-End Developer</span> Creating Digital Experiences! </p>
           </div>
           <div className="space-x-4 flex">
