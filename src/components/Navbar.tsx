@@ -27,7 +27,7 @@ export const NavList = () => {
 }
 const Navbar = () => {
   return (
-    <nav className="flex justify-between items-center p-4 shadow-lg lg:px-20 lg:py-5 ">
+    <nav className="flex w-full justify-between items-center p-4 shadow-lg lg:px-20 lg:py-4 ">
       <div>
         <p className="font-bold text-xl lg:text-2xl">
           <Link href="/">S Soumyakanta</Link>
@@ -41,7 +41,7 @@ const Navbar = () => {
       <div className="hidden lg:block">
         <div className="flex space-x-8">
         <ThemeToggle />
-        <Button name="Contact" active={true} link="/contact" />
+        <Button name="Hire me" active={true} link="/contact" />
         </div>
       </div>
       <div className=" flex items-center justify-center space-x-4 lg:hidden">
