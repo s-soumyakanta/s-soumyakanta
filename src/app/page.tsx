@@ -4,7 +4,7 @@ const page = () => {
     <>
       <div className="flex flex-col justify-center items-center bg-lm-bg text-lm-subheading dark:bg-dm-bg dark:text-dm-subheading">
         <div className=" w-full">
-          <section className="min-h-screen">
+          <section className="min-h-screen w-full">
             <Navbar />
             <LandingPage />
             <About />
