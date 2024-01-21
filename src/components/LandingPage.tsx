@@ -2,7 +2,7 @@ import Image from "next/image";
 import Button from "./Button";
 const LandingPage = () => {
   return (
-    <div id="home" className="w-full h-[80vh] flex justify-center items-center">
+    <div id="home" className="w-full h-[80vh] flex justify-center items-center max-w-7xl">
       <div className=" flex flex-col items-center justify-between gap-2 lg:flex-row-reverse lg:w-full ">
         <div className="w-4/5 flex justify-center items-center mt-3  lg:mt-0 lg:w-1/2">
           <Image

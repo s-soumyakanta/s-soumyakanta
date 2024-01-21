@@ -1,11 +1,10 @@
-import {Navbar,LandingPage,About,Work} from '../components/index'
+import {LandingPage,About,Work} from '../components/index'
 const page = () => {
   return (
     <>
-      <div className="flex flex-col justify-center items-center bg-lm-bg text-lm-subheading dark:bg-dm-bg dark:text-dm-subheading">
+      <div className="flex flex-col justify-center items-center ">
         <div className=" w-full">
-          <section className="min-h-screen w-full">
-            <Navbar />
+          <section className="min-h-screen w-full flex justify-center items-center flex-col">
             <LandingPage />
             <About />
             <Work />
