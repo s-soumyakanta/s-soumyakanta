@@ -24,7 +24,7 @@ const Work = () => {
         github: "https://github.com/s-soumyakanta/weather-app",
         live: "https://s-soumyakanta.github.io/weather-app/",
       },
-      url: "snap.vercel.com",
+      url: "weathersnap-ss.vercel.app",
       image: "/weathersnap.png",
       tags: ["React","Redux Toolkit", "TailwindCSS"],
     },
