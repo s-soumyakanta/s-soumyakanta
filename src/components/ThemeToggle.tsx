@@ -1,31 +1,24 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
 import { LightModeOutlined, DarkModeOutlined } from '@mui/icons-material';
 
-const ThemeToggle = () => {
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme) {
-      setTheme(currentTheme);
-    }
-  }, []);
+const ThemeToggler = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    // Toggle the dark mode state
+    setIsDarkMode(!isDarkMode);
+
+    // Apply the dark mode class to the document
+    document.documentElement.classList.toggle('dark', !isDarkMode);
   };
 
   return (
     <IconButton onClick={toggleTheme} color="inherit">
-      {theme === 'light' && <DarkModeOutlined />}
-      {theme === 'dark' && <LightModeOutlined/>}
+      {isDarkMode ? <LightModeOutlined /> : <DarkModeOutlined />}
     </IconButton>
   );
 };
 
-export default ThemeToggle;
+export default ThemeToggler;

@@ -5,7 +5,7 @@ import { Analytics } from '@vercel/analytics/react'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import CookieBanner from '@/components/CockieBanner'
 import Script from 'next/script'
-
+import { Navbar, Footer } from "../components/index"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -52,8 +52,10 @@ export default function RootLayout({
               width="0">
 
       </iframe>
+      <Navbar />
         {children}
         <CookieBanner />
+        <Footer />
       </body>
       <Analytics />
     </html>

@@ -9,7 +9,7 @@ const DynamicHamburger = dynamic(() => import("./Hamburger"), {
 
 export const NavList = () => {
     return(
-        <ul className="flex flex-col space-y-8 w-full justify-center items-center lg:text-lg lg:space-y-0 lg:flex-row lg:space-x-12">
+        <ul className="flex flex-col space-y-8 w-full justify-center items-center lg:text-base lg:space-y-0 lg:flex-row lg:space-x-12">
         <li className="hover:font-semibold hover:text-lm-heading dark:hover:text-dm-heading">
           <Link href="/">Home</Link>
         </li>
