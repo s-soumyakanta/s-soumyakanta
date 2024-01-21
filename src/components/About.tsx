@@ -1,16 +1,17 @@
 import Image from "next/image";
+import { Heading } from "./index";
 
 const About = () => {
   return (
     <div
       id="about"
-      className="min-h-screen md:h-auto  flex flex-col justify-center items-center "
+      className="min-h-screen md:h-auto  flex flex-col justify-center items-center max-w-5xl "
     >
-      <div className="flex justify-center items-center flex-col space-y-8 mt-8 md:mt-0">
+      <div className="flex justify-center items-center flex-col space-y-20 mt-8 md:mt-0">
         <div>
-          <h2 className="text-2xl text-lm-heading md:text-3xl lg:text-4xl uppercase font-semibold dark:text-dm-heading">About</h2>
-        </div>
-        <div className="mx-3 filte space-y-8 md:space-y-0 lg:space-y-0 md:grid md:grid-cols-2 md:gap-4 md:max-w-5xl">
+          <Heading name="About" />
+          </div>
+        <div className="mx-8  filte space-y-8 md:space-y-0 lg:space-y-0 md:grid md:grid-cols-2 md:gap-4 ">
           <div className="md:w-full md:h-full">
           <Image
             src="/about.jpg"

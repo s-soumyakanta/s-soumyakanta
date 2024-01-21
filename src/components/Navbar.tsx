@@ -39,7 +39,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="hidden lg:block">
-        <div className="flex space-x-8">
+        <div className="flex space-x-8 items-center">
         <ThemeToggle />
         <Button name="Hire me" active={true} link="/contact" />
         </div>

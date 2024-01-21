@@ -1,7 +1,7 @@
 
 const page = () => {
   return (
-    <div>page</div>
+    <h2>contact@s-soumyakanta.com</h2>
   )
 }
 
