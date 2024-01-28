@@ -77,7 +77,7 @@ const ContactForm: React.FC = () => {
     } 
 
   return (
-      <form onSubmit={handleSubmit} className='md:w-2/5 w-full bg-gray-100 dark:bg-slate-950  border-gray-200 dark:border-gray-50 shadow-lg border-2 dark:border  p-4 rounded-lg'>
+      <form onSubmit={handleSubmit} className='md:w-2/5 w-4/5 bg-gray-100 dark:bg-slate-950  border-gray-200 dark:border-gray-50 shadow-lg border-2 dark:border  p-4 rounded-lg'>
         <Input
           type="text"
           id="name"
