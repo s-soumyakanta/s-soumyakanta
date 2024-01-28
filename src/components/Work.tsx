@@ -76,7 +76,7 @@ const Work = () => {
                       <a href={links.live}>{url}</a>
                     </h4>
                   </div>
-                  <div className="space-x-6">
+                  <div className="md:space-x-6 space-x-2 text-sm md:text-lg">
                     {
                       links.github ?<GithubIcon link={links.github} />
                       :null
