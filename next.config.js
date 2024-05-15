@@ -13,12 +13,7 @@ const nextConfig = {
       {
         source: "/pdfreader",
         destination: "https://pdfreader-teal.vercel.app/pdfreader",
-      },
-      {
-        source: "/pdfreader/:path*",
-        destination: "https://pdfreader-teal.vercel.app/pdfreader/:path*",
-      },
-
+      }
     ];
   }
 }
