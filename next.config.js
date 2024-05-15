@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         source: "/pdfreader",
-        destination: "https://pdfreader-teal.vercel.app/pdfreader",
+        destination: "https://adobepdfsdk.vercel.app/pdfreader",
       }
     ];
   }
