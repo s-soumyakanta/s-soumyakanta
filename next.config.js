@@ -10,6 +10,11 @@ const nextConfig = {
         source: "/blog/:path*",
         destination: "https://starter-kit-xi.vercel.app/blog/:path*",
       },
+      {
+        source: "/pdfreader",
+        destination: "https://pdfreader-teal.vercel.app",
+      },
+
     ];
   }
 }
