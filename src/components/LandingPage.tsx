@@ -17,7 +17,7 @@ const LandingPage = () => {
         <div className="flex flex-col items-center justify-center space-y-6 w-3/5 h-full md:h-3/5 text-center lg:w-3/5">
           <div>
             <h2 className="text-2xl font-bold md:text-4xl lg:text-5xl">
-              S Soumyakanta - Hi Aman👋
+              S Soumyakanta
             </h2>
           </div>
           <div className="lg:flex lg:justify-center lg:items-center">
