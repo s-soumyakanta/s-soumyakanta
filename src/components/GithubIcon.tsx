@@ -4,7 +4,7 @@ type GitHubIconType = {
 }
 const GithubIcon = ({link}:GitHubIconType) => {
   return (
-    <a href={link}>
+    <a href={link} target="_blank">
         <GitHubIcon />
     </a>
   )
