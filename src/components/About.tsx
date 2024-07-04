@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Heading } from "./index";
 
 const About = () => {
+  // Portfolio v3
   return (
     <div
       id="about"
