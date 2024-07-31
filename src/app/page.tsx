@@ -1,17 +1,20 @@
-const Page = () => {
-  return (
-    <div className="flex justify-center items-center h-screen w-screen bg-black">
-      <div className="bg-slate-50 text-black rounded-md shadow-md p-8 text-center backdrop-blur-md">
-        <h1 className="font-bold text-xl mb-4">S Soumyakanta</h1>
-        <a
-          href="mailto:contact@s-soumyakanta.com"
-          className="inline-flex items-center px-4 py-2 rounded-md text-base font-medium bg-black hover:bg-gray-900 text-white"
-        >
-          Contact
-        </a>
-      </div>
-    </div>
-  );
-};
+import { Button } from "@/components/ui/button"
 
-export default Page;
+export default function page() {
+  return (
+    <>
+    <div className="min-h-screen flex justify-center items-center flex-col">
+      <h1>S Soumyakanta</h1>
+      <Button>Contact</Button>
+      <p></p>
+      
+    </div>
+    <div className="min-h-screen">
+      mai
+    </div>
+    <div className="min-h-screen">
+      mai
+    </div>
+    </>
+  )
+}
