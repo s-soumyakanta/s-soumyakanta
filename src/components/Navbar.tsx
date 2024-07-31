@@ -8,7 +8,8 @@ import { ModeToggle } from "./dark-mode";
 export default function Navbar() {
   const [scrollingDown, setScrollingDown] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [scrollingTimeout, setScrollingTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [scrollingTimeout, setScrollingTimeout] =
+    useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,16 +43,16 @@ export default function Navbar() {
     <nav
       className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
         scrollingDown ? "-translate-y-full" : "translate-y-0"
-      } backdrop-blur-md bg-white/70 dark:bg-slate-950`}
+      } backdrop-blur-md bg-[hsl(var(--background)/0.7)] dark:bg-[hsl(var(--background)/0.7)] border-b border-[hsl(var(--border))]`}
     >
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6 p-2">
         <div className="flex h-14 items-center">
           <Link
             href="/"
-            className="mr-auto flex items-center gap-2 text-lg font-semibold"
+            className="mr-auto flex items-center gap-2 text-lg font-semibold text-[hsl(var(--foreground))]"
             prefetch={false}
           >
-            <span>S Soumyakanta</span>
+            S Soumyakanta
           </Link>
           <nav className="ml-auto flex items-center space-x-4">
             <ModeToggle />
