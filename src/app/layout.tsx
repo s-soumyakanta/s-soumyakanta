@@ -11,9 +11,10 @@ const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
 export const metadata: Metadata = {
   title: "S Soumyakanta",
-  description: "A crative front-end developer from Bhubaneswar,India",
+  description: "A creative front-end developer from Bhubaneswar, India",
   robots: {
     index: true,
     follow: true,
@@ -42,15 +43,15 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-                  <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-        <Navbar />
-        <main> {children}</main>
-        {<Analytics />}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main>{children}</main>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
