@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const About = () => {
   return (
@@ -28,7 +29,7 @@ const About = () => {
             stack web app developer.
           </p>
           <p className="max-w-md md:max-w-4xl mx-auto text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-            Feel free to reach out at contact@s-soumyakanta.com! I&apos;m
+            Feel free to reach out at <Link className="underline" href="mailto:contact@s-soumyakanta.com">contact@s-soumyakanta.com</Link>! I&apos;m
             excited to connect with fellow web development enthusiasts, share
             insights, and explore new ideas. Let&apos;s create exceptional web
             experiences together.
