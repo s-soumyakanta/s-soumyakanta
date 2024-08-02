@@ -145,7 +145,7 @@ const LandingPage = () => {
               Helping businesses build robust and scalable web applications.
             </p>
             <Link href="/contact">
-              <Button className="uppercase font-bold">Contact</Button>
+              <Button className="uppercase font-bold z-30">Contact</Button>
             </Link>
           </div>
         </section>
