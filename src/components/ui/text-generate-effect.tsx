@@ -40,7 +40,7 @@ export const TextGenerateEffect = ({
         {wordsArray.map((word, idx) => (
           <motion.span
             key={word + idx}
-            className="text-muted-foreground opacity-0"
+            className="text-muted-foreground text-base md:text-lg opacity-0"
             style={{
               filter: filter ? "blur(10px)" : "none",
             }}
@@ -55,7 +55,7 @@ export const TextGenerateEffect = ({
   return (
     <div className={cn("font-semibold", className)}>
       <div className="mt-4 w-full flex justify-center items-center">
-        <div className="text-lg leading-snug tracking-wide max-w-3xl text-center">
+        <div className=" leading-snug tracking-wide max-w-3xl text-center">
           {renderWords()}
         </div>
       </div>
