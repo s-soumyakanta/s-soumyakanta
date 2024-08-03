@@ -48,7 +48,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed inset-x-0 top-0 z-50 transition-transform duration-300 ${
+        className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${
           scrollingDown ? "-translate-y-full" : "translate-y-0"
         } backdrop-blur-md bg-[hsl(var(--background)/0.7)] dark:bg-[hsl(var(--background)/0.7)] border-b border-[hsl(var(--border))]`}
       >
