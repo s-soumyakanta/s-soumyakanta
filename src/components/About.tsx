@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 
 const About = () => {
@@ -22,7 +21,7 @@ const About = () => {
             About Me
           </h2>
           <div className="w-full">
-          <TextGenerateEffect words={aboutMeText} className="text-center" />
+          <TextGenerateEffect words={aboutMeText} className="text-center text-sm" />
         
           </div>
           </div>

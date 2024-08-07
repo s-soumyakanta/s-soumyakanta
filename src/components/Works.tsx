@@ -5,6 +5,7 @@ import React from "react";
 import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { ExternalLink } from "lucide-react";
 
 const cardData = [
   {
@@ -65,21 +66,20 @@ const Works = () => {
                 />
               </CardItem>
               <div className="flex flex-wrap gap-2 mt-4">
-              {card.techStack.map((tech, techIndex) => (
-  <CardItem
-    key={techIndex}
-    translateZ="60"
-    className="text-xs font-semibold px-3 py-1 rounded-full border shadow-sm transition-transform transform hover:scale-105 hover:shadow-md"
-    style={{
-      backgroundColor: "var(--secondary)",
-      color: "var(--secondary-foreground)",
-      borderColor: "var(--border)",
-    }}
-  >
-    {tech}
-  </CardItem>
-))}
-
+                {card.techStack.map((tech, techIndex) => (
+                  <CardItem
+                    key={techIndex}
+                    translateZ="60"
+                    className="text-xs font-semibold px-3 py-1 rounded-full border shadow-sm transition-transform transform hover:scale-105 hover:shadow-md"
+                    style={{
+                      backgroundColor: "var(--secondary)",
+                      color: "var(--secondary-foreground)",
+                      borderColor: "var(--border)",
+                    }}
+                  >
+                    {tech}
+                  </CardItem>
+                ))}
               </div>
               <div className="flex justify-end items-center mt-4">
                 <CardItem
@@ -88,7 +88,7 @@ const Works = () => {
                   href={card.link}
                   target="__blank"
                 >
-                  <Button className="font-bold">Live Link →</Button>
+                  <Button className="font-bold text-center">Live Link <ExternalLink className="w-4 ml-2" /></Button>
                 </CardItem>
               </div>
             </CardBody>
