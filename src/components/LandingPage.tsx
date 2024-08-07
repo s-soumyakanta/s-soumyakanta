@@ -7,6 +7,7 @@ import Works from "./Works";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Spotlight } from "./ui/spotlight";
 
 const GlowingStarsBackgroundCard = ({
   className,
@@ -131,6 +132,10 @@ const LandingPage = () => {
     <>
       <GlowingStarsBackgroundCard>
         <section className="relative h-[90vh] w-full bg-background text-foreground dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex items-center justify-center text-center mb-8 md:mb-16">
+        <Spotlight
+        className="-top-10 left-14 md:left-60 md:-top-20"
+        fill="white"
+      />
           {/* Radial gradient for the container to give a faded look */}
           <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-background text-foreground [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
 
