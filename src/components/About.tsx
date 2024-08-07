@@ -3,13 +3,7 @@ import Link from "next/link";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 
 const About = () => {
-  const aboutMeText = `Hello there! I'm S Soumyakanta, a self-taught web developer
-            whose journey began with a love for blogging and tinkering with
-            Blogger templates. My fascination for the digital realm deepened,
-            leading me to explore the world of web development. From learning
-            the basics of HTML, CSS, and JavaScript to mastering technologies
-            like React.js and Next.js, I've evolved into a passionate full
-            stack web app developer.`;
+  const aboutMeText = `Hello! I'm Soumyakanta, a self-taught full-stack developer with a passion for creating dynamic and responsive web applications. My journey into web development began with experimenting with blog templates, which ignited my curiosity about the inner workings of websites. Over time, I have honed my skills in both front-end and back-end development, specializing in technologies such as React, Next.js, Node.js, and various other modern tools and frameworks. I am dedicated to continuous learning and leveraging my technical expertise to deliver robust and scalable solutions.`
   return (
     <div className="w-full py-12 lg:py-24 xl:py-32 flex justify-center items-center">
       <div className="container flex flex-col gap-8 px-4 md:gap-12 md:px-6">
