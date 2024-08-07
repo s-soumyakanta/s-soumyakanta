@@ -8,8 +8,8 @@ import LandingPage from "./LandingPage";
 
 const Home = () => {
   return (
-    <div className="bg-background text-foreground">
-      <main className="container mx-auto px-4 py-8 md:py-16">
+    <div className="bg-background text-foreground w-full">
+      <main className="container w-full">
         <section className="min-h-screen w-full">
           <LandingPage />
         </section>
