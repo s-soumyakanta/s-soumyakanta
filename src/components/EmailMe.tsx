@@ -10,7 +10,7 @@ export default function EmailMe() {
       <div className="max-w-3xl p-6 shadow-none">
         <div className="text-center">
           <h2 className="mb-4 text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Get in Touch
+           Send an Email
           </h2>
           <p className="mb-6 text-base md:text-lg font-normal text-gray-700 dark:text-gray-400">
             If you have any questions or would like to work together, feel free to reach out!
