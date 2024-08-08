@@ -48,7 +48,7 @@ export default function Footer() {
             </div>
             <div>
               <h2 className="mb-6 text-sm font-semibold text-[hsl(var(--foreground))] uppercase dark:text-[hsl(var(--foreground))]">
-                Let's Connect
+                Let&apos;s Connect
               </h2>
               <ul className="text-sm text-[hsl(var(--foreground))] dark:text-[hsl(var(--foreground))] font-normal">
                 <li className="mb-4">
