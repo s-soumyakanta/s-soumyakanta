@@ -8,8 +8,8 @@ const Skills = () => {
         Skills
       </span>
 
-      {/* Inner Circle */}
-      <OrbitingCircles
+       {/* Inner Circle */}
+       <OrbitingCircles
         className="size-[30px] border-none bg-transparent"
         duration={20}
         delay={10}
@@ -29,7 +29,7 @@ const Skills = () => {
       {/* Middle Circle */}
       <OrbitingCircles
         className="size-[40px] border-none bg-transparent"
-        radius={140}
+        radius={130}
         duration={25}
         delay={10}
         reverse
@@ -38,7 +38,7 @@ const Skills = () => {
       </OrbitingCircles>
       <OrbitingCircles
         className="size-[40px] border-none bg-transparent"
-        radius={140}
+        radius={130}
         duration={25}
         delay={20}
         reverse
@@ -50,7 +50,7 @@ const Skills = () => {
 
       <OrbitingCircles
         className="size-[50px] border-none bg-transparent"
-        radius={200}
+        radius={180}
         duration={30}
         delay={10}
       >
@@ -58,13 +58,13 @@ const Skills = () => {
       </OrbitingCircles>
       <OrbitingCircles
         className="size-[50px] border-none"
-        radius={200}
+        radius={180}
         duration={30}
         delay={20}
       >
         <Image src="/icons/nextjs.svg" alt="Nextjs" width={50} height={50} />
       </OrbitingCircles>
-    </div>
+   </div>
   );
 };
 
