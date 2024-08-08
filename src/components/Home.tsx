@@ -6,6 +6,7 @@ import Works from "./Works";
 
 import LandingPage from "./LandingPage";
 import Skills from "./Skills";
+import EmailMe from "./EmailMe";
 
 const Home = () => {
   return (
@@ -30,6 +31,10 @@ const Home = () => {
         >
           <Works />
         </section>
+        <section className="h-[80vh] flex justify-center items-center">
+          <EmailMe />
+        </section>
+        
         
       </main>
     </div>
