@@ -1,15 +1,44 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
+import { useState, useEffect } from "react";
+
+const schema = yup.object().shape({
+  name: yup.string().required("This field is required").min(1, "Minimum 1 character"),
+  email: yup.string().required("This field is required").email("Invalid email format"),
+  message: yup.string().required("This field is required").min(1, "Minimum 1 character"),
+});
+
+
+interface ContactFormData {
+  name: string;
+  email: string;
+  message: string;
+}
 
 export default function Contact() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, setValue, trigger } = useForm<ContactFormData>({
+    resolver: yupResolver(schema)
+  });
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data: any) => {
+  useEffect(() => {
+    const emailElement = document.getElementById("email") as HTMLInputElement;
+    emailElement.addEventListener("change", () => {
+      trigger("email");
+    });
+  }, [trigger]);
+
+  const onSubmit: SubmitHandler<ContactFormData> = async (data) => {
+    setLoading(true);
     try {
       const response = await fetch('/api/send', {
         method: 'POST',
@@ -20,12 +49,25 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        alert('Message sent successfully!');
+        toast({
+          description: "Your message has been sent.",
+        });
+        reset(); 
       } else {
-        alert('Failed to send message.');
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "Failed to send message.",
+        });
       }
     } catch (error) {
-      alert('An error occurred.');
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "An error occurred.",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,10 +86,10 @@ export default function Contact() {
             type="text"
             id="name"
             placeholder="Your name"
-            {...register("name", { required: true })}
+            {...register("name")}
             className={errors.name ? "border-red-600" : ""}
           />
-          {errors.name && <span className="text-red-600">This field is required</span>}
+          {errors.name && <span className="text-red-600">{errors.name.message}</span>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Your email</Label>
@@ -55,10 +97,10 @@ export default function Contact() {
             type="email"
             id="email"
             placeholder="Your email"
-            {...register("email", { required: true })}
+            {...register("email")}
             className={errors.email ? "border-red-600" : ""}
           />
-          {errors.email && <span className="text-red-600">This field is required</span>}
+          {errors.email && <span className="text-red-600">{errors.email.message}</span>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="message">Your message</Label>
@@ -66,14 +108,14 @@ export default function Contact() {
             id="message"
             rows={6}
             placeholder="Your message"
-            {...register("message", { required: true })}
+            {...register("message")}
             className={errors.message ? "border-red-600" : ""}
           />
-          {errors.message && <span className="text-red-600">This field is required</span>}
+          {errors.message && <span className="text-red-600">{errors.message.message}</span>}
         </div>
         <div className="flex justify-end">
-          <Button type="submit" className="py-3 px-5 text-sm font-medium">
-            Send message
+          <Button type="submit" className="py-3 px-5 text-sm font-medium" disabled={loading}>
+            {loading ? "Sending..." : "Send message"}
           </Button>
         </div>
       </form>

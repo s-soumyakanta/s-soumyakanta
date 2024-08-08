@@ -6,13 +6,11 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const { name, email, message } = await req.json();
-  
-  console.log(name,email,message)
   try {
     const { data, error } = await resend.emails.send({
-      from: `${name} <${email}>`,
+      from: `Web Mail <web-mail@s-soumyakanta.com>`,
       to: [String(process.env.MY_EMAIL)],
-      subject: 'New Message from Contact Form',
+      subject: 'New Message from s-soumyakanta.com',
       react: EmailTemplate({ name, email, message }),
     });
 
