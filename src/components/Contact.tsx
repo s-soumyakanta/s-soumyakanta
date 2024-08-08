@@ -72,7 +72,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] py-8 mt-10 px-4 mx-auto max-w-xl h-screen flex flex-col justify-center">
+    <section className="bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] py-12 mt-6 px-4 mx-auto max-w-xl min-h-screen flex flex-col justify-center">
       <h2 className="mb-4 text-3xl md:text-4xl font-bold tracking-tight text-center text-gray-900 dark:text-white">
         Contact
       </h2>
