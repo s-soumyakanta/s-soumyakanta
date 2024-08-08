@@ -5,6 +5,7 @@ import About from "./About";
 import Works from "./Works";
 
 import LandingPage from "./LandingPage";
+import Skills from "./Skills";
 
 const Home = () => {
   return (
@@ -20,12 +21,16 @@ const Home = () => {
         >
           <About />
         </section>
+        <section className="min-h-screen flex justify-center items-center">
+          <Skills />
+        </section>
         <section
           id="works"
           className="min-h-screen flex justify-center items-center"
         >
           <Works />
         </section>
+        
       </main>
     </div>
   );
