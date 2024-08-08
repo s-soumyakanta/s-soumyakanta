@@ -1,0 +1,30 @@
+import { EmailTemplate } from '@/components/EmailTemplate';
+import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export async function POST(req: NextRequest) {
+  const { name, email, message } = await req.json();
+  
+  console.log(name,email,message)
+  try {
+    const { data, error } = await resend.emails.send({
+      from: `${name} <${email}>`,
+      to: [String(process.env.MY_EMAIL)],
+      subject: 'New Message from Contact Form',
+      react: EmailTemplate({ name, email, message }),
+    });
+
+    if (error) {
+      return NextResponse.json({ error }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
+  }
+}
