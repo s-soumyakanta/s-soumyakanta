@@ -4,7 +4,7 @@
 - 🔭 I’m currently working on [RecipePlannerAI](https://github.com/s-soumyakanta/recipeplannerai)  
   
 
-- 🌱 I’m currently learning Agenting AI 
+- 🌱 I’m currently learning Golang 
   
 
 - ❓ Ask me about anything related to JavaScritpt!
