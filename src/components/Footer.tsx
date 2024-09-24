@@ -81,6 +81,16 @@ export default function Footer() {
                     X
                   </a>
                 </li>
+                <li className="mb-4">
+                  <a
+                    href="https://youtube.com/@s-soumyakanta"
+                    className="hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    YouTube
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
