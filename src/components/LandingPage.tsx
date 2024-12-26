@@ -29,7 +29,7 @@ const LandingPage = () => {
               Full-Stack Developer
             </h2>
             <p className="max-w-xs md:max-w-md mx-auto text-base sm:text-lg mb-6 md:mb-8">
-              Helping businesses build robust and scalable web applications!
+              Helping businesses build robust and scalable web applications.
             </p>
             <Link href="/contact">
               <Button className="uppercase font-bold z-30">Contact</Button>
