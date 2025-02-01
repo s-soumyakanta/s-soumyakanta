@@ -20,7 +20,7 @@ const LandingPage = () => {
           </p>
 
           <Link href="/contact">
-            <Button className="uppercase font-bold">
+            <Button className="uppercase font-bold secondary">
               Contact
             </Button>
           </Link>
