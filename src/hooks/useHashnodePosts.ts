@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { getAllPosts, Posts, PostEdge, PageInfo } from "@/queries/blog-data";
+import { getAllPosts, PostsData, PostEdge, PageInfo } from "@/queries/blog-data";
 
 interface UseHashnodePostsSettings {
     host: string;
@@ -33,23 +33,19 @@ export function useHashnodePosts(
         async (loadMore: boolean) => {
             try {
                 setLoading(true);
-                const data = await getAllPosts(host, first, pageInfo.endCursor ?? endCursor);
+                const data: PostsData | undefined = await getAllPosts(
+                    host,
+                    first,
+                    loadMore ? pageInfo.endCursor : endCursor
+                );
                 if (data) {
                     setPageInfo(data.pageInfo);
                     setTotalDocs(data.totalDocuments ?? 0);
 
-                    if (loadMore) {
-                        setPosts((prev) => [...prev, ...data.edges]);
-                    } else {
-                        setPosts(data.edges);
-                    }
+                    setPosts((prev) => (loadMore ? [...prev, ...data.edges] : data.edges));
                 }
             } catch (err) {
-                if (err instanceof Error) {
-                    setError(err);
-                } else {
-                    setError(new Error("An unknown error occurred"));
-                }
+                setError(err instanceof Error ? err : new Error("An unknown error occurred"));
             } finally {
                 setLoading(false);
             }
@@ -59,7 +55,7 @@ export function useHashnodePosts(
 
     useEffect(() => {
         fetchPosts(false);
-    }, [fetchPosts]);
+    }, [host, first]);
 
     const loadMorePost = useCallback(() => {
         if (pageInfo.hasNextPage && pageInfo.endCursor) {

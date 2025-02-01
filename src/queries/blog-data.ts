@@ -1,24 +1,22 @@
 import { gql, GraphQLClient } from "graphql-request";
 import { getClient } from "../lib/graphQLClient";
 
-// Define interfaces for the GraphQL response structure
-
-interface Author {
+export interface Author {
   name: string;
   profilePicture: string;
 }
 
-interface CoverImage {
+export interface CoverImage {
   url: string;
 }
 
-interface Tag {
+export interface Tag {
   name: string;
   slug: string;
   id: string;
 }
 
-export interface Post {
+export interface SinglePost {
   author: Author;
   title: string;
   subtitle: string;
@@ -28,15 +26,16 @@ export interface Post {
   tags: Tag[];
   publishedAt: string;
   readTimeInMinutes: number;
+  content: { html: string };
 }
 
-interface PageInfo {
+export interface PostEdge {
+  node: SinglePost;
+}
+
+export interface PageInfo {
   hasNextPage: boolean;
-  endCursor: string;
-}
-
-interface PostEdge {
-  node: Post;
+  endCursor?: string;
 }
 
 export interface PostsData {
@@ -45,25 +44,15 @@ export interface PostsData {
   edges: PostEdge[];
 }
 
-interface Publication {
-  title: string;
-  posts: PostsData;
-}
-
-interface AllPostsResponse {
-  publication: Publication;
-}
-
-// Convert getAllPosts to TypeScript with typed parameters and return value.
 export const getAllPosts = async (
   host: string,
   first: number = 10,
   endCursor?: string,
-  tags?: string[] // Adjust this type if ObjectId is not a string
+  tags?: string[]
 ): Promise<PostsData | undefined> => {
   const client: GraphQLClient = getClient();
 
-  const data = await client.request<AllPostsResponse>(
+  const data = await client.request<{ publication: { posts: PostsData } }>(
     gql`
       query allPosts(
         $first: Int!
@@ -72,7 +61,6 @@ export const getAllPosts = async (
         $tags: [ObjectId!]
       ) {
         publication(host: $host) {
-          title
           posts(first: $first, after: $endCursor, filter: { tags: $tags }) {
             totalDocuments
             pageInfo {
@@ -99,19 +87,54 @@ export const getAllPosts = async (
                 }
                 publishedAt
                 readTimeInMinutes
+                content {
+                  html
+                }
               }
             }
           }
         }
       }
     `,
-    {
-      first,
-      host,
-      endCursor,
-      tags,
-    }
+    { first, host, endCursor, tags }
   );
 
-  return data?.publication?.posts;
+  return data.publication?.posts;
+};
+
+export const getPost = async (host: string, slug: string): Promise<SinglePost | null> => {
+  const client: GraphQLClient = getClient();
+
+  const data = await client.request<{ publication: { post: SinglePost } }>(
+    gql`
+      query postDetails($host: String, $slug: String!) {
+        publication(host: $host) {
+          post(slug: $slug) {
+            author {
+              name
+              profilePicture
+            }
+            publishedAt
+            title
+            subtitle
+            readTimeInMinutes
+            content {
+              html
+            }
+            tags {
+              name
+              slug
+              id
+            }
+            coverImage {
+              url
+            }
+          }
+        }
+      }
+    `,
+    { host, slug }
+  );
+
+  return data.publication?.post || null;
 };
