@@ -1,7 +1,8 @@
+import { ModeToggle } from "@/components/dark-mode-btn"
 
 const page = () => {
   return (
-    <div className="bg-lime-300">S Soumyakanta</div>
+    <div>S Soumyakanta</div>
   )
 }
 
