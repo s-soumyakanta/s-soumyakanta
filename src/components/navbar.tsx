@@ -100,11 +100,11 @@ export default function Navbar() {
                             </div>
                             <div className="hidden md:block">
                                 <Link href="/contact">
-                                    <Button>Contact</Button>
+                                    <Button variant="outline" className="cursor-pointer">Contact</Button>
                                 </Link>
                             </div>
                             <div className="block md:hidden">
-                                <Button variant="outline" size="icon" onClick={toggleSidebar}>
+                                <Button className="cursor-pointer" size="icon" onClick={toggleSidebar}>
                                     <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]" />
                                     <span className="sr-only">Open menu</span>
                                 </Button>
