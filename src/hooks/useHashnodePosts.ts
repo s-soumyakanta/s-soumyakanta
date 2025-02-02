@@ -55,7 +55,7 @@ export function useHashnodePosts(
 
     useEffect(() => {
         fetchPosts(false);
-    }, [host, first]);
+    }, [host, first, fetchPosts]);
 
     const loadMorePost = useCallback(() => {
         if (pageInfo.hasNextPage && pageInfo.endCursor) {

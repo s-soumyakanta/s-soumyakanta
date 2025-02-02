@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ interface ContactFormData {
 }
 
 export default function Contact() {
-  const { register, handleSubmit, formState: { errors }, reset, setValue, trigger } = useForm<ContactFormData>({
+  const { register, handleSubmit, formState: { errors }, reset, trigger } = useForm<ContactFormData>({
     resolver: yupResolver(schema)
   });
   const { toast } = useToast();
@@ -37,7 +37,7 @@ export default function Contact() {
     });
   }, [trigger]);
 
-  const onSubmit: SubmitHandler<ContactFormData> = async (data: any) => {
+  const onSubmit: SubmitHandler<ContactFormData> = async (data) => {
     setLoading(true);
     try {
       const response = await fetch('/api/send', {
@@ -64,7 +64,7 @@ export default function Contact() {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: "An error occurred.",
+        description: `An error occurred. ${error}`,
       });
     } finally {
       setLoading(false);
