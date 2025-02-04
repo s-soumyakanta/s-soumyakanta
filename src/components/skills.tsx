@@ -89,7 +89,7 @@ export default function Skills() {
             md:grid-cols-4
             place-items-center
             max-w-3xl
-            flex items-center justify-center mx-auto
+            items-center justify-center mx-auto
           "
                 >
                     {skills.map((skill) => (
