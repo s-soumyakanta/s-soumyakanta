@@ -43,7 +43,7 @@ export default function RootLayout({
       <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
       <body
         className={cn(
-          "min-h-screen w-full bg-background text-foreground font-sans antialiased",
+          "min-h-screen w-full text-foreground font-sans antialiased ",
           fontSans.variable
         )}
       >
@@ -51,7 +51,7 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
           enableSystem
-          disableTransitionOnChange
+
         >
           <Navbar />
           <main>{children}</main>

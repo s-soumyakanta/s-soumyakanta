@@ -5,43 +5,40 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { HamburgerMenuIcon } from "@radix-ui/react-icons"
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "./ui/navigation-menu"
-import { ModeToggle } from "./dark-mode-btn"
-import Sidebar from "./sidebar"
+import {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    navigationMenuTriggerStyle,
+} from "./ui/navigation-menu"
 import { useBoolean } from "@/hooks/useBoolean"
+import Sidebar from "./sidebar"
+// import { ModeToggle } from "./dark-mode-btn"  // commented out for brevity
 
 export default function Navbar() {
     const { value: isSidebarOpen, onToggle: toggleSidebar, onFalse: closeSidebar } = useBoolean(false)
     const [scrollingDown, setScrollingDown] = useState(false)
     const [lastScrollY, setLastScrollY] = useState(0)
-    const [scrollingTimeout, setScrollingTimeout] =
-        useState<NodeJS.Timeout | null>(null)
+    const [scrollingTimeout, setScrollingTimeout] = useState<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
         const handleScroll = () => {
-            if (typeof window !== "undefined") {
-                if (window.scrollY > lastScrollY) {
-                    setScrollingDown(true)
-                    if (scrollingTimeout) {
-                        clearTimeout(scrollingTimeout)
-                    }
-                    const timeout: NodeJS.Timeout = setTimeout(() => {
-                        setScrollingDown(false)
-                    }, 300) // Adjust this timeout as needed
-                    setScrollingTimeout(timeout)
-                } else {
-                    setScrollingDown(false)
-                }
-                setLastScrollY(window.scrollY)
+            if (window.scrollY > lastScrollY) {
+                setScrollingDown(true)
+                if (scrollingTimeout) clearTimeout(scrollingTimeout)
+                const timeout: NodeJS.Timeout = setTimeout(() => setScrollingDown(false), 300)
+                setScrollingTimeout(timeout)
+            } else {
+                setScrollingDown(false)
             }
+            setLastScrollY(window.scrollY)
         }
 
         window.addEventListener("scroll", handleScroll)
         return () => {
             window.removeEventListener("scroll", handleScroll)
-            if (scrollingTimeout) {
-                clearTimeout(scrollingTimeout)
-            }
+            if (scrollingTimeout) clearTimeout(scrollingTimeout)
         }
     }, [lastScrollY, scrollingTimeout])
 
@@ -49,9 +46,10 @@ export default function Navbar() {
         <>
             <nav
                 className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${scrollingDown ? "-translate-y-full" : "translate-y-0"
-                    } backdrop-blur-md bg-[hsl(var(--background)/0.7)] dark:bg-[hsl(var(--background)/0.7)] border-b border-[hsl(var(--border))]`}
+                    } backdrop-blur-md bg-[hsl(var(--background)/0.7)] dark:bg-[hsl(var(--background)/0.7)] 
+           border-b border-[hsl(var(--border))]`}
             >
-                <div className="container mx-auto px-4 md:px-6 p-2">
+                <div className="container mx-auto p-2 px-4 md:px-6">
                     <div className="flex h-14 items-center">
                         <Link
                             href="/"
@@ -60,7 +58,7 @@ export default function Navbar() {
                         >
                             S Soumyakanta
                         </Link>
-                        <div className="mx-auto items-center hidden md:block">
+                        <div className="mx-auto hidden md:block">
                             <NavigationMenu>
                                 <NavigationMenuList>
                                     <NavigationMenuItem>
@@ -95,16 +93,39 @@ export default function Navbar() {
                             </NavigationMenu>
                         </div>
                         <nav className="ml-auto flex items-center space-x-4">
-                            <div>
-                                <ModeToggle />
-                            </div>
+                            {/* 
+                ModeToggle or other controls would go here.
+                <ModeToggle /> 
+              */}
                             <div className="hidden md:block">
                                 <Link href="/contact">
-                                    <Button variant="outline" className="cursor-pointer">Contact</Button>
+                                    <Button className="cursor-pointer bg-white text-black">
+                                        Contact
+                                    </Button>
                                 </Link>
                             </div>
                             <div className="block md:hidden">
-                                <Button className="cursor-pointer" size="icon" onClick={toggleSidebar}>
+                                {/* 
+                  Use the same ring classes from Sidebar’s close button:
+                */}
+                                <Button
+                                    onClick={toggleSidebar}
+                                    size="icon"
+                                    className="
+                    p-2 
+                    focus:outline-none 
+                    focus:ring-2 
+                    focus:ring-gray-400 
+                    dark:focus:ring-gray-100
+                    text-gray-500 
+                    dark:text-gray-400 
+                    hover:text-gray-700 
+                    dark:hover:text-gray-200 
+                    transition-colors 
+                    duration-200 
+                    rounded-lg
+                  "
+                                >
                                     <HamburgerMenuIcon className="h-[1.2rem] w-[1.2rem]" />
                                     <span className="sr-only">Open menu</span>
                                 </Button>

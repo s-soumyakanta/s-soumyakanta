@@ -12,7 +12,7 @@ import CurrentYear from "./cureent-year";
 
 export default function Footer() {
     return (
-        <footer className="bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] mt-4 rounded-lg shadow border-t border-[hsl(var(--border))]">
+        <footer className="bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))]  rounded-lg shadow border-t border-[hsl(var(--border))]">
             <div className="container mx-auto p-4 py-6 lg:py-8">
                 <div className="md:flex md:justify-between">
                     <div className="mb-6 md:mb-0">

@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 
 const LandingPage = () => {
   return (
-    <section className="min-h-screen w-full flex items-center justify-center">
-      <div className="min-h-screen w-full relative flex items-center justify-center bg-background">
+    <section className="min-h-screen w-full flex items-center justify-center bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))]">
+      <div className="min-h-screen w-full relative flex items-center justify-center bg-foreground">
         <div className="relative z-10 flex flex-col items-center text-center px-4">
           <h1 className="text-4xl md:text-6xl font-bold mb-2 md:mb-4">
             S Soumyakanta
@@ -20,7 +20,7 @@ const LandingPage = () => {
           </p>
 
           <Link href="/contact">
-            <Button className="uppercase font-bold cursor-pointer">
+            <Button className="uppercase font-bold cursor-pointer bg-white text-black  ">
               Contact
             </Button>
           </Link>
