@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import About from "@/components/about";
 import Skills from "@/components/skills";
+import Works from "@/components/works";
 
 const LandingPage = () => {
   return (
@@ -40,6 +41,7 @@ const LandingPage = () => {
       </section>
       <About />
       <Skills />
+      <Works />
     </>
   );
 };

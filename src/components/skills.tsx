@@ -108,7 +108,8 @@ export default function Skills() {
                 duration-300 
                 hover:-translate-y-1 
                 hover:shadow-md
-                dark:bg-gray-800
+                dark:bg-white
+                dark:bg-opacity-10
               "
                         >
                             <Image
