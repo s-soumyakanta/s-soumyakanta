@@ -114,7 +114,7 @@ export default function Contact() {
           {errors.message && <span className="text-red-600">{errors.message.message}</span>}
         </div>
         <div className="flex justify-end">
-          <Button type="submit" className="py-3 px-5 text-sm font-medium" disabled={loading}>
+          <Button type="submit" className="py-3 px-5 text-sm font-medium bg-white text-black" disabled={loading}>
             {loading ? "Sending..." : "Send message"}
           </Button>
         </div>

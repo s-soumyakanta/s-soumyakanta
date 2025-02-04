@@ -19,11 +19,19 @@ const LandingPage = () => {
             Helping businesses build robust and scalable web applications.
           </p>
 
-          <Link href="/contact">
-            <Button className="uppercase font-bold cursor-pointer bg-white text-black  ">
-              Contact
-            </Button>
-          </Link>
+          <div className="flex gap-4 fade-in">
+            <Link href="/contact">
+              <Button className="pulse-effect uppercase font-bold bg-white text-black hover:bg-gray-200">
+                Contact
+              </Button>
+            </Link>
+
+            <Link href="/blog">
+              <Button variant="outline" className="pulse-effect uppercase font-bold border-white text-white hover:bg-white/10">
+                Read Blog
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     </section>
