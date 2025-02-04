@@ -53,7 +53,7 @@ export default function Navbar() {
                     <div className="flex h-14 items-center">
                         <Link
                             href="/"
-                            className="mr-auto flex items-center gap-2 text-lg font-semibold text-[hsl(var(--foreground))]"
+                            className="mr-auto flex items-center gap-2 text-lg lg:text-2xl font-semibold text-[hsl(var(--foreground))]"
                             prefetch={false}
                         >
                             S Soumyakanta
