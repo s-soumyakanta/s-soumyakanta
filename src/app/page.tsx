@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import About from "@/components/about";
 import Skills from "@/components/skills";
 import Works from "@/components/works";
+import EmailMe from "@/components/email-me";
 
 const LandingPage = () => {
   return (
@@ -42,6 +43,7 @@ const LandingPage = () => {
       <About />
       <Skills />
       <Works />
+      <EmailMe />
     </>
   );
 };

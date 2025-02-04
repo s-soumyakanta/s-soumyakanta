@@ -70,7 +70,7 @@ const skills: Skill[] = [
 export default function Skills() {
     return (
         <section className="w-full py-12 lg:py-24">
-            <div className="container mx-auto px-4 md:px-6 text-center">
+            <div className="container mx-auto px-4 md:px-6 text-center ">
                 <h2 className="text-3xl font-bold tracking-tight text-gray-800 dark:text-gray-100 md:text-4xl">
                     Skills
                 </h2>
@@ -87,8 +87,9 @@ export default function Skills() {
             gap-8
             sm:grid-cols-3
             md:grid-cols-4
-            xl:grid-cols-8
             place-items-center
+            max-w-3xl
+            flex items-center justify-center mx-auto
           "
                 >
                     {skills.map((skill) => (
