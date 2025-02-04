@@ -5,7 +5,8 @@ import {
     faGithub,
     faLinkedin,
     faXTwitter,
-    faYoutube
+    faYoutube,
+    faBluesky
 } from '@fortawesome/free-brands-svg-icons';
 import CurrentYear from "./cureent-year";
 
@@ -73,13 +74,24 @@ export default function Footer() {
                                 </li>
                                 <li className="mb-4">
                                     <a
+                                        href="https://bsky.app/profile/s-soumyakanta.com"
+                                        className="hover:underline flex items-center gap-2"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <FontAwesomeIcon icon={faBluesky} className="w-4 h-4" />
+                                        Bluesky
+                                    </a>
+                                </li>
+                                <li className="mb-4">
+                                    <a
                                         href="https://twitter.com/s_soumyakanta"
                                         className="hover:underline flex items-center gap-2"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
                                         <FontAwesomeIcon icon={faXTwitter} className="w-4 h-4" />
-                                        X
+                                        Twitter
                                     </a>
                                 </li>
                                 <li className="mb-4">
