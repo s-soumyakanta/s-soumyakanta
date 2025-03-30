@@ -4,7 +4,7 @@ import {
 	PublicationByHostDocument,
 	PublicationByHostQuery,
 	PublicationByHostQueryVariables,
-} from '../generated/graphql';
+} from '@/generated/graphql';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const Dashboard = () => null;

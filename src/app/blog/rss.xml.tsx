@@ -1,7 +1,7 @@
-import { constructRSSFeedFromPosts } from '@starter-kit/utils/feed';
+import { constructRSSFeedFromPosts } from '@/utils/feed';
 import request from 'graphql-request';
 import { GetServerSideProps } from 'next';
-import { RssFeedDocument, RssFeedQuery, RssFeedQueryVariables } from '../generated/graphql';
+import { RssFeedDocument, RssFeedQuery, RssFeedQueryVariables } from '@/generated/graphql';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const RSS = () => null;

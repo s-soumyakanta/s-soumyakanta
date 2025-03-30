@@ -1,4 +1,4 @@
-import { getSitemap } from '@starter-kit/utils/seo/sitemap';
+import { getSitemap } from '@/utils/seo/sitemap';
 import request from 'graphql-request';
 import { GetServerSideProps } from 'next';
 import {
@@ -8,7 +8,7 @@ import {
 	SitemapDocument,
 	SitemapQuery,
 	SitemapQueryVariables,
-} from '../generated/graphql';
+} from '@/generated/graphql';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const MAX_POSTS = 1000;
