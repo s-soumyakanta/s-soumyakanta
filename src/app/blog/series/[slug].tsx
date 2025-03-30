@@ -1,14 +1,8 @@
-import { resizeImage } from '@starter-kit/utils/image';
+import { resizeImage } from '@/utils/image';
 import request from 'graphql-request';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
-import { Container } from '../../components/container';
-import { AppProvider } from '../../components/contexts/appContext';
-import { CoverImage } from '../../components/cover-image';
-import { Footer } from '../../components/footer';
-import { Header } from '../../components/header';
-import { Layout } from '../../components/layout';
-import { MorePosts } from '../../components/more-posts';
+
 import {
 	PostFragment,
 	PublicationFragment,
@@ -16,8 +10,15 @@ import {
 	SeriesPostsByPublicationDocument,
 	SeriesPostsByPublicationQuery,
 	SeriesPostsByPublicationQueryVariables,
-} from '../../generated/graphql';
-import { DEFAULT_COVER } from '../../utils/const';
+} from '@/generated/graphql';
+import { DEFAULT_COVER } from '@/utils/const';
+import { AppProvider } from '@/components/contexts/appContext';
+import { Layout } from '@/components/layout';
+import { Header } from '@/components/header';
+import { Container } from '@/components/container';
+import { Footer } from '@/components/footer';
+import { MorePosts } from '@/components/more-posts';
+import { CoverImage } from '@/components/cover-image';
 
 type Props = {
 	series: SeriesFragment;
@@ -37,9 +38,8 @@ export default function Post({ series, publication, posts }: Props) {
 				<Header />
 				<Container className="flex flex-col items-stretch gap-10 px-5 pb-10">
 					<div
-						className={`${
-							series.coverImage ? 'col-span-full' : 'col-span-3'
-						} grid grid-cols-4 pt-5 md:gap-5`}
+						className={`${series.coverImage ? 'col-span-full' : 'col-span-3'
+							} grid grid-cols-4 pt-5 md:gap-5`}
 					>
 						<div className="col-span-full flex flex-col gap-1 md:col-span-2 lg:col-span-3">
 							<p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Series</p>
