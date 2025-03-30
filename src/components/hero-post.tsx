@@ -1,4 +1,4 @@
-import { resizeImage } from '@starter-kit/utils/image';
+import { resizeImage } from '@/utils/image';
 import Link from 'next/link';
 import { DEFAULT_COVER } from '../utils/const';
 import { CoverImage } from './cover-image';

@@ -1,5 +1,5 @@
-import { useEmbeds } from '@starter-kit/utils/renderer/hooks/useEmbeds';
-import { markdownToHtml } from '@starter-kit/utils/renderer/markdownToHtml';
+import { useEmbeds } from '@/utils/renderer/hooks/useEmbeds';
+import { markdownToHtml } from '@/utils/renderer/markdownToHtml';
 import { memo } from 'react';
 
 type Props = {

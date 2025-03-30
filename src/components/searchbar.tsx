@@ -1,4 +1,4 @@
-import { resizeImage } from '@starter-kit/utils/image';
+import { resizeImage } from '@/utils/image';
 import request from 'graphql-request';
 import Link from 'next/link';
 import { KeyboardEventHandler, useEffect, useRef, useState } from 'react';

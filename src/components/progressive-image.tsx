@@ -1,5 +1,5 @@
 import React from 'react';
-import { resizeImage } from '@starter-kit/utils/image';
+import { resizeImage } from '@/utils/image';
 
 import { DEFAULT_AVATAR } from '../utils/const';
 import { twMerge } from 'tailwind-merge';

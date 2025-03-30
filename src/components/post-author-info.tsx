@@ -1,7 +1,7 @@
 import { twJoin } from 'tailwind-merge';
 
 import CustomImage from './custom-image';
-import { getBlurHash, resizeImage } from '@starter-kit/utils/image';
+import { getBlurHash, resizeImage } from '@/utils/image';
 
 function PostAuthorInfo(props: any) {
   const {

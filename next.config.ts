@@ -1,4 +1,4 @@
-const { request, gql } = require('graphql-request');
+import { request, gql } from "graphql-request";
 
 const ANALYTICS_BASE_URL = 'https://hn-ping2.hashnode.com';
 const HASHNODE_ADVANCED_ANALYTICS_URL = 'https://user-analytics.hashnode.com';
@@ -28,7 +28,7 @@ const getRedirectionRules = async () => {
 		}
   	`;
 
-  const data = await request(GQL_ENDPOINT, query);
+  const data = await request(GQL_ENDPOINT, query) as { publication?: { id: string; redirectionRules: { source: string; destination: string; type: string; }[] } };
 
   if (!data.publication) {
     throw 'Please ensure you have set the env var NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST correctly.';
@@ -59,7 +59,7 @@ const getRedirectionRules = async () => {
  * @type {import('next').NextConfig}
  */
 const config = {
-  transpilePackages: ['@starter-kit/utils'],
+  transpilePackages: ['@/utils'],
   basePath: getBasePath(),
   experimental: {
     scrollRestoration: true,

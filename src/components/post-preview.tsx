@@ -1,4 +1,4 @@
-import { resizeImage } from '@starter-kit/utils/image';
+import { resizeImage } from '@/utils/image';
 import Link from 'next/link';
 import { User } from '../generated/graphql';
 import { DEFAULT_COVER } from '../utils/const';

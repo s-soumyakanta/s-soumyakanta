@@ -2,7 +2,7 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import Image from 'next/legacy/image';
 
-import { resizeImage } from '@starter-kit/utils/image';
+import { resizeImage } from '@/utils/image';
 import { DEFAULT_AVATAR } from '../utils/const';
 
 export default class ProfileImage extends React.Component {
@@ -24,10 +24,10 @@ export default class ProfileImage extends React.Component {
           blogURL
             ? blogURL
             : user && !user.isDeactivated
-            ? `https://hashnode.com/@${user.username}`
-            : this.props.postUrlForAnonymous
-            ? this.props.postUrlForAnonymous
-            : '#'
+              ? `https://hashnode.com/@${user.username}`
+              : this.props.postUrlForAnonymous
+                ? this.props.postUrlForAnonymous
+                : '#'
         }
         ref={(c) => {
           this.profileImage = c;

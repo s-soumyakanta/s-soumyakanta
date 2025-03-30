@@ -1,4 +1,4 @@
-import { markdownToHtml } from '@starter-kit/utils/renderer/markdownToHtml';
+import { markdownToHtml } from '@/utils/renderer/markdownToHtml';
 import { Comment } from '../generated/graphql';
 import { Avatar } from './avatar';
 import { Button } from './button';
