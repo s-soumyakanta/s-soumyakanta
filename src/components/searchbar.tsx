@@ -74,7 +74,7 @@ export const Search = () => {
 	}, [query]);
 
 	const searchResultsList = searchResults.map((post) => {
-		const postURL = `/${post.slug}`;
+		const postURL = `/blog/${post.slug}`;
 		return (
 			<Link
 				key={post.id}

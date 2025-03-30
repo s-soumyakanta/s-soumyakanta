@@ -19,6 +19,7 @@ import {
     SlugPostsByPublicationDocument,
     StaticPageFragment,
 } from '@/generated/graphql';
+import { SubscribeForm } from '@/components/subscribe-form';
 
 const AboutAuthor = dynamic(() => import('@/components/about-author'));
 const Subscribe = dynamic(() => import('@/components/subscribe').then((mod) => mod.Subscribe));
@@ -97,8 +98,8 @@ function PostPage({ data, publication }: Props) {
             </Head>
             <AppProvider publication={publication} post={post}>
                 <Layout>
-                    <Header />
-                    <Container className="pt-10">
+                    {/* <Header /> */}
+                    <Container className="mt-24">
                         <article className="flex flex-col items-start gap-10 pb-10">
                             <PostHeader
                                 title={post.title}
@@ -110,11 +111,11 @@ function PostPage({ data, publication }: Props) {
                             {post.features?.tableOfContents?.isEnabled && <PostTOC />}
                             <MarkdownToHtml contentMarkdown={post.content.markdown} />
                             <AboutAuthor />
-                            {!post.preferences?.disableComments && <PostComments />}
-                            <Subscribe />
+                            {/* {!post.preferences?.disableComments && <PostComments />} */}
+                            <SubscribeForm />
                         </article>
                     </Container>
-                    <Footer />
+                    {/* <Footer /> */}
                 </Layout>
             </AppProvider>
         </>
@@ -131,7 +132,7 @@ function PagePage({ data, publication }: Props) {
             </Head>
             <AppProvider publication={publication} page={page}>
                 <Layout>
-                    <Header />
+                    {/* <Header /> */}
                     <Container className="pt-10">
                         <MarkdownToHtml contentMarkdown={page.content.markdown} />
                     </Container>

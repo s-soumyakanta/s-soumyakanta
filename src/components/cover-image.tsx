@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const CoverImage = ({ title, src, slug, priority = false }: Props) => {
-	const postURL = `/${slug}`;
+	const postURL = `/blog/${slug}`;
 
 	const image = (
 		<div className="relative pt-[52.5%]">

@@ -80,10 +80,10 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
         <AppProvider publication={publication}>
             <Layout>
                 <Head>
-                    <title>{publication.displayTitle || publication.title || 'Hashnode Blog Starter Kit'}</title>
+                    <title>{publication.displayTitle || publication.title || 'S Soumyakanta'}</title>
                 </Head>
-                <Header />
-                <Container className="flex flex-col items-stretch gap-10 px-5 pb-10">
+                {/* <Header /> */}
+                <Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
                     <Navbar />
 
                     {allPosts.length === 0 && (
@@ -139,9 +139,7 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
                     {loadedMore && pageInfo.hasNextPage && pageInfo.endCursor && (
                         <div ref={ref} className="h-10"></div>
                     )}
-                    <div className='w-1/2 mx-auto'>
-                        <SubscribeForm />
-                    </div>
+                    <SubscribeForm />
                 </Container>
             </Layout>
         </AppProvider>

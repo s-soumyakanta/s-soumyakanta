@@ -1,112 +1,61 @@
 "use client";
 
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { useState } from 'react';
-import { PublicationNavbarItem } from '../generated/graphql';
-import { Button } from './button';
-import { Container } from './container';
-import { useAppContext } from './contexts/appContext';
-import HamburgerSVG from './icons/svgs/HamburgerSVG';
-import { PublicationLogo } from './publication-logo';
-import PublicationSidebar from './sidebar';
+import { usePathname } from "next/navigation";
+import { PublicationNavbarItem } from "../generated/graphql";
+import { Container } from "./container";
+import { useAppContext } from "./contexts/appContext";
+import { ChevronLeft } from "lucide-react";
 
 function hasUrl(
-	navbarItem: PublicationNavbarItem,
+	navbarItem: PublicationNavbarItem
 ): navbarItem is PublicationNavbarItem & { url: string } {
 	return !!navbarItem.url && navbarItem.url.length > 0;
 }
 
 export const Header = () => {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '/';
-	const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>();
 	const { publication } = useAppContext();
 	const navbarItems = publication.preferences.navbarItems.filter(hasUrl);
-	const visibleItems = navbarItems.slice(0, 3);
-	const hiddenItems = navbarItems.slice(3);
+	const pathname = usePathname();
 
-	const toggleSidebar = () => {
-		setIsSidebarVisible((prevVisibility) => !prevVisibility);
-	};
-
-	const navList = (
-		<ul className="flex flex-row items-center gap-2 text-white">
-			{visibleItems.map((item) => (
-				<li key={item.url}>
-					<a
-						href={item.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="transition-200 block max-w-[200px] truncate text-ellipsis whitespace-nowrap rounded-full p-2 transition-colors hover:bg-white hover:text-black dark:hover:bg-neutral-800 dark:hover:text-white"
-					>
-						{item.label}
-					</a>
-				</li>
-			))}
-
-			{hiddenItems.length > 0 && (
-				<li>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger asChild>
-							<button className="transition-200 block rounded-full p-2 transition-colors hover:bg-white hover:text-black dark:hover:bg-neutral-800 dark:hover:text-white">
-								More
-							</button>
-						</DropdownMenu.Trigger>
-
-						<DropdownMenu.Portal>
-							<DropdownMenu.Content
-								className="w-48 rounded border border-gray-300 bg-white text-neutral-950 shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:text-white"
-								align="end"
-								sideOffset={5}
-							>
-								{hiddenItems.map((item) => (
-									<DropdownMenu.Item asChild key={item.url}>
-										<a
-											href={item.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="transition-200 block truncate p-2 transition-colors hover:bg-slate-100 hover:text-black dark:hover:bg-neutral-800 dark:hover:text-white"
-										>
-											{item.label}
-										</a>
-									</DropdownMenu.Item>
-								))}
-							</DropdownMenu.Content>
-						</DropdownMenu.Portal>
-					</DropdownMenu.Root>
-				</li>
-			)}
-		</ul>
-	);
+	// Check if we're on the blog page
+	const isOnBlogPage = pathname === "/blog";
 
 	return (
-		<header className="border-b bg-slate-950 py-10 dark:border-neutral-800 dark:bg-neutral-900">
-			<Container className="grid grid-cols-4 gap-5 px-5">
-				<div className="col-span-2 flex flex-1 flex-row items-center gap-2 lg:col-span-1">
-					<div className="lg:hidden">
-						<Button
-							type="outline"
-							label=""
-							icon={<HamburgerSVG className="h-5 w-5 stroke-current" />}
-							className="rounded-xl border-transparent !px-3 !py-2 text-white hover:bg-slate-900 dark:hover:bg-neutral-800"
-							onClick={toggleSidebar}
-						/>
+		<header
+			className={`${isOnBlogPage ? "mt-2" : "mt-20"
+				} w-full mx-auto bg-slate-950 py-3 rounded-sm ${isOnBlogPage ? "dark:bg-neutral-900" : "dark:bg-neutral-900"}`}
+		>
+			<Container className="flex  md:max-w-3xl items-center justify-between px-6">
+				<div className="flex-1 overflow-x-auto no-scrollbar pr-4">
+					<nav className="flex">
+						<ul className="flex flex-row items-center gap-4 text-white whitespace-nowrap">
+							{navbarItems.map((item) => (
+								<li key={item.url}>
+									<a
+										href={item.url}
+										rel="noopener noreferrer"
+										className="block px-4 py-2 rounded-md text-sm font-medium bg-slate-900 border border-slate-700 shadow-sm transition-all hover:bg-white hover:border-slate-600 active:transform active:scale-95 dark:bg-neutral-900 dark:border-neutral-700 dark:hover:bg-white dark:hover:text-black dark:hover:border-neutral-600"
+									>
+										{item.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				</div>
 
-						{isSidebarVisible && (
-							<PublicationSidebar navbarItems={navbarItems} toggleSidebar={toggleSidebar} />
-						)}
+				{!isOnBlogPage && (
+					<div className="ml-4 shrink-0">
+						<a
+							href="/blog"
+							className="flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium bg-white text-black border border-blue-100 shadow-sm transition-all active:transform active:scale-95 whitespace-nowrap"
+						>
+							<ChevronLeft size={16} />
+							<span>Blog</span>
+						</a>
 					</div>
-					<div className="hidden lg:block">
-						<PublicationLogo />
-					</div>
-				</div>
-				<div className="col-span-2 flex flex-row items-center justify-end gap-5 text-slate-300 lg:col-span-3">
-					<nav className="hidden lg:block">{navList}</nav>
-					<Button href={baseUrl} as="a" type="primary" label="Book a demo" />
-				</div>
+				)}
 			</Container>
-			<div className="mt-5 flex justify-center lg:hidden">
-				<PublicationLogo />
-			</div>
 		</header>
 	);
 };
