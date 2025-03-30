@@ -3,6 +3,14 @@ import request from 'graphql-request';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
 
+import { AppProvider } from '@/components/contexts/appContext';
+import { Layout } from '@/components/layout';
+import { Header } from '@/components/header';
+import { Container } from '@/components/container';
+import { Footer } from '@/components/footer';
+import { MorePosts } from '@/components/more-posts';
+import { CoverImage } from '@/components/cover-image';
+
 import {
 	PostFragment,
 	PublicationFragment,
@@ -12,13 +20,7 @@ import {
 	SeriesPostsByPublicationQueryVariables,
 } from '@/generated/graphql';
 import { DEFAULT_COVER } from '@/utils/const';
-import { AppProvider } from '@/components/contexts/appContext';
-import { Layout } from '@/components/layout';
-import { Header } from '@/components/header';
-import { Container } from '@/components/container';
-import { Footer } from '@/components/footer';
-import { MorePosts } from '@/components/more-posts';
-import { CoverImage } from '@/components/cover-image';
+
 
 type Props = {
 	series: SeriesFragment;

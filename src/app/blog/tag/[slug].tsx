@@ -1,18 +1,20 @@
 import request from 'graphql-request';
 import Head from 'next/head';
-import { Container } from '../../components/container';
-import { AppProvider } from '../../components/contexts/appContext';
-import { Footer } from '../../components/footer';
-import { Header } from '../../components/header';
-import { Layout } from '../../components/layout';
-import { MorePosts } from '../../components/more-posts';
+
+import { AppProvider } from '@/components/contexts/appContext';
+import { Layout } from '@/components/layout';
+import { Header } from '@/components/header';
+import { Container } from '@/components/container';
+import { MorePosts } from '@/components/more-posts';
+import { Footer } from '@/components/footer';
+
 import {
-	Post,
+	type Post,
 	Publication,
 	TagPostsByPublicationDocument,
 	TagPostsByPublicationQuery,
 	TagPostsByPublicationQueryVariables,
-} from '../../generated/graphql';
+} from '@/generated/graphql';
 
 type Props = {
 	posts: Post[];
