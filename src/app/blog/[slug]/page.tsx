@@ -55,7 +55,7 @@ export async function generateStaticParams() {
 
 export default async function PostOrPage({ params }: { params: { slug: string } }) {
     try {
-        const { slug } = params;
+        const slug = params.slug;
 
         const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
         const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
