@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { getAllPosts, PostsData, PostEdge, PageInfo } from "@/queries/blog-data";
 

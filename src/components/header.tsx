@@ -1,3 +1,5 @@
+"use client";
+
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useState } from 'react';
 import { PublicationNavbarItem } from '../generated/graphql';

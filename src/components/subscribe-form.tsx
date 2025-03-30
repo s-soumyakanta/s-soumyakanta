@@ -1,3 +1,5 @@
+"use client";
+
 import request from 'graphql-request';
 import { useRef, useState } from 'react';
 import {

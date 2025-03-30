@@ -1,3 +1,5 @@
+"use client";
+
 import { resizeImage } from '@/utils/image';
 import request from 'graphql-request';
 import Link from 'next/link';

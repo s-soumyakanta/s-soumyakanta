@@ -1,3 +1,5 @@
+"use client";
+
 import { resizeImage } from '@/utils/image';
 import { PostFullFragment, User } from '../generated/graphql';
 import { Avatar } from './avatar';

@@ -1,3 +1,5 @@
+"use client";
+
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -27,9 +29,8 @@ function PublicationSidebar(props: Props) {
 		<DialogPrimitive.Root open>
 			<DialogPrimitive.Portal>
 				<DialogPrimitive.Overlay
-					className={`fixed inset-0 z-50 bg-slate-900 opacity-0 transition-opacity duration-300 ease-out ${
-						isMounted && 'opacity-50'
-					}`}
+					className={`fixed inset-0 z-50 bg-slate-900 opacity-0 transition-opacity duration-300 ease-out ${isMounted && 'opacity-50'
+						}`}
 				/>
 				<DialogPrimitive.Content
 					onEscapeKeyDown={() => {
@@ -41,7 +42,7 @@ function PublicationSidebar(props: Props) {
 					className={`${
 						// When the sheet is mounted, we want to slide it in from the left.
 						!isMounted ? '-translate-x-96' : 'translate-x-0'
-					} fixed bottom-0 left-0 top-0 z-50 flex w-80 transform flex-col bg-white shadow-2xl duration-300 ease-out dark:border-neutral-800 dark:bg-neutral-950`}
+						} fixed bottom-0 left-0 top-0 z-50 flex w-80 transform flex-col bg-white shadow-2xl duration-300 ease-out dark:border-neutral-800 dark:bg-neutral-950`}
 				>
 					<div className="blog-sidebar-header w-full shrink-0 py-6">
 						<div className="flex items-center justify-between pl-8 pr-4">
