@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from './button';
 import CloseSVG from './icons/svgs/CloseSVG';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
@@ -60,12 +62,12 @@ export default function CoAuthorsModal({ closeModal }: CoAuthorsModalProps) {
             Authors in this article
           </DialogPrimitive.DialogTitle>
           <DialogPrimitive.Close className="absolute right-2 top-4 text-slate-900 dark:text-slate-50" asChild>
-          <Button
-                type="outline"
-                label=""
-                icon={<CloseSVG className="h-5 w-5 fill-current" />}
-                className="rounded-xl !border-transparent !px-3 !py-2 hover:bg-neutral-800 dark:text-white"
-                onClick={closeModal}
+            <Button
+              type="outline"
+              label=""
+              icon={<CloseSVG className="h-5 w-5 fill-current" />}
+              className="rounded-xl !border-transparent !px-3 !py-2 hover:bg-neutral-800 dark:text-white"
+              onClick={closeModal}
             />
           </DialogPrimitive.Close>
           <CustomScrollArea>

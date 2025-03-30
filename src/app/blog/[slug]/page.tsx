@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import request from 'graphql-request';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import Link from 'next/link';
 import { Container } from '@/components/container';
 import { AppProvider } from '@/components/contexts/appContext';
 import { Footer } from '@/components/footer';
@@ -34,38 +33,57 @@ type Props = {
 };
 
 export async function generateStaticParams() {
-    const data = await request(
-        process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT,
-        SlugPostsByPublicationDocument,
-        {
-            first: 10,
-            host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-        },
-    );
+    try {
+        const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
+        const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
 
-    return (data.publication?.posts.edges ?? []).map((edge) => ({
-        slug: edge.node.slug,
-    }));
+        if (!endpoint || !host) {
+            console.error("Missing environment variables.");
+            return [];
+        }
+
+        const data = await request(endpoint, SlugPostsByPublicationDocument, { first: 10, host });
+
+        return (data.publication?.posts.edges ?? []).map((edge) => ({
+            slug: edge.node.slug,
+        }));
+    } catch (error) {
+        console.error("Error fetching slugs:", error);
+        return [];
+    }
 }
 
 export default async function PostOrPage({ params }: { params: { slug: string } }) {
-    const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
-    const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
-    const slug = params.slug;
+    try {
+        const { slug } = await params; // ✅ Awaiting params before using it
 
-    let postData = await request(endpoint, SinglePostByPublicationDocument, { host, slug });
+        const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
+        const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
 
-    if (postData.publication?.post) {
-        return <PostPage type="post" data={postData.publication.post} publication={postData.publication} />;
+        if (!endpoint || !host) {
+            console.error("Missing required environment variables.");
+            return notFound();
+        }
+
+        // Fetch post data
+        const postData = await request(endpoint, SinglePostByPublicationDocument, { host, slug });
+
+        if (postData.publication?.post) {
+            return <PostPage type="post" data={postData.publication.post} publication={postData.publication} />;
+        }
+
+        // Fetch static page data if not a post
+        const pageData = await request(endpoint, PageByPublicationDocument, { host, slug });
+
+        if (pageData.publication?.staticPage) {
+            return <PagePage type="page" data={pageData.publication.staticPage} publication={pageData.publication} />;
+        }
+
+        return notFound();
+    } catch (error) {
+        console.error("Error fetching post or page:", error);
+        return notFound();
     }
-
-    let pageData = await request(endpoint, PageByPublicationDocument, { host, slug });
-
-    if (pageData.publication?.staticPage) {
-        return <PagePage type="page" data={pageData.publication.staticPage} publication={pageData.publication} />;
-    }
-
-    return notFound();
 }
 
 function PostPage({ data, publication }: Props) {
@@ -89,10 +107,10 @@ function PostPage({ data, publication }: Props) {
                                 author={post.author}
                                 readTimeInMinutes={post.readTimeInMinutes}
                             />
-                            {post.features.tableOfContents.isEnabled && <PostTOC />}
+                            {post.features?.tableOfContents?.isEnabled && <PostTOC />}
                             <MarkdownToHtml contentMarkdown={post.content.markdown} />
                             <AboutAuthor />
-                            {!post.preferences.disableComments && <PostComments />}
+                            {!post.preferences?.disableComments && <PostComments />}
                             <Subscribe />
                         </article>
                     </Container>

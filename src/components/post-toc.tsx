@@ -1,3 +1,5 @@
+'use client';
+
 import { PostFullFragment } from '../generated/graphql';
 import { useAppContext } from './contexts/appContext';
 

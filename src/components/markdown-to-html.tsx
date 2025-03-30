@@ -1,3 +1,5 @@
+"use client";
+
 import { useEmbeds } from '@/utils/renderer/hooks/useEmbeds';
 import { markdownToHtml } from '@/utils/renderer/markdownToHtml';
 import { memo } from 'react';

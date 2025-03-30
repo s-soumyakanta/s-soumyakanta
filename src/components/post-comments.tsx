@@ -1,3 +1,5 @@
+'use client';
+
 import { markdownToHtml } from '@/utils/renderer/markdownToHtml';
 import { Comment } from '../generated/graphql';
 import { Avatar } from './avatar';

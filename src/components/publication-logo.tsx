@@ -1,3 +1,5 @@
+'use client';
+
 import { resizeImage } from '@/utils/image';
 import Link from 'next/link';
 import { useAppContext } from './contexts/appContext';
