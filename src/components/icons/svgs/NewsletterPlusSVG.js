@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 
 export default class NewsletterPlusSVG extends React.Component {

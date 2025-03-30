@@ -1,3 +1,5 @@
+"use client";
+
 import PostAuthorInfo from './post-author-info';
 import { useAppContext } from './contexts/appContext';
 import { PostFullFragment } from '../generated/graphql';

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from 'react';
 import { useAppContext } from './contexts/appContext';
 
@@ -57,8 +59,8 @@ export function Integrations() {
         _paq.push(['setSiteId', '${encodeURI(matomoSiteID || '')}']);
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
         g.type='text/javascript'; g.async=true; g.defer=true; g.src='//cdn.matomo.cloud/${encodeURI(
-					matomoURL || '',
-				)}/matomo.js'; s.parentNode.insertBefore(g,s);
+		matomoURL || '',
+	)}/matomo.js'; s.parentNode.insertBefore(g,s);
       })();
   `;
 

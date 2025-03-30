@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const HeroPost = ({ title, coverImage, date, excerpt, slug }: Props) => {
-	const postURL = `/${slug}`;
+	const postURL = `/blog/${slug}`;
 
 	return (
 		<section className="grid grid-cols-1 gap-5">
