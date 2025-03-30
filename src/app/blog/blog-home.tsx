@@ -139,8 +139,10 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
                     {loadedMore && pageInfo.hasNextPage && pageInfo.endCursor && (
                         <div ref={ref} className="h-10"></div>
                     )}
+                    <div className='w-1/2 mx-auto'>
+                        <SubscribeForm />
+                    </div>
                 </Container>
-                <Footer />
             </Layout>
         </AppProvider>
     );

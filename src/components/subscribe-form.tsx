@@ -66,7 +66,7 @@ export const SubscribeForm = () => {
 					<p className="font-medium text-slate-600 dark:text-neutral-300">
 						Check your inbox for a confirmation email and click{' '}
 						<strong>&quot;Confirm and Subscribe&quot;</strong> to complete your subscription. Thanks
-						for joining us!
+						for joining!
 					</p>
 				</div>
 			)}
