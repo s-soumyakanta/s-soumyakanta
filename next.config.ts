@@ -1,5 +1,5 @@
 import { createRequire } from "module";
-const require = createRequire(import.meta.url); // ✅ Fix CommonJS + ESM issue
+const require = createRequire(import.meta.url);
 
 const ANALYTICS_BASE_URL = "https://hn-ping2.hashnode.com";
 const HASHNODE_ADVANCED_ANALYTICS_URL = "https://user-analytics.hashnode.com";
@@ -16,8 +16,10 @@ const getBasePath = () => {
 };
 
 const getRedirectionRules = async () => {
-  const { request, gql } = await import("graphql-request"); // ✅ Dynamic Import Fix
+  // Import your own wrapper instead of directly from graphql-request
+  const { gql } = await import("./resolve-graphql-request.js");
 
+  // Use fetch API directly instead of relying on request from graphql-request
   const query = gql`
     query GetRedirectionRules {
       publication(host: "${host}") {
@@ -31,17 +33,21 @@ const getRedirectionRules = async () => {
     }
   `;
 
-  const data = (await request(GQL_ENDPOINT, query)) as {
-    publication?: { id: string; redirectionRules: { source: string; destination: string; type: string }[] };
-  };
+  const response = await fetch(GQL_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query })
+  });
 
-  if (!data.publication) {
+  const data = await response.json();
+
+  if (!data.data || !data.data.publication) {
     throw new Error("Please ensure you have set the env var NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST correctly.");
   }
 
-  return data.publication.redirectionRules
-    .filter((rule) => !rule.source.includes("*")) // ✅ Remove wildcard redirects (Next.js doesn't support them)
-    .map((rule) => ({
+  return data.data.publication.redirectionRules
+    .filter((rule: { source: string | string[]; }) => !rule.source.includes("*"))
+    .map((rule: { source: any; destination: any; type: string; }) => ({
       source: rule.source,
       destination: rule.destination,
       permanent: rule.type === "PERMANENT",
@@ -66,6 +72,11 @@ const config = {
       },
     ],
   },
+  webpack: (config: { resolve: { alias: { [x: string]: string; }; }; }, { isServer }: any) => {
+    // Add resolver for graphql-request
+    config.resolve.alias['graphql-request'] = require.resolve('./resolve-graphql-request.js');
+    return config;
+  },
   async rewrites() {
     return [
       {
@@ -79,8 +90,13 @@ const config = {
     ];
   },
   async redirects() {
-    return await getRedirectionRules();
+    try {
+      return await getRedirectionRules();
+    } catch (error) {
+      console.error("Error getting redirection rules:", error);
+      return [];
+    }
   },
 };
 
-export default config; // ✅ Use ESM export
+export default config;
