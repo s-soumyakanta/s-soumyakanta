@@ -55,7 +55,9 @@ export async function generateStaticParams() {
 
 export default async function PostOrPage({ params }: { params: { slug: string } }) {
     try {
-        const slug = await params.slug;
+        // Try awaiting the params object as the error suggests
+        const resolvedParams = await Promise.resolve(params);
+        const slug = resolvedParams.slug;
 
         const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
         const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
@@ -85,6 +87,7 @@ export default async function PostOrPage({ params }: { params: { slug: string } 
         return notFound();
     }
 }
+
 
 function PostPage({ data, publication }: Props) {
     const post = data as PostFullFragment;

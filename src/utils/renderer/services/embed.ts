@@ -42,7 +42,7 @@ export const triggerEmbed = async (node?: Element | undefined) => {
 
 	let isSupported = false;
 
-	// eslint-disable-next-line no-restricted-syntax
+	 
 	for (const link of SUPPORTED_EMBEDS) {
 		if (embedURL.includes(link)) {
 			isSupported = true;
@@ -132,7 +132,7 @@ export const triggerEmbed = async (node?: Element | undefined) => {
 
 		// @ts-ignore
 		parentNode.innerHTML = html;
-		// eslint-disable-next-line consistent-return
+		 
 		Array.from(parentNode.querySelectorAll('script')).forEach(
 			async (oldScript: HTMLScriptElement) => {
 				if (!oldScript) return;
@@ -152,7 +152,7 @@ export const triggerEmbed = async (node?: Element | undefined) => {
 
 		if (provider_name === 'Facebook' && 'FB' in window) {
 			// @ts-ignore
-			// eslint-disable-next-line no-undef
+			 
 			FB!.init({ version: 'v2.7', xfbml: true });
 		}
 

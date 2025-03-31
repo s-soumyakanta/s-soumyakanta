@@ -21,7 +21,7 @@ function AboutAuthor() {
   }
 
   const { publication, author } = post;
-  let coAuthors = post.coAuthors || [];
+  const coAuthors = post.coAuthors || [];
 
   const allAuthors: Author[] = publication?.isTeam
     ? [author, ...coAuthors].filter(Boolean) // ✅ Ensure all authors are defined

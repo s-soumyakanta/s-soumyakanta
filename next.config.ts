@@ -1,65 +1,58 @@
-import { request, gql } from "graphql-request";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url); // ✅ Fix CommonJS + ESM issue
 
-const ANALYTICS_BASE_URL = 'https://hn-ping2.hashnode.com';
-const HASHNODE_ADVANCED_ANALYTICS_URL = 'https://user-analytics.hashnode.com';
+const ANALYTICS_BASE_URL = "https://hn-ping2.hashnode.com";
+const HASHNODE_ADVANCED_ANALYTICS_URL = "https://user-analytics.hashnode.com";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
 
 const getBasePath = () => {
-  if (BASE_URL && BASE_URL.indexOf('/') !== -1) {
-    return BASE_URL.substring(BASE_URL.indexOf('/'));
+  if (BASE_URL && BASE_URL.indexOf("/") !== -1) {
+    return BASE_URL.substring(BASE_URL.indexOf("/"));
   }
   return undefined;
 };
 
 const getRedirectionRules = async () => {
-  const query = gql`
-		query GetRedirectionRules {
-			publication(host: "${host}") {
-				id
-				redirectionRules {
-					source
-					destination
-					type
-				}
-			}
-		}
-  	`;
+  const { request, gql } = await import("graphql-request"); // ✅ Dynamic Import Fix
 
-  const data = await request(GQL_ENDPOINT, query) as { publication?: { id: string; redirectionRules: { source: string; destination: string; type: string; }[] } };
+  const query = gql`
+    query GetRedirectionRules {
+      publication(host: "${host}") {
+        id
+        redirectionRules {
+          source
+          destination
+          type
+        }
+      }
+    }
+  `;
+
+  const data = (await request(GQL_ENDPOINT, query)) as {
+    publication?: { id: string; redirectionRules: { source: string; destination: string; type: string }[] };
+  };
 
   if (!data.publication) {
-    throw 'Please ensure you have set the env var NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST correctly.';
+    throw new Error("Please ensure you have set the env var NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST correctly.");
   }
 
-  const redirectionRules = data.publication.redirectionRules;
-
-  // convert to next.js redirects format
-  const redirects = redirectionRules
-    .filter((rule: { source: string | string[]; }) => {
-      // Hashnode gives an option to set a wildcard redirect,
-      // but it doesn't work properly with Next.js
-      // the solution is to filter out all the rules with wildcard and use static redirects for now
-      return rule.source.indexOf('*') === -1;
-    })
-    .map((rule: { source: any; destination: any; type: string; }) => {
-      return {
-        source: rule.source,
-        destination: rule.destination,
-        permanent: rule.type === 'PERMANENT',
-      };
-    });
-
-  return redirects;
+  return data.publication.redirectionRules
+    .filter((rule) => !rule.source.includes("*")) // ✅ Remove wildcard redirects (Next.js doesn't support them)
+    .map((rule) => ({
+      source: rule.source,
+      destination: rule.destination,
+      permanent: rule.type === "PERMANENT",
+    }));
 };
 
 /**
  * @type {import('next').NextConfig}
  */
 const config = {
-  transpilePackages: ['@/utils'],
+  transpilePackages: ["@/utils"],
   basePath: getBasePath(),
   experimental: {
     scrollRestoration: true,
@@ -68,19 +61,19 @@ const config = {
     unoptimized: true,
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'cdn.hashnode.com',
+        protocol: "https",
+        hostname: "cdn.hashnode.com",
       },
     ],
   },
   async rewrites() {
     return [
       {
-        source: '/ping/data-event',
+        source: "/ping/data-event",
         destination: `${ANALYTICS_BASE_URL}/api/data-event`,
       },
       {
-        source: '/api/analytics',
+        source: "/api/analytics",
         destination: `${HASHNODE_ADVANCED_ANALYTICS_URL}/api/analytics`,
       },
     ];
@@ -90,4 +83,4 @@ const config = {
   },
 };
 
-module.exports = config;
+export default config; // ✅ Use ESM export
