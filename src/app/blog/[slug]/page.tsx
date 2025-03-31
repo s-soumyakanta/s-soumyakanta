@@ -21,10 +21,6 @@ import {
 import { SubscribeForm } from '@/components/subscribe-form';
 
 const AboutAuthor = dynamic(() => import('@/components/about-author'));
-// const Subscribe = dynamic(() => import('@/components/subscribe').then((mod) => mod.Subscribe));
-// const PostComments = dynamic(() =>
-//     import('@/components/post-comments').then((mod) => mod.PostComments),
-// );
 
 type Props = {
     type: 'post' | 'page';
@@ -53,11 +49,10 @@ export async function generateStaticParams() {
     }
 }
 
-export default async function PostOrPage({ params }: { params: { slug: string } }) {
+export default async function PostOrPage({ params }: { params: Promise<{ slug: string }> }) {
     try {
-        // Try awaiting the params object as the error suggests
-        const resolvedParams = await Promise.resolve(params);
-        const slug = resolvedParams.slug;
+        // Await params before accessing properties
+        const { slug } = await Promise.resolve(params);
 
         const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
         const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
@@ -88,7 +83,6 @@ export default async function PostOrPage({ params }: { params: { slug: string } 
     }
 }
 
-
 function PostPage({ data, publication }: Props) {
     const post = data as PostFullFragment;
 
@@ -100,7 +94,6 @@ function PostPage({ data, publication }: Props) {
             </Head>
             <AppProvider publication={publication} post={post}>
                 <Layout>
-                    {/* <Header /> */}
                     <Container className="mt-24">
                         <article className="flex flex-col items-start gap-10 pb-10">
                             <PostHeader
@@ -113,11 +106,9 @@ function PostPage({ data, publication }: Props) {
                             {post.features?.tableOfContents?.isEnabled && <PostTOC />}
                             <MarkdownToHtml contentMarkdown={post.content.markdown} />
                             <AboutAuthor />
-                            {/* {!post.preferences?.disableComments && <PostComments />} */}
                             <SubscribeForm />
                         </article>
                     </Container>
-                    {/* <Footer /> */}
                 </Layout>
             </AppProvider>
         </>
@@ -134,7 +125,6 @@ function PagePage({ data, publication }: Props) {
             </Head>
             <AppProvider publication={publication} page={page}>
                 <Layout>
-                    {/* <Header /> */}
                     <Container className="pt-10">
                         <MarkdownToHtml contentMarkdown={page.content.markdown} />
                     </Container>
