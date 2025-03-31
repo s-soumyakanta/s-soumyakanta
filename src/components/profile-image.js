@@ -4,6 +4,7 @@ import Image from 'next/legacy/image';
 
 import { resizeImage } from '@/utils/image';
 import { DEFAULT_AVATAR } from '../utils/const';
+import Link from 'next/link';
 
 export default class ProfileImage extends React.Component {
   componentDidMount() {
@@ -17,18 +18,10 @@ export default class ProfileImage extends React.Component {
 
   render() {
     const user = this.props.user;
-    const blogURL = this.props.blogURL;
+    // const blogURL = this.props.blogURL;
     return (
-      <a
-        href={
-          blogURL
-            ? blogURL
-            : user && !user.isDeactivated
-              ? `https://hashnode.com/@${user.username}`
-              : this.props.postUrlForAnonymous
-                ? this.props.postUrlForAnonymous
-                : '#'
-        }
+      <Link
+        href="/blog"
         ref={(c) => {
           this.profileImage = c;
         }}
@@ -50,7 +43,7 @@ export default class ProfileImage extends React.Component {
           // }}
           alt={user ? user.name + "'s photo" : undefined}
         />
-      </a>
+      </Link>
     );
   }
 }

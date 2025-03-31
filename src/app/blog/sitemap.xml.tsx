@@ -33,7 +33,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			notFound: true,
 		};
 	}
-	const posts = publication.posts.edges.map((edge) => edge.node);
+	const posts = publication.posts.edges.map((edge) => ({
+		...edge.node,
+		updatedAt: edge.node.updatedAt ?? undefined,
+		tags: edge.node.tags ? edge.node.tags.filter(Boolean) : undefined,
+	}));
 
 	// Get more posts by pagination if exists
 	const initialPageInfo = publication.posts.pageInfo;
@@ -55,7 +59,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		}
 		const pageInfo = publication.posts.pageInfo;
 
-		posts.push(...publication.posts.edges.map((edge) => edge.node));
+		posts.push(
+			...publication.posts.edges.map((edge) => ({
+				...edge.node,
+				updatedAt: edge.node.updatedAt ?? undefined,
+				tags: edge.node.tags ?? [], // Ensure tags defaults to an empty array if null or undefined
+			}))
+		);
 
 		if (pageInfo.hasNextPage && posts.length < MAX_POSTS) {
 			await fetchPosts(pageInfo.endCursor);

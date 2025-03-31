@@ -22,10 +22,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			notFound: true,
 		};
 	}
-	const allPosts = publication.posts.edges.map((edge) => edge.node);
+	const allPosts = publication.posts.edges.map((edge) => ({
+		...edge.node,
+		tags: edge.node.tags ?? [], // Ensure tags defaults to an empty array if null or undefined
+		publishedAt: 'publishedAt' in edge.node && typeof edge.node.publishedAt === 'string' ? edge.node.publishedAt : new Date().toISOString(), // Ensure publishedAt is a string or defaults to the current date-time
+	}));
 
 	const xml = constructRSSFeedFromPosts(
-		publication,
+		{
+			...publication,
+			preferences: {
+				...publication.preferences,
+				logo: publication.preferences?.logo ?? '', // Ensure logo is a string
+			},
+		},
 		allPosts,
 		after,
 		publication.posts.pageInfo.hasNextPage && publication.posts.pageInfo.endCursor
