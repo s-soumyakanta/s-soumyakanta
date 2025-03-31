@@ -1,14 +1,14 @@
 "use client";
 
-import { useEmbeds } from '@/utils/renderer/hooks/useEmbeds';
-import { markdownToHtml } from '@/utils/renderer/markdownToHtml';
-import { memo } from 'react';
+import { useEmbeds } from "@/utils/renderer/hooks/useEmbeds";
+import { markdownToHtml } from "@/utils/renderer/markdownToHtml";
+import { memo } from "react";
 
 type Props = {
 	contentMarkdown: string;
 };
 
-const _MarkdownToHtml = ({ contentMarkdown }: Props) => {
+const MarkdownToHtmlComponent = ({ contentMarkdown }: Props) => {
 	const content = markdownToHtml(contentMarkdown);
 	useEmbeds({ enabled: true });
 
@@ -20,4 +20,4 @@ const _MarkdownToHtml = ({ contentMarkdown }: Props) => {
 	);
 };
 
-export const MarkdownToHtml = memo(_MarkdownToHtml);
+export const MarkdownToHtml = memo(MarkdownToHtmlComponent);

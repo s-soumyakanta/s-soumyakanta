@@ -1,22 +1,22 @@
 "use client";
 
-import { resizeImage } from '@/utils/image';
-import request from 'graphql-request';
-import Link from 'next/link';
-import { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
+import { resizeImage } from "@/utils/image";
+import request from "graphql-request";
+import Link from "next/link";
+import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from "react";
 import {
 	SearchPostsOfPublicationDocument,
 	SearchPostsOfPublicationQuery,
 	SearchPostsOfPublicationQueryVariables,
-} from '../generated/graphql';
-import { DEFAULT_COVER } from '../utils/const';
-import { useAppContext } from './contexts/appContext';
-import { CoverImage } from './cover-image';
+} from "../generated/graphql";
+import { DEFAULT_COVER } from "../utils/const";
+import { useAppContext } from "./contexts/appContext";
+import { CoverImage } from "./cover-image";
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const NO_OF_SEARCH_RESULTS = 5;
 
-type Post = SearchPostsOfPublicationQuery['searchPostsOfPublication']['edges'][0]['node'];
+type Post = SearchPostsOfPublicationQuery["searchPostsOfPublication"]["edges"][0]["node"];
 
 export const Search = () => {
 	const { publication } = useAppContext();
@@ -24,27 +24,27 @@ export const Search = () => {
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-	const [query, setQuery] = useState('');
+	const [query, setQuery] = useState("");
 	const [searchResults, setSearchResults] = useState<Post[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
 
 	const resetInput = () => {
 		if (!searchInputRef.current) return;
-		searchInputRef.current.value = '';
-		setQuery('');
+		searchInputRef.current.value = "";
+		setQuery("");
 	};
 
 	const escapeSearchOnESC: KeyboardEventHandler<HTMLInputElement> = (e) => {
-		if (e.key === 'Escape') {
+		if (e.key === "Escape") {
 			resetInput();
 		}
 	};
 
 	const updateSearchQuery = () => {
-		setQuery(searchInputRef.current?.value || '');
+		setQuery(searchInputRef.current?.value || "");
 	};
 
-	const search = async (query: string) => {
+	const search = useCallback(async (query: string) => {
 		if (timerRef.current) clearTimeout(timerRef.current);
 
 		if (!query) {
@@ -55,23 +55,29 @@ export const Search = () => {
 
 		timerRef.current = setTimeout(async () => {
 			setIsSearching(true);
+			try {
+				const data = await request<
+					SearchPostsOfPublicationQuery,
+					SearchPostsOfPublicationQueryVariables
+				>(GQL_ENDPOINT, SearchPostsOfPublicationDocument, {
+					first: NO_OF_SEARCH_RESULTS,
+					filter: { query, publicationId: publication.id },
+				});
 
-			const data = await request<
-				SearchPostsOfPublicationQuery,
-				SearchPostsOfPublicationQueryVariables
-			>(GQL_ENDPOINT, SearchPostsOfPublicationDocument, {
-				first: NO_OF_SEARCH_RESULTS,
-				filter: { query, publicationId: publication.id },
-			});
-			const posts = data.searchPostsOfPublication.edges.map((edge) => edge.node);
-			setSearchResults(posts);
-			setIsSearching(false);
+				const posts = data.searchPostsOfPublication.edges.map((edge) => edge.node);
+				setSearchResults(posts);
+			} catch (error) {
+				console.error("Error fetching search results:", error);
+				setSearchResults([]);
+			} finally {
+				setIsSearching(false);
+			}
 		}, 500);
-	};
+	}, [publication.id]); // ✅ Added `publication.id` as a dependency
 
 	useEffect(() => {
 		search(query);
-	}, [query]);
+	}, [query, search]); // ✅ `search` is now included in the dependency array safely
 
 	const searchResultsList = searchResults.map((post) => {
 		const postURL = `/blog/${post.slug}`;
@@ -84,7 +90,7 @@ export const Search = () => {
 				<div className="flex flex-col gap-1">
 					<strong className="text-base">{post.title}</strong>
 					<span className="text-slate-600 dark:text-neutral-300">
-						{post.brief.length > 140 ? post.brief.substring(0, 140) + '…' : post.brief}
+						{post.brief.length > 140 ? post.brief.substring(0, 140) + "…" : post.brief}
 					</span>
 				</div>
 				<div className="w-56">
@@ -92,12 +98,8 @@ export const Search = () => {
 						title={post.title}
 						src={resizeImage(
 							post.coverImage?.url,
-							{
-								w: 400,
-								h: 210,
-								c: 'thumb',
-							},
-							DEFAULT_COVER,
+							{ w: 400, h: 210, c: "thumb" },
+							DEFAULT_COVER
 						)}
 					/>
 				</div>
@@ -119,16 +121,6 @@ export const Search = () => {
 				<>
 					{isSearching && (
 						<div className="top-100 absolute left-0 z-10 mt-1 flex w-full flex-col items-stretch overflow-hidden rounded-lg border bg-white p-1 text-left text-slate-900 shadow-2xl dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-50">
-							<div className="flex animate-pulse flex-col gap-1 p-4">
-								<div className="h-8 w-full rounded-lg bg-slate-100 dark:bg-neutral-800"></div>
-								<div className="h-4 w-full rounded-lg bg-slate-100 dark:bg-neutral-800"></div>
-								<div className="h-4 w-2/3 rounded-lg bg-slate-100 dark:bg-neutral-800"></div>
-							</div>
-							<div className="flex animate-pulse flex-col gap-1 p-4">
-								<div className="h-8 w-full rounded-lg bg-slate-100 dark:bg-neutral-800"></div>
-								<div className="h-4 w-full rounded-lg bg-slate-100 dark:bg-neutral-800"></div>
-								<div className="h-4 w-2/3 rounded-lg bg-slate-100 dark:bg-neutral-800"></div>
-							</div>
 							<div className="flex animate-pulse flex-col gap-1 p-4">
 								<div className="h-8 w-full rounded-lg bg-slate-100 dark:bg-neutral-800"></div>
 								<div className="h-4 w-full rounded-lg bg-slate-100 dark:bg-neutral-800"></div>

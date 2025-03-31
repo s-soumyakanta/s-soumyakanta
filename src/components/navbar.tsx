@@ -1,6 +1,5 @@
-import { Header } from './header';
 import { Search } from './searchbar';
-import { SocialLinks } from './social-links';
+
 
 export const Navbar = () => {
 	return (

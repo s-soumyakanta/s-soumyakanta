@@ -5,6 +5,7 @@ import { PublicationNavbarItem } from "../generated/graphql";
 import { Container } from "./container";
 import { useAppContext } from "./contexts/appContext";
 import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 function hasUrl(
 	navbarItem: PublicationNavbarItem
@@ -46,13 +47,13 @@ export const Header = () => {
 
 				{!isOnBlogPage && (
 					<div className="ml-4 shrink-0">
-						<a
+						<Link
 							href="/blog"
 							className="flex items-center gap-1 px-4 py-2 rounded-md text-sm font-medium bg-white text-black border border-blue-100 shadow-sm transition-all active:transform active:scale-95 whitespace-nowrap"
 						>
 							<ChevronLeft size={16} />
 							<span>Blog</span>
-						</a>
+						</Link>
 					</div>
 				)}
 			</Container>

@@ -2,7 +2,7 @@ import sanitizeHtml from 'sanitize-html';
 import slug from 'slug';
 
 export class HeadingSlugger {
-	headings: { [key: string]: number };
+	private headings: Record<string, number>;
 
 	constructor() {
 		this.headings = {};
@@ -13,19 +13,17 @@ export class HeadingSlugger {
 	}
 
 	private doesHeadingExist(slug: string): boolean {
-		// eslint-disable-next-line no-prototype-builtins
-		return this.headings.hasOwnProperty(slug);
+		return Object.prototype.hasOwnProperty.call(this.headings, slug);
 	}
 
-	private findSafeSlug(originalSlug: string) {
-		const headingExists = this.doesHeadingExist(originalSlug);
-
-		if (!headingExists) {
+	private findSafeSlug(originalSlug: string): string {
+		if (!this.doesHeadingExist(originalSlug)) {
 			this.headings[originalSlug] = 0;
 			return originalSlug;
 		}
-		let modifiedSlug;
+
 		let duplicateCount = this.headings[originalSlug];
+		let modifiedSlug: string;
 
 		do {
 			duplicateCount += 1;
@@ -37,7 +35,7 @@ export class HeadingSlugger {
 		return modifiedSlug;
 	}
 
-	public getSlug(str: string) {
+	public getSlug(str: string): string {
 		const sanitizedSlug = HeadingSlugger.sanitizeSlug(str);
 		return this.findSafeSlug(sanitizedSlug);
 	}

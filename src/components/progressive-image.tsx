@@ -1,67 +1,58 @@
-import React from 'react';
+import React, { Component, createRef } from 'react';
+import Image from 'next/image';
 import { resizeImage } from '@/utils/image';
-
 import { DEFAULT_AVATAR } from '../utils/const';
 import { twMerge } from 'tailwind-merge';
 
-/**
- * Progressive Image Component which loads low resolution version image before loading original
- * @param {string}    options.src         Image source
- * @param {string}    options.alt         Image alt text
- * @param {string}    options.className   Classname string
- * @param {...[type]} options.restOfProps Rest of the props passed to the child
- */
-class ProgressiveImage extends React.Component<{
-  resize: any;
+interface ProgressiveImageProps {
+  resize?: { w?: number; h?: number; c?: string };
   src: string;
   alt: string;
-  className: string;
-  css: string;
-}> {
-  image: HTMLImageElement | null = null;
+  className?: string;
+}
+
+class ProgressiveImage extends Component<ProgressiveImageProps> {
+  imageRef: React.RefObject<HTMLImageElement | null>;
+
+  constructor(props: ProgressiveImageProps) {
+    super(props);
+    this.imageRef = createRef<HTMLImageElement>();
+  }
 
   componentDidMount() {
-    if (!(window as any).lazySizes && this.image) {
-      this.image.setAttribute('src', this.image.getAttribute('data-src') || '');
+    if (typeof window !== 'undefined' && !('lazySizes' in window) && this.imageRef.current) {
+      this.imageRef.current.src = this.imageRef.current.dataset.src || '';
     }
   }
 
-  // TODO: Improve type
-  replaceBadImage = (e: any) => {
-    // eslint-disable-next-line react/destructuring-assignment
-    if (this.props.resize && this.props.resize.c !== 'face') {
-      return;
-    }
-    e.target.onerror = null;
-    e.target.src = DEFAULT_AVATAR;
+  replaceBadImage = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    if (this.props.resize?.c !== 'face') return;
+    e.currentTarget.onerror = null;
+    e.currentTarget.src = DEFAULT_AVATAR;
   };
 
   render() {
-    const { src, alt, className, resize = {}, ...restOfProps } = this.props;
-
-    if (!src || src.trim().length === 0) return null;
+    const { src, alt, className, resize = {} } = this.props;
+    if (!src?.trim()) return null;
 
     const resizedImage = resizeImage(src, resize);
+    const { w = 100, h = 100 } = resize;
 
     return (
-      <img
-        data-sizes="auto"
-        loading="lazy"
-        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
-        // eslint-disable-next-line no-return-assign
-        ref={(c) => (this.image = c || null)}
-        data-src={resizedImage}
-        width={resize.w}
-        height={resize.h}
-        onError={this.replaceBadImage}
+      <Image
+        ref={this.imageRef}
+        src={resizedImage}
         alt={alt}
-        className={twMerge('lazyload block w-full', className)}
-        {...restOfProps}
+        width={w}
+        height={h}
+        className={twMerge('block w-full', className)}
+        onError={this.replaceBadImage}
+        priority
+        unoptimized
       />
     );
   }
 }
 
 export default ProgressiveImage;
-
 export { ProgressiveImage };

@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import request from 'graphql-request';
 import Head from 'next/head';
 import { Button } from '@/components/button';
 import { Container } from '@/components/container';
 import { AppProvider } from '@/components/contexts/appContext';
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
 import { HeroPost } from '@/components/hero-post';
 import { ArticleSVG, ChevronDownSVG } from '@/components/icons';
 import { Layout } from '@/components/layout';
@@ -30,7 +28,7 @@ const SubscribeForm = dynamic(() =>
     import('@/components/subscribe-form').then((mod) => mod.SubscribeForm),
 );
 
-const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
+const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT as string;
 
 type Props = {
     publication: PublicationFragment;
@@ -45,36 +43,37 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
 
     // Hook for infinite scrolling
     const { ref, inView } = useInView({
-        triggerOnce: false, // Keep triggering when visible
-        threshold: 0.1, // Trigger when 10% is visible
+        triggerOnce: false,
+        threshold: 0.1,
     });
 
-    // Load more posts function
-    const loadMore = async () => {
+    // Load more posts function wrapped in useCallback
+    const loadMore = useCallback(async () => {
+        if (!pageInfo.hasNextPage || !pageInfo.endCursor) return;
+
         const data = await request<MorePostsByPublicationQuery, MorePostsByPublicationQueryVariables>(
             GQL_ENDPOINT,
             MorePostsByPublicationDocument,
             {
                 first: 10,
-                host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+                host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST as string,
                 after: pageInfo.endCursor,
             },
         );
-        if (!data.publication) {
-            return;
-        }
+        if (!data.publication) return;
+
         const newPosts = data.publication.posts.edges.map((edge) => edge.node);
-        setAllPosts([...allPosts, ...newPosts]);
+        setAllPosts((prevPosts) => [...prevPosts, ...newPosts]);
         setPageInfo(data.publication.posts.pageInfo);
         setLoadedMore(true);
-    };
+    }, [pageInfo]);
 
     // Trigger loadMore when inView is true
     useEffect(() => {
         if (inView) {
             loadMore();
         }
-    }, [inView]); // Dependency array ensures it runs only when `inView` changes
+    }, [inView, loadMore]);
 
     return (
         <AppProvider publication={publication}>
@@ -82,10 +81,8 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
                 <Head>
                     <title>{publication.displayTitle || publication.title || 'S Soumyakanta'}</title>
                 </Head>
-                {/* <Header /> */}
                 <Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
                     <Navbar />
-
                     {allPosts.length === 0 && (
                         <div className="grid grid-cols-1 py-20 lg:grid-cols-3">
                             <div className="col-span-1 flex flex-col items-center gap-5 text-center text-slate-700 dark:text-neutral-400 lg:col-start-2">
@@ -96,7 +93,6 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
                             </div>
                         </div>
                     )}
-
                     <div className="grid items-start gap-6 xl:grid-cols-2">
                         <div className="col-span-1">
                             {allPosts[0] && (
@@ -122,9 +118,7 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
                             ))}
                         </div>
                     </div>
-
                     {allPosts.length > 4 && <MorePosts context="home" posts={allPosts.slice(4)} />}
-
                     {!loadedMore && pageInfo.hasNextPage && pageInfo.endCursor && (
                         <div className="flex w-full flex-row items-center justify-center">
                             <Button
@@ -135,7 +129,6 @@ export default function BlogHome({ publication, initialAllPosts, initialPageInfo
                             />
                         </div>
                     )}
-
                     {loadedMore && pageInfo.hasNextPage && pageInfo.endCursor && (
                         <div ref={ref} className="h-10"></div>
                     )}

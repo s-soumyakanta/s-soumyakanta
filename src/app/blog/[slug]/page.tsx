@@ -5,7 +5,6 @@ import Head from 'next/head';
 import { Container } from '@/components/container';
 import { AppProvider } from '@/components/contexts/appContext';
 import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
 import { Layout } from '@/components/layout';
 import { MarkdownToHtml } from '@/components/markdown-to-html';
 import { PostHeader } from '@/components/post-header';
@@ -22,10 +21,10 @@ import {
 import { SubscribeForm } from '@/components/subscribe-form';
 
 const AboutAuthor = dynamic(() => import('@/components/about-author'));
-const Subscribe = dynamic(() => import('@/components/subscribe').then((mod) => mod.Subscribe));
-const PostComments = dynamic(() =>
-    import('@/components/post-comments').then((mod) => mod.PostComments),
-);
+// const Subscribe = dynamic(() => import('@/components/subscribe').then((mod) => mod.Subscribe));
+// const PostComments = dynamic(() =>
+//     import('@/components/post-comments').then((mod) => mod.PostComments),
+// );
 
 type Props = {
     type: 'post' | 'page';
@@ -56,7 +55,7 @@ export async function generateStaticParams() {
 
 export default async function PostOrPage({ params }: { params: { slug: string } }) {
     try {
-        const slug = params.slug;
+        const slug = await params.slug;
 
         const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
         const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;

@@ -34,9 +34,15 @@ export const SubscribeForm = () => {
 			setRequestInProgress(false);
 			setStatus(data.subscribeToNewsletter.status);
 		} catch (error) {
-			const message = (error as any).response?.errors?.[0]?.message;
-			if (message) {
-				window.alert(message);
+			if (error instanceof Error) {
+				const message =
+					(error as { response?: { errors?: { message: string }[] } }).response
+						?.errors?.[0]?.message;
+				if (message) {
+					window.alert(message);
+				}
+			} else {
+				console.error("An unexpected error occurred", error);
 			}
 			setRequestInProgress(false);
 		}
@@ -65,7 +71,7 @@ export const SubscribeForm = () => {
 								<button
 									disabled={requestInProgress}
 									onClick={subscribe}
-									className="w-full sm:w-auto bg-white text-black transition-colors duration-200 rounded-lg px-4 sm:px-6 py-2 sm:py-3 font-medium disabled:cursor-not-allowed disabled:opacity-80 border border-neutral-200 dark:border-neutral-700  "
+									className="w-full sm:w-auto bg-white text-black transition-colors duration-200 rounded-lg px-4 sm:px-6 py-2 sm:py-3 font-medium disabled:cursor-not-allowed disabled:opacity-80 border border-neutral-200 dark:border-neutral-700"
 								>
 									{requestInProgress ? (
 										<span className="flex items-center justify-center">
@@ -94,7 +100,7 @@ export const SubscribeForm = () => {
 							<p className="text-sm sm:text-base font-medium text-neutral-700 dark:text-neutral-300">
 								Check your inbox for a confirmation email and click{' '}
 								<strong className="text-green-700 dark:text-green-400">
-									"Confirm and Subscribe"
+									&quot;Confirm and Subscribe&quot;
 								</strong>{' '}
 								to complete your subscription. Thanks for joining!
 							</p>

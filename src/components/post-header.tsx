@@ -2,7 +2,7 @@
 
 import { resizeImage } from '@/utils/image';
 import { PostFullFragment, User } from '../generated/graphql';
-import { Avatar } from './avatar';
+
 import { CoverImage } from './cover-image';
 import { DateFormatter } from './date-formatter';
 import CoAuthorsModal from './co-authors-modal';
@@ -12,6 +12,7 @@ import { useAppContext } from './contexts/appContext';
 import { twJoin } from 'tailwind-merge';
 import { useState } from 'react';
 import ProfileImage from './profile-image';
+import Link from 'next/link';
 
 type Author = Pick<User, 'username' | 'name' | 'profilePicture'>;
 
@@ -23,7 +24,7 @@ type Props = {
 	readTimeInMinutes: number;
 };
 
-export const PostHeader = ({ title, coverImage, date, author, readTimeInMinutes }: Props) => {
+export const PostHeader = ({ title, coverImage, date, readTimeInMinutes }: Props) => {
 	const { post: _post } = useAppContext();
 	const post = _post as unknown as PostFullFragment;
 	const authorsArray = [post.author, ...(post.coAuthors || [])];
@@ -64,12 +65,12 @@ export const PostHeader = ({ title, coverImage, date, author, readTimeInMinutes 
 						</button>
 					)}
 					{!post.coAuthors?.length && (
-						<a
-							href={`https://s-soumyakanta.com/blog`}
+						<Link
+							href={`/blog`}
 							className="ml-2 font-semibold text-slate-600 dark:text-white md:ml-0"
 						>
 							<span>{post.author.name}</span>
-						</a>
+						</Link>
 					)}
 					{post.coAuthors && post.coAuthors.length > 0 && (
 						<button

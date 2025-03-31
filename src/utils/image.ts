@@ -10,11 +10,11 @@ type ResizeImageResizeOptions = {
 
 const _getBlurHash = (src: string) => {
 	if (src && src.indexOf('?') === -1) {
-	  return `${src}?fm=blurhash`;
+		return `${src}?fm=blurhash`;
 	}
 	return `${src}&fm=blurhash`;
 };
-  
+
 export const getBlurHash = _getBlurHash;
 
 export function resizeImage(
@@ -50,9 +50,8 @@ export function resizeImage(
 			if (nextParts[0].indexOf('v') === 0) {
 				nextParts[0] = nextParts[0].substring(1);
 			}
-			newSrc = `${parts[0]}/upload/${nextParts[1].substring(0, nextParts[1].lastIndexOf('.'))}/${
-				nextParts[0]
-			}.${format}?auto=compress,format&format=webp`;
+			newSrc = `${parts[0]}/upload/${nextParts[1].substring(0, nextParts[1].lastIndexOf('.'))}/${nextParts[0]
+				}.${format}?auto=compress,format&format=webp`;
 		}
 		newSrc = newSrc
 			.replace('//res.cloudinary.com', '//cdn.hashnode.com/res')
@@ -84,7 +83,7 @@ export function resizeImage(
 	}
 
 	if (newSrc.indexOf('?') !== -1) {
-		let newSrcSplit = newSrc.split('?');
+		const newSrcSplit = newSrc.split('?');
 		newSrc = newSrcSplit[0];
 		opts += newSrcSplit[1].slice(-1) !== '&' ? `${newSrcSplit[1]}&` : newSrcSplit[1];
 	}

@@ -1,13 +1,13 @@
 export const triggerCustomWidgetEmbed = async (pubId) => {
 	const frames = document.querySelectorAll('.hn-embed-widget');
-	if (frames.length === 0) {
-		return;
-	}
-	frames.forEach(async (frame) => {
+	if (frames.length === 0) return;
+
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+	const host = window.location.hostname;
+
+	Array.from(frames).forEach(async (frame) => {
 		try {
-			const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
 			const iframe = document.createElement('iframe');
-			const host = window.location.hostname;
 			iframe.id = `frame-${frame.id}`;
 			iframe.sandbox =
 				'allow-same-origin allow-forms allow-presentation allow-scripts allow-popups';
@@ -16,16 +16,22 @@ export const triggerCustomWidgetEmbed = async (pubId) => {
 					? `${baseUrl}/api/pub/${pubId}/embed/${frame.id}`
 					: `https://embeds.hashnode.co?p=${pubId}&w=${frame.id}`;
 			iframe.width = '100%';
+
+			// Clear existing content and append new iframe
 			frame.innerHTML = '';
 			frame.appendChild(iframe);
+			frame.classList.add('hn-embed-widget-expanded');
+
+			// Ensure iFrameResize is available before using it
 			setTimeout(() => {
-				// TODO:
-				// eslint-disable-next-line no-undef
-				iFrameResize({ log: false, autoResize: true }, `#${iframe.id}`);
+				if (typeof window !== 'undefined' && window.iFrameResize) {
+					window.iFrameResize({ log: false, autoResize: true }, `#${iframe.id}`);
+				} else {
+					console.warn('iFrameResize is not available');
+				}
 			}, 1000);
-			frame.setAttribute('class', 'hn-embed-widget-expanded');
-		} catch (e) {
-			console.log(e);
+		} catch (error) {
+			console.error('Error embedding widget:', error);
 		}
 	});
 };

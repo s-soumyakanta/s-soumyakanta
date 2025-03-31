@@ -1,4 +1,4 @@
-const sanitizeHtml = require('sanitize-html');
+import sanitizeHtml from 'sanitize-html';
 
 const allowedTags = sanitizeHtml.defaults.allowedTags.concat([
 	'h1',
@@ -20,6 +20,7 @@ const allowedTags = sanitizeHtml.defaults.allowedTags.concat([
 	'details',
 	'summary',
 ]);
+
 const allowedAttributes = {
 	'*': ['id'],
 	iframe: ['src', 'class', 'sandbox', 'style', 'width', 'height'],
@@ -30,8 +31,8 @@ const allowedAttributes = {
 	span: ['class'],
 	abbr: ['title'],
 };
-// const disallowedTagsMode = 'discard';
 
 const sanitizeHtmlOptions = { allowedTags, allowedAttributes };
 
-module.exports = sanitizeHtmlOptions;
+// ✅ Use ES Module export
+export default sanitizeHtmlOptions;

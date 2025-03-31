@@ -14,8 +14,7 @@ import {
 } from "./ui/navigation-menu"
 import { useBoolean } from "@/hooks/useBoolean"
 import Sidebar from "./ss-sidebar"
-import { ModeToggle } from "./dark-mode-btn"
-// import { ModeToggle } from "./dark-mode-btn"  // commented out for brevity
+// import { ModeToggle } from "./dark-mode-btn"
 
 export default function SSNavbar() {
     const { value: isSidebarOpen, onToggle: toggleSidebar, onFalse: closeSidebar } = useBoolean(false)

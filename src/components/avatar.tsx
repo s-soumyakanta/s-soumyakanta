@@ -1,5 +1,6 @@
 import { resizeImage } from '@/utils/image';
 import { DEFAULT_AVATAR } from '../utils/const';
+import Image from 'next/image';
 
 type Props = {
 	username: string;
@@ -21,10 +22,14 @@ export const Avatar = ({ username, name, picture, size }: Props) => {
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<img
+				<Image
 					className="block h-full w-full"
 					src={resizeImage(picture, { w: 160, h: 160, c: 'face' }, DEFAULT_AVATAR)}
 					alt={name}
+					width={160}
+					height={160}
+					layout="intrinsic" // Ensures proper rendering
+					priority // Ensures faster loading if it's an important image
 				/>
 			</a>
 			<div className="text-base font-bold text-slate-600 dark:text-neutral-300">

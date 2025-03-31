@@ -8,7 +8,7 @@ import { Container } from '@/components/container';
 import { AppProvider } from '@/components/contexts/appContext';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
-import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from 'react';
+// import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from 'react';
 import { MarkdownToHtml } from '@/components/markdown-to-html';
 import { Layout } from '@/components/layout';
 import { PostHeader } from '@/components/post-header';
@@ -30,6 +30,11 @@ type Props = {
 	publication: Publication;
 };
 
+type Tag = {
+	id: string;
+	slug: string;
+};
+
 export default function Post({ publication, post }: Props) {
 	if (!post) {
 		return <ErrorPage statusCode={404} />;
@@ -38,7 +43,7 @@ export default function Post({ publication, post }: Props) {
 	const highlightJsMonokaiTheme =
 		'.hljs{display:block;overflow-x:auto;padding:.5em;background:#23241f}.hljs,.hljs-subst,.hljs-tag{color:#f8f8f2}.hljs-emphasis,.hljs-strong{color:#a8a8a2}.hljs-bullet,.hljs-link,.hljs-literal,.hljs-number,.hljs-quote,.hljs-regexp{color:#ae81ff}.hljs-code,.hljs-section,.hljs-selector-class,.hljs-title{color:#a6e22e}.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hljs-attr,.hljs-keyword,.hljs-name,.hljs-selector-tag{color:#f92672}.hljs-attribute,.hljs-symbol{color:#66d9ef}.hljs-class .hljs-title,.hljs-params{color:#f8f8f2}.hljs-addition,.hljs-built_in,.hljs-builtin-name,.hljs-selector-attr,.hljs-selector-id,.hljs-selector-pseudo,.hljs-string,.hljs-template-variable,.hljs-type,.hljs-variable{color:#e6db74}.hljs-comment,.hljs-deletion,.hljs-meta{color:#75715e}';
 
-	const tagsList = post.tags?.map((tag: { id: Key | null | undefined; slug: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
+	const tagsList = post.tags?.map((tag: Tag) => (
 		<li key={tag.id}>
 			<Link
 				href={`/tag/${tag.slug}`}
@@ -86,22 +91,23 @@ type Params = {
 };
 
 export async function getStaticProps({ params }: Params) {
-	const [dataDraft, dataPublication] = await Promise.all([
+	const [dataDraft, dataPublication]: [DraftByIdQuery, PublicationByHostQuery] = await Promise.all([
 		request<DraftByIdQuery, DraftByIdQueryVariables>(
-			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT,
+			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT as string,
 			DraftByIdDocument,
 			{
 				id: params.id,
 			},
 		),
 		request<PublicationByHostQuery, PublicationByHostQueryVariables>(
-			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT,
+			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT as string,
 			PublicationByHostDocument,
 			{
-				host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+				host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST as string,
 			},
 		),
 	]);
+
 
 	const publication = dataPublication.publication;
 	const post = dataDraft.draft;

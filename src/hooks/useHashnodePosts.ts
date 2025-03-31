@@ -61,7 +61,7 @@ export function useHashnodePosts(settings: UseHashnodePostsSettings): UseHashnod
 
     useEffect(() => {
         fetchPosts(false);
-    }, [host, first]);
+    }, [host, first, fetchPosts]);
 
     const loadMorePost = useCallback(async () => {
         if (pageInfo.hasNextPage && pageInfo.endCursor) {

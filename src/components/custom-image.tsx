@@ -1,53 +1,47 @@
-import { ImgHTMLAttributes } from 'react';
+"use client";
 
-import Image, { ImageProps } from 'next/legacy/image';
+import { ImgHTMLAttributes } from "react";
+import Image, { ImageProps } from "next/image";
+import { StaticImageData } from "next/image";
 
 type Props = {
-  src: any; // can be string or StaticImport of next/image
+  src: string | StaticImageData;
   alt: string;
   originalSrc: string;
-} & ImgHTMLAttributes<any> &
-  ImageProps;
+} & ImgHTMLAttributes<HTMLImageElement> & ImageProps;
 
 /**
- * Conditionally renders native img for gifs and next/image for other types
- * @param props
- * @returns <img /> or <Image/>
+ * CustomImage component:
+ * - Uses Next.js Image component for optimization.
+ * - Falls back to <img> for GIFs.
+ * - Handles external images and static imports.
  */
-function CustomImage(props: Props) {
-  const { originalSrc, ...originalRestOfTheProps } = props;
-  const {
-    alt = '',
-    loader,
-    quality,
-    priority,
-    loading,
-    unoptimized,
-    objectFit,
-    objectPosition,
-    src,
-    width,
-    height,
-    layout,
-    placeholder,
-    blurDataURL,
-    ...restOfTheProps
-  } = originalRestOfTheProps; // Destructured next/image props on purpose, so that unwanted props don't end up in <img />
-
+function CustomImage({ originalSrc, alt, src, ...restProps }: Props) {
   if (!originalSrc) {
     return null;
   }
 
-  const isGif = originalSrc.substr(-4) === '.gif';
-  const isHashnodeCDNImage = src.indexOf('cdn.hashnode.com') > -1;
+  const isGif = originalSrc.endsWith(".gif");
+  const isExternalImage =
+    typeof src === "string" && !src.includes("cdn.hashnode.com");
 
-  if (isGif || !isHashnodeCDNImage) {
-    // restOfTheProps will contain all props excluding the next/image props
-    return <img {...restOfTheProps} alt={alt} src={src || originalSrc} />;
+  // Use <img> for GIFs to avoid Next.js optimization issues.
+  if (isGif) {
+    return <Image {...restProps} alt={alt || "Image"} src={originalSrc} />;
   }
 
-  // Notes we are passing whole props object here
-  return <Image {...originalRestOfTheProps} src={src || originalSrc} />;
+  return (
+    <Image
+      {...restProps}
+      src={src || originalSrc}
+      alt={alt || "Image"}
+      width={restProps.width || 500} // Default width
+      height={restProps.height || 300} // Default height
+      loader={isExternalImage ? undefined : undefined} // Use Next.js default loader
+      priority // Improve LCP performance
+      unoptimized={isGif} // Prevents Next.js optimization for GIFs
+    />
+  );
 }
 
 export default CustomImage;
