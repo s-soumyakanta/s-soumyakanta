@@ -40,7 +40,7 @@ export async function generateStaticParams() {
 
         const data = await request(endpoint, SlugPostsByPublicationDocument, { first: 10, host });
 
-        return (data.publication?.posts.edges ?? []).map((edge) => ({
+        return (data.publication?.posts.edges ?? []).map((edge: any) => ({
             slug: edge.node.slug,
         }));
     } catch (error) {

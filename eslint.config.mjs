@@ -48,15 +48,7 @@ const eslintConfig = [
     },
 
     // Skip checking certain directories or files where you have many errors
-    ignorePatterns: [
-      "**/*.js",
-      "node_modules",
-      ".next",
-      "out",
-      "build",
-      // Add specific directories or files that have too many errors
-      "src/utils/renderer/services/embed.ts"
-    ]
+    ignorePatterns: ["**/*.js", "node_modules", ".next", "out", "build"]
   },
 ];
 

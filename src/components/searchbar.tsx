@@ -1,7 +1,7 @@
 "use client";
 
 import { resizeImage } from "@/utils/image";
-import request from "graphql-request";
+import { request } from 'graphql-request';
 import Link from "next/link";
 import { KeyboardEventHandler, useCallback, useEffect, useRef, useState } from "react";
 import {

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import request from 'graphql-request';
+import { request } from 'graphql-request';
 import Head from 'next/head';
 import { Button } from '@/components/button';
 import { Container } from '@/components/container';
