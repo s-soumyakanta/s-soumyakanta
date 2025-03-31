@@ -23,7 +23,7 @@ interface ContactFormData {
   message: string;
 }
 
-export default function Contact() {
+export default function SSContact() {
   const { register, handleSubmit, formState: { errors }, reset, trigger } = useForm<ContactFormData>({
     resolver: yupResolver(schema)
   });

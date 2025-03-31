@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+import Navbar from "@/components/ss-navbar";
+import Footer from "@/components/ss-footer";
 import { GoogleTagManager } from "@next/third-parties/google";
 
 const fontSans = FontSans({

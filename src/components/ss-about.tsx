@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function About() {
+export default function SSAbout() {
     return (
         <section
             id="about"

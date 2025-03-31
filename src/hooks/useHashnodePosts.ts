@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { getAllPosts, PostsData, PostEdge, PageInfo } from "@/queries/blog-data";
 
@@ -59,7 +61,7 @@ export function useHashnodePosts(settings: UseHashnodePostsSettings): UseHashnod
 
     useEffect(() => {
         fetchPosts(false);
-    }, [host, first]);
+    }, [host, first, fetchPosts]);
 
     const loadMorePost = useCallback(async () => {
         if (pageInfo.hasNextPage && pageInfo.endCursor) {

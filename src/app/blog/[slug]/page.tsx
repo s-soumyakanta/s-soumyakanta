@@ -1,139 +1,136 @@
-"use client"
+import { notFound } from 'next/navigation';
+import request from 'graphql-request';
+import dynamic from 'next/dynamic';
+import Head from 'next/head';
+import { Container } from '@/components/container';
+import { AppProvider } from '@/components/contexts/appContext';
+import { Footer } from '@/components/footer';
+import { Layout } from '@/components/layout';
+import { MarkdownToHtml } from '@/components/markdown-to-html';
+import { PostHeader } from '@/components/post-header';
+import { PostTOC } from '@/components/post-toc';
 
-import React from "react"
-import { useHashnodePostDetails } from "@/hooks"
-import { useParams } from "next/navigation"
-import { cn } from "@/lib/utils"
+import {
+    PageByPublicationDocument,
+    PostFullFragment,
+    PublicationFragment,
+    SinglePostByPublicationDocument,
+    SlugPostsByPublicationDocument,
+    StaticPageFragment,
+} from '@/generated/graphql';
+import { SubscribeForm } from '@/components/subscribe-form';
 
-const BlogPostPage = () => {
-    const { slug } = useParams<{ slug: string }>()
-    const settings = {
-        host: "s-soumyakanta.hashnode.dev",
-        slug,
+const AboutAuthor = dynamic(() => import('@/components/about-author'));
+
+type Props = {
+    type: 'post' | 'page';
+    data: PostFullFragment | StaticPageFragment;
+    publication: PublicationFragment;
+};
+
+export async function generateStaticParams() {
+    try {
+        const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
+        const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
+
+        if (!endpoint || !host) {
+            console.error("Missing environment variables.");
+            return [];
+        }
+
+        const data = await request(endpoint, SlugPostsByPublicationDocument, { first: 10, host });
+
+        return (data.publication?.posts.edges ?? []).map((edge: any) => ({
+            slug: edge.node.slug,
+        }));
+    } catch (error) {
+        console.error("Error fetching slugs:", error);
+        return [];
     }
-
-    const { loading, error, post } = useHashnodePostDetails(settings)
-
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-        )
-    }
-
-    if (error) {
-        return (
-            <div
-                className={cn(
-                    "container mx-auto px-4 py-8",
-                    "bg-background text-foreground"
-                )}
-            >
-                <div
-                    className={cn(
-                        "p-4 my-4 border rounded",
-                        "border-destructive text-destructive"
-                    )}
-                >
-                    <strong className="font-bold">Error!</strong> {error.message}
-                </div>
-            </div>
-        )
-    }
-
-    if (!post) {
-        return (
-            <div
-                className={cn(
-                    "container mx-auto px-4 py-8",
-                    "bg-background text-foreground"
-                )}
-            >
-                <div className="p-4 my-4 border rounded text-warning border-warning">
-                    <strong className="font-bold">Notice:</strong> No post found.
-                </div>
-            </div>
-        )
-    }
-
-    return (
-        <article
-            className={cn(
-                "min-h-screen",
-                "bg-background text-foreground mt-8"
-            )}
-        >
-            {/* Hero Section */}
-            <div
-                className={cn(
-                    "w-full text-white mb-8",
-                    "bg-primary"
-                )}
-            >
-                <div className="container mx-auto px-4 py-12 max-w-4xl">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                        {post.title}
-                    </h1>
-                    {post.subtitle && (
-                        <p className="text-xl text-primary-foreground/80 mb-6">
-                            {post.subtitle}
-                        </p>
-                    )}
-                    <div className="flex items-center space-x-4">
-                        <img
-                            src={post.author.profilePicture}
-                            alt={post.author.name}
-                            className="w-12 h-12 rounded-full border-2 border-white"
-                        />
-                        <div>
-                            <p className="font-medium">{post.author.name}</p>
-                            <div className="text-sm text-primary-foreground/80">
-                                {new Date(post.publishedAt).toLocaleDateString()} ·{" "}
-                                {post.readTimeInMinutes} min read
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="container mx-auto px-4 pb-16 max-w-4xl">
-                {/* Cover Image */}
-                <div className="mb-8 rounded-lg overflow-hidden shadow">
-                    <img
-                        src={post.coverImage.url}
-                        alt={post.title}
-                        className="w-full h-auto object-cover"
-                    />
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                    {post.tags.map((tag) => (
-                        <span
-                            key={tag.id}
-                            className={cn(
-                                "px-3 py-1 rounded-full text-sm",
-                                "bg-secondary text-secondary-foreground"
-                            )}
-                        >
-                            {tag.name}
-                        </span>
-                    ))}
-                </div>
-
-                {/* Post Content */}
-                <div
-                    className={cn(
-                        // Use Shadcn’s "prose" classes + dark mode inversion
-                        "prose dark:prose-invert max-w-none"
-                    )}
-                    dangerouslySetInnerHTML={{ __html: post.content.html }}
-                />
-            </div>
-        </article>
-    )
 }
 
-export default BlogPostPage
+export default async function PostOrPage({ params }: { params: Promise<{ slug: string }> }) {
+    try {
+        // Await params before accessing properties
+        const { slug } = await Promise.resolve(params);
+
+        const endpoint = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!;
+        const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST!;
+
+        if (!endpoint || !host) {
+            console.error("Missing required environment variables.");
+            return notFound();
+        }
+
+        // Fetch post data
+        const postData = await request(endpoint, SinglePostByPublicationDocument, { host, slug });
+
+        if (postData.publication?.post) {
+            return <PostPage type="post" data={postData.publication.post} publication={postData.publication} />;
+        }
+
+        // Fetch static page data if not a post
+        const pageData = await request(endpoint, PageByPublicationDocument, { host, slug });
+
+        if (pageData.publication?.staticPage) {
+            return <PagePage type="page" data={pageData.publication.staticPage} publication={pageData.publication} />;
+        }
+
+        return notFound();
+    } catch (error) {
+        console.error("Error fetching post or page:", error);
+        return notFound();
+    }
+}
+
+function PostPage({ data, publication }: Props) {
+    const post = data as PostFullFragment;
+
+    return (
+        <>
+            <Head>
+                <title>{post.seo?.title || post.title}</title>
+                <link rel="canonical" href={post.url} />
+            </Head>
+            <AppProvider publication={publication} post={post}>
+                <Layout>
+                    <Container className="mt-24">
+                        <article className="flex flex-col items-start gap-10 pb-10">
+                            <PostHeader
+                                title={post.title}
+                                coverImage={post.coverImage?.url}
+                                date={post.publishedAt}
+                                author={post.author}
+                                readTimeInMinutes={post.readTimeInMinutes}
+                            />
+                            {post.features?.tableOfContents?.isEnabled && <PostTOC />}
+                            <MarkdownToHtml contentMarkdown={post.content.markdown} />
+                            <AboutAuthor />
+                            <SubscribeForm />
+                        </article>
+                    </Container>
+                </Layout>
+            </AppProvider>
+        </>
+    );
+}
+
+function PagePage({ data, publication }: Props) {
+    const page = data as StaticPageFragment;
+
+    return (
+        <>
+            <Head>
+                <title>{page.title}</title>
+            </Head>
+            <AppProvider publication={publication} page={page}>
+                <Layout>
+                    <Container className="pt-10">
+                        <MarkdownToHtml contentMarkdown={page.content.markdown} />
+                    </Container>
+                    <Footer />
+                </Layout>
+            </AppProvider>
+        </>
+    );
+}
