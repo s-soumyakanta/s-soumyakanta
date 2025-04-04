@@ -16,8 +16,8 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "S Soumyakanta",
-  description: "A creative front-end developer from Bhubaneswar, India",
+  title: "S Soumyakanta | Full Stack Developer",
+  description: "Soumya (S Soumyakanta) - Versatile full stack developer specializing in React, Next.js, Node.js, and Golang from Bhubaneswar, India. Creating responsive web applications with modern technologies.",
   robots: {
     index: true,
     follow: true,
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  keywords: "Soumya, S Soumyakanta, full stack developer, React developer, Next.js, Node.js, Golang, Go programming, web development, Bhubaneswar, frontend developer, backend developer",
 };
 
 export default function RootLayout({
@@ -39,19 +40,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
       <body
         className={cn(
-          "min-h-screen w-full text-foreground font-sans antialiased bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))]  ",
+          "min-h-screen w-full text-foreground font-sans antialiased bg-[hsl(var(--background))]",
           fontSans.variable
         )}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
-
         >
           <Navbar />
           <main>{children}</main>
