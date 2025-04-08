@@ -1,19 +1,30 @@
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
 
-const About = dynamic(() => import("@/components/ss-about"));
-const Skills = dynamic(() => import("@/components/skills"));
-const Works = dynamic(() => import("@/components/works"));
-const EmailMe = dynamic(() => import("@/components/email-me"));
+const About = dynamic(() => import("@/components/ss-about"), {
+  loading: () => <div className="min-h-[300px]"></div>,
+});
+const Skills = dynamic(() => import("@/components/skills"), {
+  loading: () => <div className="min-h-[300px]"></div>,
+});
+const Works = dynamic(() => import("@/components/works"), {
+  loading: () => <div className="min-h-[300px]"></div>,
+});
+const EmailMe = dynamic(() => import("@/components/email-me"), {
+  loading: () => <div className="min-h-[300px]"></div>
+});
+
 const LandingPage = () => {
   return (
     <>
       <section className="min-h-screen w-full flex items-center justify-center bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))]">
         <div className="min-h-screen w-full relative flex items-center justify-center bg-foreground">
           <div className="relative z-10 flex flex-col items-center text-center px-4">
-            <h1 className="text-4xl md:text-6xl font-bold mb-2 md:mb-4">
+            <h1
+              className="text-4xl md:text-6xl font-bold mb-2 md:mb-4"
+              style={{ contentVisibility: "auto" }}
+            >
               S Soumyakanta
             </h1>
 
@@ -25,15 +36,20 @@ const LandingPage = () => {
               Helping businesses build robust and scalable web applications.
             </p>
 
-            <div className="flex gap-4 fade-in">
+            <div className="flex gap-4">
               <Link href="/contact">
-                <Button className="pulse-effect uppercase font-bold bg-white text-black hover:bg-gray-200">
+                <Button
+                  className="pulse-effect uppercase font-bold bg-white text-black hover:bg-gray-200"
+                >
                   Contact
                 </Button>
               </Link>
 
               <Link href="/blog">
-                <Button variant="outline" className="pulse-effect uppercase font-bold border-white text-white hover:bg-white/10">
+                <Button
+                  variant="outline"
+                  className="pulse-effect uppercase font-bold border-white text-white hover:bg-white/10"
+                >
                   Read Blog
                 </Button>
               </Link>
