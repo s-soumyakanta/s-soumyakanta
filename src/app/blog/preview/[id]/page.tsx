@@ -21,9 +21,7 @@ import {
 } from '@/generated/graphql';
 
 type Props = {
-    params: {
-        id: string;
-    };
+    params: Promise<{ id: string }>; // Updated to reflect async nature
 };
 
 type Tag = {
@@ -34,7 +32,7 @@ type Tag = {
 
 // Metadata generation
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { id } = await params;
+    const { id } = await params; // Await the params promise
 
     try {
         const dataDraft = await request<DraftByIdQuery, DraftByIdQueryVariables>(
@@ -67,7 +65,7 @@ export async function generateStaticParams() {
 }
 
 export default async function DraftPage({ params }: Props) {
-    const { id } = await params;
+    const { id } = await params; // Await the params promise
 
     try {
         const [dataDraft, dataPublication]: [DraftByIdQuery, PublicationByHostQuery] = await Promise.all([
