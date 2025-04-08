@@ -1,38 +1,34 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { usePathname, useRouter } from "next/navigation"
-import { Cross2Icon } from "@radix-ui/react-icons"
+import * as React from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 interface SidebarProps {
-    isOpen: boolean
-    onClose: () => void
+    isOpen: boolean;
+    onClose: () => void;
 }
 
 const SSSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
-    const pathname = usePathname()
-    const router = useRouter()
+    const pathname = usePathname();
     const links = [
         { href: "/", label: "Home" },
         { href: "/#about", label: "About" },
         { href: "/#works", label: "Works" },
         { href: "/blog", label: "Blog" },
-    ]
+    ];
 
     const handleLinkClick = (href: string) => {
-        onClose()
+        onClose();
         if (href.startsWith("/#")) {
-            const id = href.split("#")[1]
-            const element = document.getElementById(id)
+            const id = href.split("#")[1];
+            const element = document.getElementById(id);
             if (element) {
-                element.scrollIntoView({ behavior: "smooth" })
-            } else {
-                router.push(href)
+                element.scrollIntoView({ behavior: "smooth" });
             }
-        } else {
-            router.push(href)
         }
-    }
+    };
 
     return (
         <>
@@ -40,7 +36,7 @@ const SSSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <div
                     className="fixed inset-0 z-40 bg-gray-600 bg-opacity-75 transition-opacity md:hidden"
                     onClick={onClose}
-                ></div>
+                />
             )}
             <div
                 className={`fixed md:hidden top-0 left-0 z-50 h-full w-4/5 max-w-xs transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
@@ -63,10 +59,12 @@ const SSSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                         </div>
                         <nav className="space-y-4">
                             {links.map((link) => {
-                                const isActive = pathname === link.href || (pathname === "/" && link.href === "/")
+                                const isActive =
+                                    pathname === link.href || (pathname === "/" && link.href === "/");
                                 return (
-                                    <a
+                                    <Link
                                         key={link.href}
+                                        href={link.href}
                                         onClick={() => handleLinkClick(link.href)}
                                         className={`flex items-center justify-center h-14 px-4 py-3 text-base font-medium text-center transition-colors duration-200 cursor-pointer ${isActive
                                             ? "text-[hsl(var(--primary))]"
@@ -74,15 +72,15 @@ const SSSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                                             }`}
                                     >
                                         {link.label}
-                                    </a>
-                                )
+                                    </Link>
+                                );
                             })}
                         </nav>
                     </div>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default SSSidebar
+export default SSSidebar;

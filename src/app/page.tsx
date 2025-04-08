@@ -1,11 +1,12 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import About from "@/components/ss-about";
-import Skills from "@/components/skills";
-import Works from "@/components/works";
-import EmailMe from "@/components/email-me";
+import dynamic from "next/dynamic";
 
+const About = dynamic(() => import("@/components/ss-about"));
+const Skills = dynamic(() => import("@/components/skills"));
+const Works = dynamic(() => import("@/components/works"));
+const EmailMe = dynamic(() => import("@/components/email-me"));
 const LandingPage = () => {
   return (
     <>
