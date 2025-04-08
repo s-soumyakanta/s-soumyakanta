@@ -1,38 +1,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-type Props = {
+// Define the Props interface
+interface CoverImageProps {
 	title: string;
 	src: string;
 	slug?: string;
 	priority?: boolean;
-	width?: number;
-	height?: number;
-};
+}
 
-export const CoverImage = ({
-	title,
-	src,
-	slug,
-	priority = false,
-	width = 1600,
-	height = 840,
-}: Props) => {
+export const CoverImage = ({ title, src, slug, priority = false }: CoverImageProps) => {
 	const postURL = `/blog/${slug}`;
 
 	const image = (
-		<div className="relative">
+		<div className="relative pt-[52.5%]">
 			<Image
 				src={src}
 				alt={`Cover Image for ${title}`}
 				className="w-full rounded-md border object-cover hover:opacity-90 dark:border-neutral-800"
-				width={width}
-				height={height}
-				sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+				fill
+				sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1600px"
+				priority={priority}
 				placeholder="blur"
 				blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI+wN4B5X7jwAAAABJRU5ErkJggg=="
-				priority={priority}
-				fetchPriority={priority ? 'high' : 'auto'}
 			/>
 		</div>
 	);

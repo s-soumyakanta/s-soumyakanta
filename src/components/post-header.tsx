@@ -100,10 +100,7 @@ export const PostHeader = ({ title, coverImage, date, readTimeInMinutes }: Props
 					<CoverImage
 						title={title}
 						src={resizeImage(coverImage, { w: 1600, h: 840, c: 'thumb' })}
-						slug={post?.slug}
 						priority={true}
-						width={1600}
-						height={840}
 					/>
 				</div>
 			)}
