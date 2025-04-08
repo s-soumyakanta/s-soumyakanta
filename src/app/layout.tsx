@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/ss-navbar";
 import Footer from "@/components/ss-footer";
 import { GoogleTagManager } from "@next/third-parties/google";
+import Script from "next/script";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -41,6 +42,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Script
+        id="gtm-init"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GTM-NRMNQ5M5');
+          `,
+        }}
+      />
       <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
       <body
         className={cn(
