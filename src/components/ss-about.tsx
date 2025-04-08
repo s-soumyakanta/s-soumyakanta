@@ -12,7 +12,7 @@ export default function SSAbout() {
                     <div className="flex justify-center">
                         <div className="overflow-hidden rounded-xl shadow-md transition-transform duration-300 hover:scale-105 md:max-w-sm">
                             <Image
-                                src="/images/profile.png"
+                                src="/images/profile.webp"
                                 width={400}
                                 height={400}
                                 alt="Picture of S Soumyakanta"
