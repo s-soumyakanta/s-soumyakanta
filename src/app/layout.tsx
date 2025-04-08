@@ -3,7 +3,6 @@ import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
-
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import Navbar from "@/components/ss-navbar";
@@ -42,19 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Script
-        id="gtm-init"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'GTM-NRMNQ5M5');
-          `,
-        }}
-      />
-      <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
+      {/* Move Script components outside of html element level */}
       <body
         className={cn(
           "min-h-screen w-full text-foreground font-sans antialiased bg-[hsl(var(--background))]",
@@ -62,6 +49,20 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
+        {/* Place Script inside body instead */}
+        <Script
+          id="gtm-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'GTM-NRMNQ5M5');
+            `,
+          }}
+        />
+        <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
