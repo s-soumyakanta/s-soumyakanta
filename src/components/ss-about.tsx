@@ -8,16 +8,17 @@ export default function SSAbout() {
         >
             <div className="container mx-auto px-4 md:px-6">
                 <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
-                    {/* Image Section */}
+                    {/* Image Section - Optimized */}
                     <div className="flex justify-center">
-                        <div className="overflow-hidden rounded-xl shadow-md transition-transform duration-300 hover:scale-105 md:max-w-sm">
+                        <div className="overflow-hidden rounded-xl shadow-md transition-transform duration-300 hover:scale-105 md:max-w-sm relative w-64 h-64 sm:w-80 sm:h-80">
                             <Image
                                 src="/images/profile.webp"
-                                width={400}
-                                height={400}
+                                fill
+                                sizes="(max-width: 768px) 256px, 320px"
                                 alt="Picture of S Soumyakanta"
-                                className="object-cover w-full h-full"
+                                className="object-cover"
                                 priority
+                                quality={85}
                             />
                         </div>
                     </div>

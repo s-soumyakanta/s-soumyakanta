@@ -44,22 +44,22 @@ export default function Works() {
                     <div
                         key={index}
                         className="
-              relative 
-              w-full 
-              h-auto 
-              rounded-xl 
-              border 
-              border-black/[0.1] 
-              dark:border-white/[0.2] 
-              bg-gray-50 
-              dark:bg-black 
-              p-6 
-              shadow-sm 
-              transition-transform 
-              duration-300 
-              hover:-translate-y-1 
-              hover:shadow-xl
-            "
+                          relative 
+                          w-full 
+                          h-auto 
+                          rounded-xl 
+                          border 
+                          border-black/[0.1] 
+                          dark:border-white/[0.2] 
+                          bg-gray-50 
+                          dark:bg-black 
+                          p-6 
+                          shadow-sm 
+                          transition-transform 
+                          duration-300 
+                          hover:-translate-y-1 
+                          hover:shadow-xl
+                        "
                     >
                         {/* Title */}
                         <h3 className="text-xl font-bold text-neutral-600 dark:text-white">
@@ -69,22 +69,16 @@ export default function Works() {
                         <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-300">
                             {card.description}
                         </p>
-                        {/* Image */}
-                        <div className="mt-4 w-full">
+                        {/* Image - Optimized */}
+                        <div className="mt-4 w-full h-60 relative">
                             <Image
                                 src={card.imgUrl}
                                 alt={card.title}
-                                width={1000}
-                                height={1000}
-                                className="
-                  h-60 
-                  w-full 
-                  rounded-xl 
-                  object-cover 
-                  transition 
-                  duration-300 
-                  hover:opacity-90
-                "
+                                fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                className="rounded-xl object-cover transition duration-300 hover:opacity-90"
+                                loading="lazy"
+                                quality={75}
                             />
                         </div>
                         {/* Tech Stack */}
@@ -93,17 +87,17 @@ export default function Works() {
                                 <span
                                     key={techIndex}
                                     className="
-                    text-xs 
-                    font-semibold 
-                    px-3 
-                    py-1 
-                    rounded-full 
-                    border 
-                    shadow-sm 
-                    transition-transform 
-                    hover:scale-105 
-                    hover:shadow-md
-                  "
+                                      text-xs 
+                                      font-semibold 
+                                      px-3 
+                                      py-1 
+                                      rounded-full 
+                                      border 
+                                      shadow-sm 
+                                      transition-transform 
+                                      hover:scale-105 
+                                      hover:shadow-md
+                                    "
                                     style={{
                                         backgroundColor: "var(--secondary)",
                                         color: "var(--secondary-foreground)",
@@ -116,7 +110,7 @@ export default function Works() {
                         </div>
                         {/* Live Link */}
                         <div className="mt-4 flex items-center justify-end">
-                            <Link href={card.link} target="__blank" className="inline-flex items-center">
+                            <Link href={card.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center">
                                 <Button className="font-bold text-center bg-white text-black">
                                     Live Link <ExternalLink className="ml-2 w-4" />
                                 </Button>
