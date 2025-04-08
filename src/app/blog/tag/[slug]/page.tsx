@@ -1,14 +1,12 @@
-// app/blog/tag/[slug]/page.tsx
 import { request } from 'graphql-request';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
 import { AppProvider } from '@/components/contexts/appContext';
 import { Layout } from '@/components/layout';
-import { Header } from '@/components/header';
 import { Container } from '@/components/container';
 import { MorePosts } from '@/components/more-posts';
-import { Footer } from '@/components/footer';
+
 
 import {
     type Post,
@@ -78,7 +76,6 @@ export default async function TagPage({ params }: Props) {
     return (
         <AppProvider publication={publication}>
             <Layout>
-                {/* <Header /> */}
                 <Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
                     <div className="flex flex-col gap-1 pt-5">
                         <p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Tag</p>
@@ -86,7 +83,6 @@ export default async function TagPage({ params }: Props) {
                     </div>
                     <MorePosts context="tag" posts={posts} />
                 </Container>
-                <Footer />
             </Layout>
         </AppProvider>
     );
