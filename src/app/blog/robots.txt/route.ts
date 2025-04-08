@@ -1,11 +1,10 @@
-// app/robots.txt/route.ts
 export async function GET() {
     const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
     if (!host) {
         throw new Error('Could not determine host');
     }
 
-    const sitemapUrl = `https://${host}/sitemap.xml`;
+    const sitemapUrl = `https://s-soumyakanta.com/blog/sitemap.xml`;
     const robotsTxt = `
 User-agent: *
 Allow: /
