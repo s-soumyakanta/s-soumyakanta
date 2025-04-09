@@ -10,9 +10,12 @@ import Footer from "@/components/ss-footer";
 import { GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 
+// Configure font with display: swap for better loading performance
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
+  display: "swap", // Add display swap for better font loading
+  preload: true,   // Ensure font preloading
 });
 
 export const metadata: Metadata = {
@@ -32,6 +35,8 @@ export const metadata: Metadata = {
     },
   },
   keywords: "Soumya, S Soumyakanta, full stack developer, React developer, Next.js, Node.js, Golang, Go programming, web development, Bhubaneswar, frontend developer, backend developer",
+  // Add viewport metadata to help with responsive design
+  viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
 };
 
 export default function RootLayout({
@@ -40,16 +45,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      {/* Move Script components outside of html element level */}
+    <html lang="en" suppressHydrationWarning className={fontSans.variable}>
+      <head>
+        {/* Add preconnect hints for external resources */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* Add content size dimensions to prevent layout shift */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            :root {
+              --min-height-body: 100vh;
+            }
+            body {
+              min-height: var(--min-height-body);
+            }
+            /* Reserve space for navbar and footer */
+            main {
+              min-height: calc(var(--min-height-body) - 160px);
+            }
+          `
+        }} />
+      </head>
       <body
         className={cn(
           "min-h-screen w-full text-foreground font-sans antialiased bg-[hsl(var(--background))]",
-          fontSans.variable
         )}
         suppressHydrationWarning
       >
-        {/* Place Script inside body instead */}
         <Script
           id="gtm-init"
           strategy="afterInteractive"
@@ -67,10 +90,13 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
           enableSystem
+          disableTransitionOnChange // Add this to prevent flicker during theme transitions
         >
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
           <Toaster />
         </ThemeProvider>
       </body>
