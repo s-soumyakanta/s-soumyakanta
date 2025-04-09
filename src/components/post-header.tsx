@@ -29,12 +29,22 @@ export const PostHeader = ({ title, coverImage, date, readTimeInMinutes }: Props
 	const post = _post as unknown as PostFullFragment;
 	const authorsArray = [post?.author, ...(post?.coAuthors || [])];
 	const [isCoAuthorModalVisible, setIsCoAuthorModalVisible] = useState(false);
+
 	const closeCoAuthorModal = () => {
 		setIsCoAuthorModalVisible(false);
 	};
+
 	const openCoAuthorModal = () => {
 		setIsCoAuthorModalVisible(true);
 	};
+
+	// Define appropriate image sizes for different view widths
+	const authorImageSizes = authorsArray.length === 1 ? "48px" : "36px";
+
+	// Calculate optimized cover image URL if available
+	const optimizedCoverImage = coverImage ?
+		resizeImage(coverImage, { w: 1200, h: 630, c: 'thumb' }) : null;
+
 	return (
 		<>
 			<PostTitle>{title}</PostTitle>
@@ -45,14 +55,19 @@ export const PostHeader = ({ title, coverImage, date, readTimeInMinutes }: Props
 							key={coAuthor?.id?.toString()}
 							style={{ zIndex: index + 1 }}
 							className={twJoin(
-								'overflow-hidden rounded-full  bg-slate-200  dark:bg-white/20 md:mr-3',
+								'overflow-hidden rounded-full bg-slate-200 dark:bg-white/20 md:mr-3',
 								index > 0 ? 'hidden md:block' : '',
 								authorsArray.length === 1
 									? 'h-10 w-10 md:h-12 md:w-12'
 									: 'h-8 w-8 border-2 border-slate-100 dark:border-slate-800 md:h-9 md:w-9 [&:not(:first-of-type)]:-ml-3 md:[&:not(:first-of-type)]:-ml-6 ',
 							)}
 						>
-							<ProfileImage user={coAuthor} width="200" height="200" hoverDisabled={true} />
+							<ProfileImage
+								user={coAuthor}
+								width={authorsArray.length === 1 ? "48" : "36"}
+								height={authorsArray.length === 1 ? "48" : "36"}
+								hoverDisabled={true}
+							/>
 						</div>
 					))}
 					{post?.coAuthors && post?.coAuthors.length > 0 && (
@@ -95,11 +110,11 @@ export const PostHeader = ({ title, coverImage, date, readTimeInMinutes }: Props
 					<ReadTimeInMinutes readTimeInMinutes={readTimeInMinutes} />
 				</div>
 			</div>
-			{coverImage && (
+			{optimizedCoverImage && (
 				<div className="w-full px-5 sm:mx-0">
 					<CoverImage
 						title={title}
-						src={resizeImage(coverImage, { w: 1600, h: 840, c: 'thumb' })}
+						src={optimizedCoverImage}
 						priority={true}
 					/>
 				</div>
