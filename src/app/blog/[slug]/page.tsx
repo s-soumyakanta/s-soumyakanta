@@ -5,7 +5,6 @@ import Head from 'next/head';
 import { Container } from '@/components/container';
 import { AppProvider } from '@/components/contexts/appContext';
 import { Footer } from '@/components/footer';
-import { Layout } from '@/components/layout';
 import { MarkdownToHtml } from '@/components/markdown-to-html';
 import { PostHeader } from '@/components/post-header';
 import { PostTOC } from '@/components/post-toc';
@@ -111,27 +110,25 @@ function PostPage({ data, publication }: Props) {
                 <link rel="canonical" href={post.url} />
             </Head>
             <AppProvider publication={publication} post={post}>
-                <Layout>
-                    <Container className="mt-24">
-                        <article className="flex flex-col items-start gap-10 pb-10">
-                            <style dangerouslySetInnerHTML={{ __html: highlightJsMonokaiTheme }}></style>
-                            <PostHeader
-                                title={post.title}
-                                coverImage={post.coverImage?.url}
-                                date={post.publishedAt}
-                                author={post.author}
-                                readTimeInMinutes={post.readTimeInMinutes}
-                            />
-                            {post.features?.tableOfContents?.isEnabled && <PostTOC />}
-                            <MarkdownToHtml contentMarkdown={post.content.markdown} />
-                            <div className="mx-auto w-full px-5 text-slate-600 dark:text-neutral-300 md:max-w-screen-md">
-                                <ul className="flex flex-row flex-wrap items-center gap-2">{tagsList}</ul>
-                            </div>
-                            <AboutAuthor />
-                            <SubscribeForm />
-                        </article>
-                    </Container>
-                </Layout>
+                <Container className="mt-24">
+                    <article className="flex flex-col items-start gap-10 pb-10">
+                        <style dangerouslySetInnerHTML={{ __html: highlightJsMonokaiTheme }}></style>
+                        <PostHeader
+                            title={post.title}
+                            coverImage={post.coverImage?.url}
+                            date={post.publishedAt}
+                            author={post.author}
+                            readTimeInMinutes={post.readTimeInMinutes}
+                        />
+                        {post.features?.tableOfContents?.isEnabled && <PostTOC />}
+                        <MarkdownToHtml contentMarkdown={post.content.markdown} />
+                        <div className="mx-auto w-full px-5 text-slate-600 dark:text-neutral-300 md:max-w-screen-md">
+                            <ul className="flex flex-row flex-wrap items-center gap-2">{tagsList}</ul>
+                        </div>
+                        <AboutAuthor />
+                        <SubscribeForm />
+                    </article>
+                </Container>
             </AppProvider>
         </>
     );

@@ -1,10 +1,11 @@
 import request from 'graphql-request';
 import { PostsByPublicationDocument } from '@/generated/graphql';
 import BlogHome from './blog-home';
+import { Metadata } from 'next';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
 	const data = await request(GQL_ENDPOINT, PostsByPublicationDocument, {
 		first: 10,
 		host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,

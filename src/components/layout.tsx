@@ -1,6 +1,8 @@
+// Remove the 'use client' directive since metadata requires a server component
+import React from 'react';
 import { Metadata } from 'next';
 
-
+// Define static metadata
 export const metadata: Metadata = {
 	title: "S Soumyakanta's Blog | Fullstack Developer",
 	description: 'Personal blog of S Soumyakanta - MERN & Golang Developer',
@@ -53,14 +55,10 @@ type Props = {
 	children: React.ReactNode;
 };
 
-export default function RootLayout({ children }: Props) {
+export default function Layout({ children }: Props) {
 	return (
-		<html lang="en">
-			<body>
-				<div className="min-h-screen bg-white dark:bg-neutral-950">
-					<main>{children}</main>
-				</div>
-			</body>
-		</html>
+		<div className="min-h-screen bg-white dark:bg-neutral-950">
+			<main>{children}</main>
+		</div>
 	);
 }
