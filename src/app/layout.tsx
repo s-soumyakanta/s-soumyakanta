@@ -73,18 +73,6 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <Script
-          id="gtm-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'GTM-NRMNQ5M5');
-            `,
-          }}
-        />
         <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
         <ThemeProvider
           attribute="class"
