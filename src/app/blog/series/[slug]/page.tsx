@@ -6,7 +6,6 @@ import { Metadata } from 'next';
 import { AppProvider } from '@/components/contexts/appContext';
 
 import { Container } from '@/components/container';
-import { Footer } from '@/components/footer';
 import { MorePosts } from '@/components/more-posts';
 import { CoverImage } from '@/components/cover-image';
 
@@ -108,7 +107,7 @@ export default async function SeriesPage({ params }: Props) {
 					<div>No posts found</div>
 				)}
 			</Container>
-			<Footer />
+			
 		</AppProvider>
 	);
 }
