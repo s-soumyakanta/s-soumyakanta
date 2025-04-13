@@ -143,12 +143,10 @@ function PagePage({ data, publication }: Props) {
                 <title>{page.title}</title>
             </Head>
             <AppProvider publication={publication} page={page}>
-                <Layout>
-                    <Container className="pt-10">
-                        <MarkdownToHtml contentMarkdown={page.content.markdown} />
-                    </Container>
-                    <Footer />
-                </Layout>
+                <Container className="pt-10">
+                    <MarkdownToHtml contentMarkdown={page.content.markdown} />
+                </Container>
+                <Footer />
             </AppProvider>
         </>
     );

@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
 import { AppProvider } from '@/components/contexts/appContext';
-import { Layout } from '@/components/layout';
 import { Container } from '@/components/container';
 import { MorePosts } from '@/components/more-posts';
 
@@ -75,15 +74,13 @@ export default async function TagPage({ params }: Props) {
 
     return (
         <AppProvider publication={publication}>
-            <Layout>
-                <Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
-                    <div className="flex flex-col gap-1 pt-5">
-                        <p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Tag</p>
-                        <h1 className="text-4xl font-bold text-slate-900 dark:text-neutral-50">#{slug}</h1>
-                    </div>
-                    <MorePosts context="tag" posts={posts} />
-                </Container>
-            </Layout>
+            <Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
+                <div className="flex flex-col gap-1 pt-5">
+                    <p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Tag</p>
+                    <h1 className="text-4xl font-bold text-slate-900 dark:text-neutral-50">#{slug}</h1>
+                </div>
+                <MorePosts context="tag" posts={posts} />
+            </Container>
         </AppProvider>
     );
 }

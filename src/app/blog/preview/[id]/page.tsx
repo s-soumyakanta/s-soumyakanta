@@ -6,7 +6,6 @@ import { request } from 'graphql-request';
 import { Container } from '@/components/container';
 import { AppProvider } from '@/components/contexts/appContext';
 import { MarkdownToHtml } from '@/components/markdown-to-html';
-import { Layout } from '@/components/layout';
 import { PostHeader } from '@/components/post-header';
 
 import {
@@ -151,24 +150,22 @@ export default async function DraftPage({ params }: Props) {
 
         return (
             <AppProvider publication={typeSafePublication} post={compatiblePost}>
-                <Layout>
-                    <Container className="pt-10">
-                        <article className="flex flex-col items-start gap-10 pb-10 mt-20">
-                            <style dangerouslySetInnerHTML={{ __html: highlightJsMonokaiTheme }}></style>
-                            <PostHeader
-                                title={draft.title || 'Untitled'}
-                                coverImage={draft.coverImage?.url}
-                                date={draft.dateUpdated}
-                                author={draft.author}
-                                readTimeInMinutes={draft.readTimeInMinutes}
-                            />
-                            <MarkdownToHtml contentMarkdown={draft.content?.markdown || ''} />
-                            <div className="mx-auto w-full px-5 text-slate-600 dark:text-neutral-300 md:max-w-screen-md">
-                                <ul className="flex flex-row flex-wrap items-center gap-2">{tagsList}</ul>
-                            </div>
-                        </article>
-                    </Container>
-                </Layout>
+                <Container className="pt-10">
+                    <article className="flex flex-col items-start gap-10 pb-10 mt-20">
+                        <style dangerouslySetInnerHTML={{ __html: highlightJsMonokaiTheme }}></style>
+                        <PostHeader
+                            title={draft.title || 'Untitled'}
+                            coverImage={draft.coverImage?.url}
+                            date={draft.dateUpdated}
+                            author={draft.author}
+                            readTimeInMinutes={draft.readTimeInMinutes}
+                        />
+                        <MarkdownToHtml contentMarkdown={draft.content?.markdown || ''} />
+                        <div className="mx-auto w-full px-5 text-slate-600 dark:text-neutral-300 md:max-w-screen-md">
+                            <ul className="flex flex-row flex-wrap items-center gap-2">{tagsList}</ul>
+                        </div>
+                    </article>
+                </Container>
             </AppProvider>
         );
     } catch (error) {
