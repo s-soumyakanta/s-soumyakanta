@@ -73,7 +73,6 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -87,6 +86,7 @@ export default function RootLayout({
           </div>
           <Toaster />
         </ThemeProvider>
+        <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
       </body>
     </html>
   );
