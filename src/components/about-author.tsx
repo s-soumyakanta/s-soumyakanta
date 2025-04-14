@@ -1,10 +1,9 @@
 "use client";
 
-import ProfileImage from "./profile-image";
 import { useAppContext } from "./contexts/appContext";
 import { PostFullFragment } from "../generated/graphql";
+import PostAuthorInfo from "./post-author-info";
 
-// Define Author type manually
 interface Author {
   id: string;
   name: string;
@@ -12,31 +11,6 @@ interface Author {
   profilePicture?: string | null;
 }
 
-interface PostAuthorInfoProps {
-  author: {
-    id: string;
-    name: string;
-    username: string;
-    profilePicture: string;
-  };
-}
-
-// Simple PostAuthorInfo component
-const PostAuthorInfo = ({ author }: PostAuthorInfoProps) => (
-  <div className="flex items-start gap-4">
-    <div className="h-16 w-16 overflow-hidden rounded-full">
-      <ProfileImage
-        user={author}
-        width="64"
-        height="64"
-      />
-    </div>
-    <div className="flex flex-col">
-      <h4 className="text-lg font-medium text-slate-800 dark:text-white">{author.name}</h4>
-      <p className="text-sm text-slate-600 dark:text-slate-300">@{author.username}</p>
-    </div>
-  </div>
-);
 
 function AboutAuthor() {
   const { post: _post } = useAppContext();
