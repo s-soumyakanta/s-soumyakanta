@@ -48,7 +48,7 @@ export default function SSNavbar() {
                 className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${scrollingDown ? "-translate-y-full" : "translate-y-0"
                     } backdrop-blur-md bg-[hsl(var(--background)/0.7)] dark:bg-[hsl(var(--background)/0.7)] border-b border-[hsl(var(--border))]`}
             >
-                <div className="container mx-auto p-2 px-4 md:px-6">
+                <div className="container mx-auto p-2 px-4 md:px-6 max-w-5xl">
                     <div className="flex h-14 items-center">
                         <Link
                             href="/"
