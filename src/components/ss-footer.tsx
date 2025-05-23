@@ -43,6 +43,11 @@ export default function SSFooter() {
                                         Blog
                                     </Link>
                                 </li>
+                                <li className="mb-4">
+                                    <Link href="/contact" className="hover:underline">
+                                        Contact
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
                         <div>

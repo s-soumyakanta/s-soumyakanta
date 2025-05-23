@@ -17,6 +17,7 @@ const SSSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         { href: "/#about", label: "About" },
         { href: "/#works", label: "Works" },
         { href: "/blog", label: "Blog" },
+        { href: "/contact", label: "Contact" },
     ];
 
     const handleLinkClick = (href: string) => {
