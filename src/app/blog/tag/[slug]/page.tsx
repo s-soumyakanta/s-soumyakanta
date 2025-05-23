@@ -14,6 +14,7 @@ import {
     TagPostsByPublicationQuery,
     TagPostsByPublicationQueryVariables,
 } from '@/generated/graphql';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {
     params: Promise<{
@@ -78,6 +79,15 @@ export default async function TagPage({ params }: Props) {
                 <div className="flex flex-col gap-1 pt-5">
                     <p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Tag</p>
                     <h1 className="text-4xl font-bold text-slate-900 dark:text-neutral-50">#{slug}</h1>
+                    {/* Breadcrumb */}
+                    <Breadcrumb
+                        items={[
+                            { name: 'Home', href: '/' },
+                            { name: 'Blog', href: '/blog' },
+                            { name: 'Tag', href: '/blog/tag' },
+                            { name: `#${slug}` },
+                        ]}
+                    />
                 </div>
                 <MorePosts context="tag" posts={posts} />
             </Container>

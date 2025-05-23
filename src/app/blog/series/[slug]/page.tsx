@@ -19,6 +19,7 @@ import {
 } from '@/generated/graphql';
 
 import { DEFAULT_COVER } from '@/utils/const';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {
 	params: Promise<{
@@ -81,10 +82,22 @@ export default async function SeriesPage({ params }: Props) {
 	return (
 		<AppProvider publication={publication as PublicationFragment} series={series as SeriesFragment}>
 			<Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
+
+
+				{/* Series Header */}
 				<div className={`${series.coverImage ? 'col-span-full' : 'col-span-3'} grid grid-cols-4 pt-5 md:gap-5`}>
 					<div className="col-span-full flex flex-col gap-1 md:col-span-2 lg:col-span-3">
 						<p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Series</p>
 						<h1 className="text-4xl font-bold text-slate-900 dark:text-neutral-50">{series.name}</h1>
+						{/* Breadcrumb */}
+						<Breadcrumb
+							items={[
+								{ name: 'Home', href: '/' },
+								{ name: 'Blog', href: '/blog' },
+								{ name: 'Series', href: '/blog/series' },
+								{ name: series.name }
+							]}
+						/>
 						<div
 							className="hashnode-content-style mb-4"
 							dangerouslySetInnerHTML={{ __html: series.description?.html ?? '' }}
@@ -93,22 +106,20 @@ export default async function SeriesPage({ params }: Props) {
 					<div className="relative col-span-full md:col-span-2 lg:col-span-1">
 						<CoverImage
 							title={series.name}
-							src={resizeImage(
-								series.coverImage,
-								{ w: 400, h: 210, c: 'thumb' },
-								DEFAULT_COVER,
-							)}
+							src={resizeImage(series.coverImage, { w: 400, h: 210, c: 'thumb' }, DEFAULT_COVER)}
 						/>
 					</div>
 				</div>
+
+				{/* Series Posts */}
 				{posts.length > 0 ? (
 					<MorePosts context="series" posts={posts} />
 				) : (
 					<div>No posts found</div>
 				)}
 			</Container>
-			
 		</AppProvider>
+
 	);
 }
 

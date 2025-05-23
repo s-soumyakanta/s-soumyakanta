@@ -13,6 +13,7 @@ import { twJoin } from 'tailwind-merge';
 import { useState } from 'react';
 import ProfileImage from './profile-image';
 import Link from 'next/link';
+import { Breadcrumb } from './Breadcrumb';
 
 type Author = Pick<User, 'username' | 'name' | 'profilePicture'>;
 
@@ -47,7 +48,18 @@ export const PostHeader = ({ title, coverImage, date, readTimeInMinutes }: Props
 
 	return (
 		<>
+			<div className=" mx-4 text-sm text-slate-500 dark:text-slate-300 lg:max-w-4xl lg:mx-auto w-full">
+				<Link href="/" className="hover:underline">
+					Home
+				</Link>
+				<span className="mx-2">/</span>
+				<Link href="/blog" className="hover:underline">
+					Blog
+				</Link>
+			</div>
+
 			<PostTitle>{title}</PostTitle>
+
 			<div className="flex flex-row flex-wrap items-center justify-center w-full gap-2 px-2 text-slate-700 dark:text-neutral-300 md:px-0">
 				<div className="mb-5 flex w-full flex-row items-center justify-center md:mb-0 md:w-auto md:justify-start">
 					{authorsArray.map((coAuthor, index) => (
