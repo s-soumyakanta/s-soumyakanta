@@ -23,7 +23,6 @@ const LandingPage = () => {
           <div className="relative z-10 flex flex-col items-center text-center px-4">
             <h1
               className="text-4xl md:text-6xl font-bold mb-2 md:mb-4"
-              style={{ contentVisibility: "auto" }}
             >
               S Soumyakanta
             </h1>
