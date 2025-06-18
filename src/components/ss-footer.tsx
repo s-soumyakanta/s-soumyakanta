@@ -48,6 +48,11 @@ export default function SSFooter() {
                                         Contact
                                     </Link>
                                 </li>
+                                <li className="mb-4">
+                                    <Link href="/resume" className="hover:underline">
+                                        Resume
+                                    </Link>
+                                </li>
                             </ul>
                         </div>
                         <div>

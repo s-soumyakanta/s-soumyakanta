@@ -18,6 +18,7 @@ const SSSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         { href: "/#works", label: "Works" },
         { href: "/blog", label: "Blog" },
         { href: "/contact", label: "Contact" },
+        { href: "/resume", label: "Resume" },
     ];
 
     const handleLinkClick = (href: string) => {
@@ -55,7 +56,7 @@ const SSSidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                                 type="button"
                                 aria-label="Close menu"
                             >
-                                <Cross2Icon />
+                                <Cross2Icon style={{ color: "white" }} />
                             </button>
                         </div>
                         <nav className="space-y-4">

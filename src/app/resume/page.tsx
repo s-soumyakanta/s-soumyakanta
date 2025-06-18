@@ -3,7 +3,7 @@ import { FileText, Download } from "lucide-react";
 
 export default function ResumePage() {
     return (
-        <main className="min-h-screen bg-black text-white flex flex-col items-center justify-start p-4 sm:p-6 pt-20 pb-20 sm:pt-28 sm:pb-28">
+        <main className="min-h-screen text-white flex flex-col items-center justify-start p-4 sm:p-6 pt-20 pb-20 sm:pt-28 sm:pb-28">
             {/* Header Section */}
             <div className="w-full max-w-6xl text-center mb-6 sm:mb-8">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4 flex items-center justify-center gap-3">

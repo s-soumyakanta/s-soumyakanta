@@ -189,7 +189,7 @@ export default function Skills() {
     }, {} as Record<SkillCategory, Skill[]>);
 
     return (
-        <section id="skills" className="min-h-screen flex flex-col justify-center items-center p-4">
+        <section id="skills" className="min-h-screen flex flex-col justify-center items-center p-4 mt-20">
             <div className="w-full max-w-6xl">
                 {/* Header */}
                 <h2 className="mb-2 text-3xl md:text-4xl font-bold tracking-tight text-white text-center">
@@ -288,56 +288,66 @@ export default function Skills() {
                 {standaloneCertifications.length > 0 && (
                     <div className="space-y-5">
                         {/* Section Header */}
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="bg-indigo-600 p-2 rounded-lg">
-                                <BookOpen className="w-5 h-5 text-white" />
-                            </div>
-                            <h3 className="text-2xl font-semibold text-white">
-                                Additional Certifications
-                            </h3>
-                            <div className="flex-1 h-px bg-gray-700 ml-4" />
-                        </div>
-
                         {/* Certifications Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {standaloneCertifications.map((cert, index) => (
-                                <Link
-                                    key={index}
-                                    href={cert.credentialUrl || '#'}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`block rounded-xl p-6 shadow-sm border border-gray-700 transition-all duration-300 ${cert.credentialUrl ? 'bg-white text-black hover:bg-gray-200 hover:-translate-y-1 hover:shadow-xl cursor-pointer' : 'bg-black text-white'}`}
-                                >
-                                    <div className="flex items-start gap-4">
-                                        <div className="flex-shrink-0">
-                                            <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
-                                                <Award className="w-6 h-6 text-white" />
-                                            </div>
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-start justify-between gap-2 mb-2">
-                                                <h4 className="font-semibold text-sm leading-tight">
-                                                    {cert.name}
-                                                </h4>
-                                                {cert.credentialUrl && (
-                                                    <ExternalLink className="w-4 h-4 text-black flex-shrink-0" />
-                                                )}
-                                            </div>
-                                            <p className="text-xs mb-2">
-                                                {cert.issuer}
-                                                {cert.issueDate && ` • Issued ${cert.issueDate}`}
-                                                {cert.expiryDate && ` • Expires ${cert.expiryDate}`}
-                                            </p>
-                                            {cert.description && (
-                                                <p className="text-xs leading-relaxed">
-                                                    {cert.description}
-                                                </p>
-                                            )}
-                                        </div>
+                        {standaloneCertifications.length > 0 &&
+
+                            (<div className="space-y-5">
+                                {/* Section Header */}
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="bg-indigo-600 p-2 rounded-lg">
+                                        <BookOpen className="w-5 h-5 text-white" />
                                     </div>
-                                </Link>
-                            ))}
-                        </div>
+                                    <h3 className="text-2xl font-semibold text-white">
+                                        Additional Certifications
+                                    </h3>
+                                    <div className="flex-1 h-px bg-gray-700 ml-4" />
+                                </div>
+
+                                {/* Certifications Grid */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {standaloneCertifications.map((cert, index) => (
+                                        <Link
+                                            key={index}
+                                            href={cert.credentialUrl || '#'}
+                                            target="_blank"  // Open in new tab
+                                            rel="noopener noreferrer"  // Security best practice
+                                            className={`block rounded-xl p-6 shadow-sm border border-gray-700 transition-all duration-300 ${cert.credentialUrl
+                                                ? 'bg-white/5 text-white hover:bg-white/10 hover:-translate-y-1 hover:shadow-xl cursor-pointer'
+                                                : 'bg-black text-white'
+                                                }`}
+                                        >
+                                            <div className="flex items-start gap-4">
+                                                <div className="flex-shrink-0">
+                                                    <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center">
+                                                        <Award className="w-6 h-6 text-white" />
+                                                    </div>
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                                        <h4 className="font-semibold text-sm leading-tight">
+                                                            {cert.name}
+                                                        </h4>
+                                                        {cert.credentialUrl && (
+                                                            <ExternalLink className="w-4 h-4 text-gray-300 flex-shrink-0" />
+                                                        )}
+                                                    </div>
+                                                    <p className="text-xs text-gray-300">
+                                                        {cert.issuer}
+                                                        {cert.issueDate && ` • Issued ${cert.issueDate}`}
+                                                        {cert.expiryDate && ` • Expires ${cert.expiryDate}`}
+                                                    </p>
+                                                    {cert.description && (
+                                                        <p className="text-xs text-gray-400 mt-2 leading-relaxed">
+                                                            {cert.description}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                            )}
                     </div>
                 )}
             </div>

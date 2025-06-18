@@ -14,6 +14,9 @@ const Works = dynamic(() => import("@/components/works"), {
 const EmailMe = dynamic(() => import("@/components/email-me"), {
   loading: () => <div className="min-h-[300px]"></div>
 });
+const Experience = dynamic(() => import("@/components/experience"), {
+  loading: () => <div className="min-h-[300px]"></div>
+});
 
 const LandingPage = () => {
   return (
@@ -57,6 +60,7 @@ const LandingPage = () => {
         </div>
       </section>
       <About />
+      <Experience />
       <Skills />
       <Works />
       <EmailMe />
