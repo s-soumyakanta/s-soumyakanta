@@ -39,6 +39,11 @@ export default function SSFooter() {
                                     </Link>
                                 </li>
                                 <li className="mb-4">
+                                    <Link href="/resume" className="hover:underline">
+                                        Resume
+                                    </Link>
+                                </li>
+                                <li className="mb-4">
                                     <Link href="/blog" className="hover:underline">
                                         Blog
                                     </Link>
@@ -46,11 +51,6 @@ export default function SSFooter() {
                                 <li className="mb-4">
                                     <Link href="/contact" className="hover:underline">
                                         Contact
-                                    </Link>
-                                </li>
-                                <li className="mb-4">
-                                    <Link href="/resume" className="hover:underline">
-                                        Resume
                                     </Link>
                                 </li>
                             </ul>
