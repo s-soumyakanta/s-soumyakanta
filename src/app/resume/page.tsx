@@ -1,4 +1,3 @@
-// app/resume/page.tsx
 import { FileText, Download } from "lucide-react";
 
 export default function ResumePage() {
@@ -31,11 +30,11 @@ export default function ResumePage() {
 
             {/* Resume Viewer Container */}
             <div className="w-full max-w-6xl flex-1 bg-black rounded-lg shadow-2xl overflow-hidden border border-black">
-                {/* Mobile: 4:3 aspect ratio */}
-                <div className="relative w-full pb-[75%] sm:pb-[70%] lg:pb-[60%] xl:pb-[56.25%]">
+                {/* Dynamic aspect ratio with no min-height constraint */}
+                <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[80vh] max-h-[800px]">
                     <iframe
                         src="https://docs.google.com/document/d/1jsNj898c_OoIJCVfycJL84F5egtdjwNAIly18KXA-So/preview"
-                        className="absolute top-0 left-0 w-full h-full rounded-lg min-h-[500px]"
+                        className="absolute top-0 left-0 w-full h-full rounded-lg"
                         title="Resume Preview"
                     />
                 </div>
