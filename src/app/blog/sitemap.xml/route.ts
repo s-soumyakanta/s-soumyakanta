@@ -74,10 +74,14 @@ export async function GET() {
             await fetchPosts(initialPageInfo.endCursor);
         }
 
-        const xml = getSitemap({
-            ...publication,
-            posts,
-        });
+        const xml = getSitemap(
+            {
+                ...publication,
+                posts,
+            },
+            'https://www.s-soumyakanta.com'
+        );
+
 
         return new Response(xml, {
             headers: {

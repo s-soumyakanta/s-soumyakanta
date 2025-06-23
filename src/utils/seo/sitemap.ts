@@ -14,71 +14,65 @@ interface Page {
 }
 
 interface Publication {
-	url: string;
+	url: string; // fallback domain
 	staticPages: { edges: { node: Page }[] };
 	posts: Post[];
 }
 
-// Function to generate sitemap XML
-export const getSitemap = (publication: Publication): string => {
-	let xml =
-		'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-
-	const domain = publication.url;
+export const getSitemap = (publication: Publication, baseUrl?: string): string => {
+	const domain = baseUrl ?? publication.url;
 	const staticPages = publication.staticPages.edges.map((edge) => edge.node);
 	const posts = publication.posts;
 
-	// Root domain entry
-	xml += '<url>';
-	xml += `<loc>${domain}</loc>`;
-	xml += '<changefreq>always</changefreq>';
-	xml += '<priority>1</priority>';
+	let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
+	xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
+	// Root domain
+	xml += `  <url>\n`;
+	xml += `    <loc>${domain}</loc>\n`;
+	xml += `    <changefreq>always</changefreq>\n`;
+	xml += `    <priority>1</priority>\n`;
 	if (posts.length > 0 && posts[0].publishedAt) {
-		xml += `<lastmod>${posts[0].publishedAt}</lastmod>`;
+		xml += `    <lastmod>${posts[0].publishedAt}</lastmod>\n`;
 	}
-	xml += '</url>';
+	xml += `  </url>\n`;
 
-	// Posts in the sitemap
+	// Posts
 	for (const post of posts) {
-		xml += '<url>';
-		xml += `<loc>${domain}/${post.slug}</loc>`;
-		xml += '<changefreq>daily</changefreq>';
-		xml += '<priority>0.8</priority>';
+		xml += `  <url>\n`;
+		xml += `    <loc>${domain}/blog/${post.slug}</loc>\n`;
+		xml += `    <changefreq>daily</changefreq>\n`;
+		xml += `    <priority>0.8</priority>\n`;
 		if (post.updatedAt) {
-			xml += `<lastmod>${post.updatedAt}</lastmod>`;
+			xml += `    <lastmod>${post.updatedAt}</lastmod>\n`;
 		}
-		xml += '</url>';
+		xml += `  </url>\n`;
 	}
 
-	// Static pages in the sitemap
-	staticPages.forEach((page) => {
-		xml += '<url>';
-		xml += `<loc>${domain}/${page.slug}</loc>`;
-		xml += '<changefreq>always</changefreq>';
-		xml += '<priority>1</priority>';
-		xml += '</url>';
-	});
+	// Static pages
+	for (const page of staticPages) {
+		xml += `  <url>\n`;
+		xml += `    <loc>${domain}/${page.slug}</loc>\n`;
+		xml += `    <changefreq>always</changefreq>\n`;
+		xml += `    <priority>1</priority>\n`;
+		xml += `  </url>\n`;
+	}
 
-	// Collect unique tags
+	// Tags (unique)
 	const uniqueTags = new Set<string>();
 	for (const post of posts) {
-		if (Array.isArray(post.tags)) {
-			for (const tag of post.tags) {
-				uniqueTags.add(tag.slug);
-			}
-		}
+		post.tags?.forEach((tag) => uniqueTags.add(tag.slug));
 	}
 
-	// Tags in the sitemap
-	uniqueTags.forEach((tag) => {
-		xml += '<url>';
-		xml += `<loc>${domain}/tag/${tag}</loc>`;
-		xml += '<changefreq>always</changefreq>';
-		xml += '<priority>1</priority>';
-		xml += '</url>';
-	});
+	for (const tag of uniqueTags) {
+		xml += `  <url>\n`;
+		xml += `    <loc>${domain}/tag/${tag}</loc>\n`;
+		xml += `    <changefreq>always</changefreq>\n`;
+		xml += `    <priority>1</priority>\n`;
+		xml += `  </url>\n`;
+	}
 
-	xml += '</urlset>';
+	xml += `</urlset>`;
+
 	return xml;
 };
