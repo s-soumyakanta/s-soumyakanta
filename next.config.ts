@@ -1,4 +1,5 @@
 // next.config.js
+
 const ANALYTICS_BASE_URL = "https://hn-ping2.hashnode.com";
 const HASHNODE_ADVANCED_ANALYTICS_URL = "https://user-analytics.hashnode.com";
 
@@ -6,14 +7,15 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
 
+// Helper to extract basePath from BASE_URL (if present)
 const getBasePath = () => {
-  if (BASE_URL && BASE_URL.indexOf("/") !== -1) {
+  if (BASE_URL && BASE_URL.includes("/")) {
     return BASE_URL.substring(BASE_URL.indexOf("/"));
   }
   return undefined;
 };
 
-// Simplified getRedirectionRules that doesn't use graphql-request
+// Fetch redirect rules from Hashnode GraphQL API
 const getRedirectionRules = async () => {
   try {
     const query = `
@@ -37,7 +39,7 @@ const getRedirectionRules = async () => {
 
     const { data } = await response.json();
 
-    if (!data || !data.publication) {
+    if (!data?.publication) {
       console.error("Publication data not found");
       return [];
     }
@@ -86,7 +88,24 @@ const nextConfig = {
     ];
   },
   async redirects() {
-    return await getRedirectionRules();
+    const hashnodeRules = await getRedirectionRules();
+
+    return [
+      // ✅ Redirect non-www to www
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "s-soumyakanta.com", // non-www version
+          },
+        ],
+        destination: "https://www.s-soumyakanta.com/:path*",
+        permanent: true,
+      },
+      // ✅ Add any additional Hashnode redirects
+      ...hashnodeRules,
+    ];
   },
 };
 
