@@ -298,7 +298,7 @@ export default function Skills() {
                                         <BookOpen className="w-5 h-5 text-white" />
                                     </div>
                                     <h3 className="text-2xl font-semibold text-white">
-                                        Additional Certifications
+                                        Other Certifications
                                     </h3>
                                     <div className="flex-1 h-px bg-gray-700 ml-4" />
                                 </div>
