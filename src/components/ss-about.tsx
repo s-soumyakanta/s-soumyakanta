@@ -29,7 +29,7 @@ export default function SSAbout() {
                             About Me
                         </h2>
                         <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-                            Hello! I&apos;m <span className="font-semibold">Soumyakanta</span>,
+                            Hello! I&apos;m <span className="font-semibold">S Soumyakanta</span>,
                             a self-taught full-stack developer with a passion for creating
                             dynamic and responsive web applications. My journey into web
                             development began with experimenting on blog templates, which
