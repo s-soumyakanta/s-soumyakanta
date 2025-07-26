@@ -165,6 +165,12 @@ const skills: Skill[] = [
 // Standalone certifications (not tied to specific skills)
 const standaloneCertifications: StandaloneCertification[] = [
     {
+        name: "Touch Typing Certificate",
+        issuer:"touchtyping.online",
+        credentialUrl:"https://www.touchtyping.online/certificate/32df9b82-6d28-4658-a6c4-ae6549ff36d8",
+        issueDate:"July 2025"
+    },
+    {
         name: "Postman API Fundamentals Student Expert",
         issuer: "Postman",
         credentialUrl: "https://api.badgr.io/public/assertions/heZW4cLtTWKhKW29sqPgAw",
