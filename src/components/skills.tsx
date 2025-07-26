@@ -166,7 +166,7 @@ const skills: Skill[] = [
 const standaloneCertifications: StandaloneCertification[] = [
     {
         name: "Touch Typing Certificate",
-        issuer:"touchtyping.online",
+        issuer:"Touch Typing Online",
         credentialUrl:"https://www.touchtyping.online/certificate/32df9b82-6d28-4658-a6c4-ae6549ff36d8",
         issueDate:"July 2025"
     },
