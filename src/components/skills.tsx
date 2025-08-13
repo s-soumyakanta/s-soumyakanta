@@ -72,7 +72,12 @@ const skills: Skill[] = [
                 issuer: "Scrimba",
                 credentialUrl: "https://scrimba.com/certificate-cert2CsEjr6BTCzyYTtbwq2SMPEScCufYUwSyz",
                 issueDate: "June 2025",
-            },
+            },  {
+                name: "Advanced JavaScript",
+                issuer: "Scrimba",
+                credentialUrl: "https://scrimba.com/certificate-cert22z7m4z2fLjtQRg7LTXaEU4wR1iDn4xQoDeKqudKKr4r",
+                issueDate: "August 2025",
+            }
         ],
     },
     {
