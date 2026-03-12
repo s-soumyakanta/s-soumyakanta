@@ -1,19 +1,69 @@
-// @ts-nocheck
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+// ─── TYPES ────────────────────────────────────────────────────────────────────
+type PhaseId = "beginner" | "intermediate" | "advanced" | "professional";
+type Difficulty = "Easy" | "Medium" | "Hard";
+type ViewType = "roadmap" | "stats";
+type TabType = "learn" | "concepts" | "practice";
+
+interface PhaseInfo {
+  color: string;
+  glow: string;
+  label: string;
+  stages: string;
+}
+
+interface DifficultyInfo {
+  fg: string;
+  bg: string;
+}
+
+interface Theme {
+  bg: string;
+  surface: string;
+  raised: string;
+  border: string;
+  borderHi: string;
+  muted: string;
+  subtle: string;
+  body: string;
+  strong: string;
+  heading: string;
+  phases: Record<PhaseId, PhaseInfo>;
+  diff: Record<Difficulty, DifficultyInfo>;
+}
+
+interface PracticeTask {
+  name: string;
+  link: string;
+  difficulty: Difficulty;
+  tag: string;
+}
+
+interface Stage {
+  stage: number;
+  phase: PhaseId;
+  title: string;
+  subtitle: string;
+  color: string;
+  accent: string;
+  concepts: string[];
+  learn: string[];
+  practice: PracticeTask[];
+}
 
 // ─── THEME ────────────────────────────────────────────────────────────────────
-const T = {
-  bg:       "#0E1117",
-  surface:  "#161B22",
-  raised:   "#1C2333",
-  border:   "#21262D",
-  borderHi: "#30363D",
-  muted:    "#484F58",
-  subtle:   "#6E7681",
-  body:     "#8B949E",
-  strong:   "#C9D1D9",
-  heading:  "#E6EDF3",
+const T: Theme = {
+  bg:        "#0E1117",
+  surface:   "#161B22",
+  raised:    "#1C2333",
+  border:    "#21262D",
+  borderHi:  "#30363D",
+  muted:     "#484F58",
+  subtle:    "#6E7681",
+  body:      "#8B949E",
+  strong:    "#C9D1D9",
+  heading:   "#E6EDF3",
   phases: {
     beginner:     { color: "#3FB950", glow: "rgba(63,185,80,0.15)",  label: "Beginner",     stages: "1 – 4"  },
     intermediate: { color: "#D29922", glow: "rgba(210,153,34,0.15)", label: "Intermediate", stages: "5 – 9"  },
@@ -28,7 +78,7 @@ const T = {
 };
 
 // ─── CURRICULUM DATA ──────────────────────────────────────────────────────────
-const CURRICULUM = [
+const CURRICULUM: Stage[] = [
   /* ═══════════════════════ BEGINNER ═══════════════════════ */
   {
     stage: 1, phase: "beginner",
@@ -64,8 +114,8 @@ const CURRICULUM = [
       { name: "FizzBuzz",                    link: "https://leetcode.com/problems/fizz-buzz/",                                    difficulty: "Easy",   tag: "Loops"    },
       { name: "Palindrome Number",           link: "https://leetcode.com/problems/palindrome-number/",                            difficulty: "Easy",   tag: "Math"     },
       { name: "Reverse Integer",             link: "https://leetcode.com/problems/reverse-integer/",                              difficulty: "Medium", tag: "Math"     },
-      { name: "Number of Steps to Zero",     link: "https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/",  difficulty: "Easy",   tag: "Bit/Math" },
-      { name: "Count Odd Numbers in Range",  link: "https://leetcode.com/problems/count-odd-numbers-in-an-interval-range/",      difficulty: "Easy",   tag: "Math"     },
+      { name: "Number of Steps to Zero",     link: "https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/",   difficulty: "Easy",   tag: "Bit/Math" },
+      { name: "Count Odd Numbers in Range",  link: "https://leetcode.com/problems/count-odd-numbers-in-an-interval-range/",       difficulty: "Easy",   tag: "Math"     },
     ],
   },
   {
@@ -102,13 +152,13 @@ const CURRICULUM = [
       "Code: Implement set operations using map[int]struct{}",
     ],
     practice: [
-      { name: "Two Sum",                     link: "https://leetcode.com/problems/two-sum/",                               difficulty: "Easy",   tag: "Maps"   },
-      { name: "Contains Duplicate",          link: "https://leetcode.com/problems/contains-duplicate/",                   difficulty: "Easy",   tag: "Maps"   },
-      { name: "Valid Anagram",               link: "https://leetcode.com/problems/valid-anagram/",                        difficulty: "Easy",   tag: "Maps"   },
-      { name: "Majority Element",            link: "https://leetcode.com/problems/majority-element/",                     difficulty: "Easy",   tag: "Maps"   },
-      { name: "Product of Array Except Self",link: "https://leetcode.com/problems/product-of-array-except-self/",         difficulty: "Medium", tag: "Arrays" },
-      { name: "Group Anagrams",              link: "https://leetcode.com/problems/group-anagrams/",                       difficulty: "Medium", tag: "Maps"   },
-      { name: "Encode and Decode Strings",   link: "https://leetcode.com/problems/encode-and-decode-strings/",            difficulty: "Medium", tag: "Strings"},
+      { name: "Two Sum",                     link: "https://leetcode.com/problems/two-sum/",                                difficulty: "Easy",   tag: "Maps"   },
+      { name: "Contains Duplicate",          link: "https://leetcode.com/problems/contains-duplicate/",                     difficulty: "Easy",   tag: "Maps"   },
+      { name: "Valid Anagram",               link: "https://leetcode.com/problems/valid-anagram/",                          difficulty: "Easy",   tag: "Maps"   },
+      { name: "Majority Element",            link: "https://leetcode.com/problems/majority-element/",                       difficulty: "Easy",   tag: "Maps"   },
+      { name: "Product of Array Except Self",link: "https://leetcode.com/problems/product-of-array-except-self/",           difficulty: "Medium", tag: "Arrays" },
+      { name: "Group Anagrams",              link: "https://leetcode.com/problems/group-anagrams/",                         difficulty: "Medium", tag: "Maps"   },
+      { name: "Encode and Decode Strings",   link: "https://leetcode.com/problems/encode-and-decode-strings/",              difficulty: "Medium", tag: "Strings"},
     ],
   },
   {
@@ -145,11 +195,11 @@ const CURRICULUM = [
       "Code: Create a custom error type with context fields",
     ],
     practice: [
-      { name: "Climbing Stairs",            link: "https://leetcode.com/problems/climbing-stairs/",           difficulty: "Easy",   tag: "Recursion" },
-      { name: "Fibonacci Number",           link: "https://leetcode.com/problems/fibonacci-number/",          difficulty: "Easy",   tag: "Recursion" },
-      { name: "Power of Two",               link: "https://leetcode.com/problems/power-of-two/",              difficulty: "Easy",   tag: "Recursion" },
-      { name: "Reverse Linked List",        link: "https://leetcode.com/problems/reverse-linked-list/",       difficulty: "Easy",   tag: "Pointers"  },
-      { name: "Swap Nodes in Pairs",        link: "https://leetcode.com/problems/swap-nodes-in-pairs/",       difficulty: "Medium", tag: "Pointers"  },
+      { name: "Climbing Stairs",             link: "https://leetcode.com/problems/climbing-stairs/",            difficulty: "Easy",   tag: "Recursion" },
+      { name: "Fibonacci Number",            link: "https://leetcode.com/problems/fibonacci-number/",           difficulty: "Easy",   tag: "Recursion" },
+      { name: "Power of Two",                link: "https://leetcode.com/problems/power-of-two/",               difficulty: "Easy",   tag: "Recursion" },
+      { name: "Reverse Linked List",         link: "https://leetcode.com/problems/reverse-linked-list/",        difficulty: "Easy",   tag: "Pointers"  },
+      { name: "Swap Nodes in Pairs",         link: "https://leetcode.com/problems/swap-nodes-in-pairs/",        difficulty: "Medium", tag: "Pointers"  },
     ],
   },
   {
@@ -186,11 +236,11 @@ const CURRICULUM = [
       "Code: Create a multi-format logger (stdout/file/noop)",
     ],
     practice: [
-      { name: "Design HashMap",                  link: "https://leetcode.com/problems/design-hashmap/",                  difficulty: "Easy",   tag: "Design"       },
-      { name: "Min Stack",                        link: "https://leetcode.com/problems/min-stack/",                       difficulty: "Medium", tag: "Interface"    },
-      { name: "Implement Queue using Stacks",     link: "https://leetcode.com/problems/implement-queue-using-stacks/",    difficulty: "Easy",   tag: "Design"       },
-      { name: "LRU Cache",                        link: "https://leetcode.com/problems/lru-cache/",                       difficulty: "Medium", tag: "Design"       },
-      { name: "Design Twitter",                   link: "https://leetcode.com/problems/design-twitter/",                  difficulty: "Medium", tag: "OOP in Go"    },
+      { name: "Design HashMap",                  link: "https://leetcode.com/problems/design-hashmap/",                   difficulty: "Easy",   tag: "Design"        },
+      { name: "Min Stack",                       link: "https://leetcode.com/problems/min-stack/",                        difficulty: "Medium", tag: "Interface"     },
+      { name: "Implement Queue using Stacks",    link: "https://leetcode.com/problems/implement-queue-using-stacks/",     difficulty: "Easy",   tag: "Design"        },
+      { name: "LRU Cache",                       link: "https://leetcode.com/problems/lru-cache/",                        difficulty: "Medium", tag: "Design"        },
+      { name: "Design Twitter",                  link: "https://leetcode.com/problems/design-twitter/",                   difficulty: "Medium", tag: "OOP in Go"     },
     ],
   },
 
@@ -224,14 +274,14 @@ const CURRICULUM = [
     ],
     practice: [
       { name: "Best Time to Buy & Sell Stock",           link: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",                  difficulty: "Easy",   tag: "Sliding Window"  },
-      { name: "Valid Palindrome",                         link: "https://leetcode.com/problems/valid-palindrome/",                                  difficulty: "Easy",   tag: "Two Pointers"    },
-      { name: "3Sum",                                     link: "https://leetcode.com/problems/3sum/",                                              difficulty: "Medium", tag: "Two Pointers"    },
-      { name: "Container With Most Water",                link: "https://leetcode.com/problems/container-with-most-water/",                         difficulty: "Medium", tag: "Two Pointers"    },
-      { name: "Longest Substring Without Repeating",      link: "https://leetcode.com/problems/longest-substring-without-repeating-characters/",    difficulty: "Medium", tag: "Sliding Window"  },
-      { name: "Longest Repeating Char Replacement",       link: "https://leetcode.com/problems/longest-repeating-character-replacement/",           difficulty: "Medium", tag: "Sliding Window"  },
-      { name: "Subarray Sum Equals K",                    link: "https://leetcode.com/problems/subarray-sum-equals-k/",                             difficulty: "Medium", tag: "Prefix Sum"      },
-      { name: "Minimum Window Substring",                 link: "https://leetcode.com/problems/minimum-window-substring/",                          difficulty: "Hard",   tag: "Sliding Window"  },
-      { name: "Sliding Window Maximum",                   link: "https://leetcode.com/problems/sliding-window-maximum/",                             difficulty: "Hard",   tag: "Monotonic Queue" },
+      { name: "Valid Palindrome",                        link: "https://leetcode.com/problems/valid-palindrome/",                                 difficulty: "Easy",   tag: "Two Pointers"    },
+      { name: "3Sum",                                    link: "https://leetcode.com/problems/3sum/",                                             difficulty: "Medium", tag: "Two Pointers"    },
+      { name: "Container With Most Water",               link: "https://leetcode.com/problems/container-with-most-water/",                        difficulty: "Medium", tag: "Two Pointers"    },
+      { name: "Longest Substring Without Repeating",     link: "https://leetcode.com/problems/longest-substring-without-repeating-characters/",   difficulty: "Medium", tag: "Sliding Window"  },
+      { name: "Longest Repeating Char Replacement",      link: "https://leetcode.com/problems/longest-repeating-character-replacement/",          difficulty: "Medium", tag: "Sliding Window"  },
+      { name: "Subarray Sum Equals K",                   link: "https://leetcode.com/problems/subarray-sum-equals-k/",                            difficulty: "Medium", tag: "Prefix Sum"      },
+      { name: "Minimum Window Substring",                link: "https://leetcode.com/problems/minimum-window-substring/",                         difficulty: "Hard",   tag: "Sliding Window"  },
+      { name: "Sliding Window Maximum",                  link: "https://leetcode.com/problems/sliding-window-maximum/",                           difficulty: "Hard",   tag: "Monotonic Queue" },
     ],
   },
   {
@@ -262,15 +312,15 @@ const CURRICULUM = [
       "Study: When monotonic stack beats brute force O(n²)→O(n)",
     ],
     practice: [
-      { name: "Valid Parentheses",              link: "https://leetcode.com/problems/valid-parentheses/",                  difficulty: "Easy",   tag: "Stack"            },
-      { name: "Daily Temperatures",             link: "https://leetcode.com/problems/daily-temperatures/",                 difficulty: "Medium", tag: "Monotonic Stack"  },
-      { name: "Next Greater Element II",        link: "https://leetcode.com/problems/next-greater-element-ii/",            difficulty: "Medium", tag: "Monotonic Stack"  },
-      { name: "Remove K Digits",                link: "https://leetcode.com/problems/remove-k-digits/",                    difficulty: "Medium", tag: "Monotonic Stack"  },
-      { name: "Asteroid Collision",             link: "https://leetcode.com/problems/asteroid-collision/",                 difficulty: "Medium", tag: "Stack"            },
-      { name: "Decode String",                  link: "https://leetcode.com/problems/decode-string/",                      difficulty: "Medium", tag: "Stack"            },
-      { name: "Largest Rectangle in Histogram", link: "https://leetcode.com/problems/largest-rectangle-in-histogram/",    difficulty: "Hard",   tag: "Monotonic Stack"  },
-      { name: "Trapping Rain Water",            link: "https://leetcode.com/problems/trapping-rain-water/",                difficulty: "Hard",   tag: "Stack/Two Ptr"    },
-      { name: "Maximal Rectangle",              link: "https://leetcode.com/problems/maximal-rectangle/",                  difficulty: "Hard",   tag: "Monotonic Stack"  },
+      { name: "Valid Parentheses",              link: "https://leetcode.com/problems/valid-parentheses/",                  difficulty: "Easy",   tag: "Stack"             },
+      { name: "Daily Temperatures",             link: "https://leetcode.com/problems/daily-temperatures/",                 difficulty: "Medium", tag: "Monotonic Stack"   },
+      { name: "Next Greater Element II",        link: "https://leetcode.com/problems/next-greater-element-ii/",            difficulty: "Medium", tag: "Monotonic Stack"   },
+      { name: "Remove K Digits",                link: "https://leetcode.com/problems/remove-k-digits/",                    difficulty: "Medium", tag: "Monotonic Stack"   },
+      { name: "Asteroid Collision",             link: "https://leetcode.com/problems/asteroid-collision/",                 difficulty: "Medium", tag: "Stack"             },
+      { name: "Decode String",                  link: "https://leetcode.com/problems/decode-string/",                      difficulty: "Medium", tag: "Stack"             },
+      { name: "Largest Rectangle in Histogram", link: "https://leetcode.com/problems/largest-rectangle-in-histogram/",     difficulty: "Hard",   tag: "Monotonic Stack"   },
+      { name: "Trapping Rain Water",            link: "https://leetcode.com/problems/trapping-rain-water/",                difficulty: "Hard",   tag: "Stack/Two Ptr"     },
+      { name: "Maximal Rectangle",              link: "https://leetcode.com/problems/maximal-rectangle/",                  difficulty: "Hard",   tag: "Monotonic Stack"   },
     ],
   },
   {
@@ -300,16 +350,16 @@ const CURRICULUM = [
       "Study: lc.discuss — Binary Search article by @zhijun_liu",
     ],
     practice: [
-      { name: "Binary Search",                    link: "https://leetcode.com/problems/binary-search/",                                    difficulty: "Easy",   tag: "Classic"          },
-      { name: "Search Insert Position",           link: "https://leetcode.com/problems/search-insert-position/",                           difficulty: "Easy",   tag: "Left Bound"       },
-      { name: "First Bad Version",                link: "https://leetcode.com/problems/first-bad-version/",                                difficulty: "Easy",   tag: "Left Bound"       },
-      { name: "Search a 2D Matrix",               link: "https://leetcode.com/problems/search-a-2d-matrix/",                              difficulty: "Medium", tag: "2D Binary Search" },
-      { name: "Find Min in Rotated Sorted Array", link: "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/",            difficulty: "Medium", tag: "Rotated"          },
-      { name: "Search in Rotated Sorted Array",   link: "https://leetcode.com/problems/search-in-rotated-sorted-array/",                  difficulty: "Medium", tag: "Rotated"          },
-      { name: "Koko Eating Bananas",              link: "https://leetcode.com/problems/koko-eating-bananas/",                              difficulty: "Medium", tag: "Search on Answer" },
-      { name: "Capacity to Ship Packages",        link: "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/",         difficulty: "Medium", tag: "Search on Answer" },
-      { name: "Split Array Largest Sum",          link: "https://leetcode.com/problems/split-array-largest-sum/",                         difficulty: "Hard",   tag: "Search on Answer" },
-      { name: "Median of Two Sorted Arrays",      link: "https://leetcode.com/problems/median-of-two-sorted-arrays/",                    difficulty: "Hard",   tag: "Advanced"         },
+      { name: "Binary Search",                    link: "https://leetcode.com/problems/binary-search/",                                      difficulty: "Easy",   tag: "Classic"          },
+      { name: "Search Insert Position",           link: "https://leetcode.com/problems/search-insert-position/",                             difficulty: "Easy",   tag: "Left Bound"       },
+      { name: "First Bad Version",                link: "https://leetcode.com/problems/first-bad-version/",                                  difficulty: "Easy",   tag: "Left Bound"       },
+      { name: "Search a 2D Matrix",               link: "https://leetcode.com/problems/search-a-2d-matrix/",                                 difficulty: "Medium", tag: "2D Binary Search" },
+      { name: "Find Min in Rotated Sorted Array", link: "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/",             difficulty: "Medium", tag: "Rotated"          },
+      { name: "Search in Rotated Sorted Array",   link: "https://leetcode.com/problems/search-in-rotated-sorted-array/",                     difficulty: "Medium", tag: "Rotated"          },
+      { name: "Koko Eating Bananas",              link: "https://leetcode.com/problems/koko-eating-bananas/",                                difficulty: "Medium", tag: "Search on Answer" },
+      { name: "Capacity to Ship Packages",        link: "https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/",          difficulty: "Medium", tag: "Search on Answer" },
+      { name: "Split Array Largest Sum",          link: "https://leetcode.com/problems/split-array-largest-sum/",                            difficulty: "Hard",   tag: "Search on Answer" },
+      { name: "Median of Two Sorted Arrays",      link: "https://leetcode.com/problems/median-of-two-sorted-arrays/",                        difficulty: "Hard",   tag: "Advanced"         },
     ],
   },
   {
@@ -343,17 +393,17 @@ const CURRICULUM = [
       "Study: Why fast/slow pointer works (mathematical proof)",
     ],
     practice: [
-      { name: "Reverse Linked List",           link: "https://leetcode.com/problems/reverse-linked-list/",              difficulty: "Easy",   tag: "Reversal"     },
-      { name: "Merge Two Sorted Lists",        link: "https://leetcode.com/problems/merge-two-sorted-lists/",           difficulty: "Easy",   tag: "Merge"        },
-      { name: "Linked List Cycle",             link: "https://leetcode.com/problems/linked-list-cycle/",                difficulty: "Easy",   tag: "Fast/Slow"    },
-      { name: "Middle of Linked List",         link: "https://leetcode.com/problems/middle-of-the-linked-list/",        difficulty: "Easy",   tag: "Fast/Slow"    },
-      { name: "Remove Nth Node From End",      link: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",difficulty: "Medium", tag: "Two Pointers" },
-      { name: "Linked List Cycle II",          link: "https://leetcode.com/problems/linked-list-cycle-ii/",             difficulty: "Medium", tag: "Floyd's"      },
-      { name: "Reorder List",                  link: "https://leetcode.com/problems/reorder-list/",                     difficulty: "Medium", tag: "Reversal"     },
-      { name: "Copy List with Random Pointer", link: "https://leetcode.com/problems/copy-list-with-random-pointer/",   difficulty: "Medium", tag: "Deep Copy"    },
-      { name: "Sort List",                     link: "https://leetcode.com/problems/sort-list/",                        difficulty: "Medium", tag: "Merge Sort"   },
-      { name: "Reverse Nodes in k-Group",      link: "https://leetcode.com/problems/reverse-nodes-in-k-group/",        difficulty: "Hard",   tag: "K-Reversal"   },
-      { name: "Merge K Sorted Lists",          link: "https://leetcode.com/problems/merge-k-sorted-lists/",            difficulty: "Hard",   tag: "Heap+Merge"   },
+      { name: "Reverse Linked List",         link: "https://leetcode.com/problems/reverse-linked-list/",              difficulty: "Easy",   tag: "Reversal"     },
+      { name: "Merge Two Sorted Lists",      link: "https://leetcode.com/problems/merge-two-sorted-lists/",           difficulty: "Easy",   tag: "Merge"        },
+      { name: "Linked List Cycle",           link: "https://leetcode.com/problems/linked-list-cycle/",                difficulty: "Easy",   tag: "Fast/Slow"    },
+      { name: "Middle of Linked List",       link: "https://leetcode.com/problems/middle-of-the-linked-list/",        difficulty: "Easy",   tag: "Fast/Slow"    },
+      { name: "Remove Nth Node From End",    link: "https://leetcode.com/problems/remove-nth-node-from-end-of-list/", difficulty: "Medium", tag: "Two Pointers" },
+      { name: "Linked List Cycle II",        link: "https://leetcode.com/problems/linked-list-cycle-ii/",             difficulty: "Medium", tag: "Floyd's"      },
+      { name: "Reorder List",                link: "https://leetcode.com/problems/reorder-list/",                     difficulty: "Medium", tag: "Reversal"     },
+      { name: "Copy List with Random Pointer", link: "https://leetcode.com/problems/copy-list-with-random-pointer/",  difficulty: "Medium", tag: "Deep Copy"    },
+      { name: "Sort List",                   link: "https://leetcode.com/problems/sort-list/",                        difficulty: "Medium", tag: "Merge Sort"   },
+      { name: "Reverse Nodes in k-Group",    link: "https://leetcode.com/problems/reverse-nodes-in-k-group/",         difficulty: "Hard",   tag: "K-Reversal"   },
+      { name: "Merge K Sorted Lists",        link: "https://leetcode.com/problems/merge-k-sorted-lists/",             difficulty: "Hard",   tag: "Heap+Merge"   },
     ],
   },
   {
@@ -389,18 +439,18 @@ const CURRICULUM = [
       "Draw: LCA algorithm on a 10-node tree by hand",
     ],
     practice: [
-      { name: "Invert Binary Tree",             link: "https://leetcode.com/problems/invert-binary-tree/",                                      difficulty: "Easy",   tag: "DFS"        },
-      { name: "Maximum Depth of BT",            link: "https://leetcode.com/problems/maximum-depth-of-binary-tree/",                            difficulty: "Easy",   tag: "DFS"        },
-      { name: "Subtree of Another Tree",        link: "https://leetcode.com/problems/subtree-of-another-tree/",                                 difficulty: "Easy",   tag: "DFS"        },
-      { name: "Level Order Traversal",          link: "https://leetcode.com/problems/binary-tree-level-order-traversal/",                       difficulty: "Medium", tag: "BFS"        },
-      { name: "Validate BST",                   link: "https://leetcode.com/problems/validate-binary-search-tree/",                             difficulty: "Medium", tag: "BST"        },
-      { name: "Kth Smallest in BST",            link: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",                          difficulty: "Medium", tag: "BST"        },
-      { name: "Lowest Common Ancestor",         link: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",                difficulty: "Medium", tag: "LCA"        },
+      { name: "Invert Binary Tree",           link: "https://leetcode.com/problems/invert-binary-tree/",                                      difficulty: "Easy",   tag: "DFS"        },
+      { name: "Maximum Depth of BT",          link: "https://leetcode.com/problems/maximum-depth-of-binary-tree/",                            difficulty: "Easy",   tag: "DFS"        },
+      { name: "Subtree of Another Tree",      link: "https://leetcode.com/problems/subtree-of-another-tree/",                                 difficulty: "Easy",   tag: "DFS"        },
+      { name: "Level Order Traversal",        link: "https://leetcode.com/problems/binary-tree-level-order-traversal/",                       difficulty: "Medium", tag: "BFS"        },
+      { name: "Validate BST",                 link: "https://leetcode.com/problems/validate-binary-search-tree/",                             difficulty: "Medium", tag: "BST"        },
+      { name: "Kth Smallest in BST",          link: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",                           difficulty: "Medium", tag: "BST"        },
+      { name: "Lowest Common Ancestor",       link: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",                 difficulty: "Medium", tag: "LCA"        },
       { name: "Construct BT Preorder+Inorder",  link: "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/",difficulty: "Medium", tag: "Tree Build" },
-      { name: "Implement Trie",                 link: "https://leetcode.com/problems/implement-trie-prefix-tree/",                              difficulty: "Medium", tag: "Trie"       },
-      { name: "Word Search II",                 link: "https://leetcode.com/problems/word-search-ii/",                                          difficulty: "Hard",   tag: "Trie+DFS"   },
-      { name: "Binary Tree Max Path Sum",       link: "https://leetcode.com/problems/binary-tree-maximum-path-sum/",                            difficulty: "Hard",   tag: "DFS"        },
-      { name: "Serialize/Deserialize BT",       link: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/",                  difficulty: "Hard",   tag: "Design"     },
+      { name: "Implement Trie",               link: "https://leetcode.com/problems/implement-trie-prefix-tree/",                              difficulty: "Medium", tag: "Trie"       },
+      { name: "Word Search II",               link: "https://leetcode.com/problems/word-search-ii/",                                          difficulty: "Hard",   tag: "Trie+DFS"   },
+      { name: "Binary Tree Max Path Sum",     link: "https://leetcode.com/problems/binary-tree-maximum-path-sum/",                            difficulty: "Hard",   tag: "DFS"        },
+      { name: "Serialize/Deserialize BT",     link: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/",                   difficulty: "Hard",   tag: "Design"     },
     ],
   },
 
@@ -440,18 +490,18 @@ const CURRICULUM = [
       "Code: Multi-source BFS for 0-1 matrix distance",
     ],
     practice: [
-      { name: "Number of Islands",              link: "https://leetcode.com/problems/number-of-islands/",                          difficulty: "Medium", tag: "DFS/BFS"       },
-      { name: "Clone Graph",                    link: "https://leetcode.com/problems/clone-graph/",                                difficulty: "Medium", tag: "DFS"           },
-      { name: "Course Schedule",                link: "https://leetcode.com/problems/course-schedule/",                            difficulty: "Medium", tag: "Topo Sort"     },
-      { name: "Course Schedule II",             link: "https://leetcode.com/problems/course-schedule-ii/",                         difficulty: "Medium", tag: "Topo Sort"     },
-      { name: "Pacific Atlantic Water Flow",    link: "https://leetcode.com/problems/pacific-atlantic-water-flow/",                difficulty: "Medium", tag: "Multi-BFS"     },
-      { name: "Redundant Connection",           link: "https://leetcode.com/problems/redundant-connection/",                       difficulty: "Medium", tag: "Union-Find"    },
-      { name: "Network Delay Time",             link: "https://leetcode.com/problems/network-delay-time/",                         difficulty: "Medium", tag: "Dijkstra"      },
-      { name: "Cheapest Flights Within K Stops",link: "https://leetcode.com/problems/cheapest-flights-within-k-stops/",           difficulty: "Medium", tag: "Bellman-Ford"  },
-      { name: "Min Cost to Connect Points",     link: "https://leetcode.com/problems/min-cost-to-connect-all-points/",            difficulty: "Medium", tag: "Prim/Kruskal"  },
-      { name: "Word Ladder",                    link: "https://leetcode.com/problems/word-ladder/",                                difficulty: "Hard",   tag: "BFS"           },
-      { name: "Alien Dictionary",               link: "https://leetcode.com/problems/alien-dictionary/",                          difficulty: "Hard",   tag: "Topo Sort"     },
-      { name: "Critical Connections",           link: "https://leetcode.com/problems/critical-connections-in-a-network/",         difficulty: "Hard",   tag: "Tarjan"        },
+      { name: "Number of Islands",              link: "https://leetcode.com/problems/number-of-islands/",                          difficulty: "Medium", tag: "DFS/BFS"        },
+      { name: "Clone Graph",                    link: "https://leetcode.com/problems/clone-graph/",                                difficulty: "Medium", tag: "DFS"            },
+      { name: "Course Schedule",                link: "https://leetcode.com/problems/course-schedule/",                            difficulty: "Medium", tag: "Topo Sort"      },
+      { name: "Course Schedule II",             link: "https://leetcode.com/problems/course-schedule-ii/",                         difficulty: "Medium", tag: "Topo Sort"      },
+      { name: "Pacific Atlantic Water Flow",    link: "https://leetcode.com/problems/pacific-atlantic-water-flow/",                difficulty: "Medium", tag: "Multi-BFS"      },
+      { name: "Redundant Connection",           link: "https://leetcode.com/problems/redundant-connection/",                       difficulty: "Medium", tag: "Union-Find"     },
+      { name: "Network Delay Time",             link: "https://leetcode.com/problems/network-delay-time/",                         difficulty: "Medium", tag: "Dijkstra"       },
+      { name: "Cheapest Flights Within K Stops",link: "https://leetcode.com/problems/cheapest-flights-within-k-stops/",            difficulty: "Medium", tag: "Bellman-Ford"   },
+      { name: "Min Cost to Connect Points",     link: "https://leetcode.com/problems/min-cost-to-connect-all-points/",             difficulty: "Medium", tag: "Prim/Kruskal"   },
+      { name: "Word Ladder",                    link: "https://leetcode.com/problems/word-ladder/",                                difficulty: "Hard",   tag: "BFS"            },
+      { name: "Alien Dictionary",               link: "https://leetcode.com/problems/alien-dictionary/",                           difficulty: "Hard",   tag: "Topo Sort"      },
+      { name: "Critical Connections",           link: "https://leetcode.com/problems/critical-connections-in-a-network/",          difficulty: "Hard",   tag: "Tarjan"         },
     ],
   },
   {
@@ -483,11 +533,11 @@ const CURRICULUM = [
     practice: [
       { name: "Kth Largest Element in Array", link: "https://leetcode.com/problems/kth-largest-element-in-an-array/",            difficulty: "Medium", tag: "Min-Heap"    },
       { name: "Top K Frequent Elements",      link: "https://leetcode.com/problems/top-k-frequent-elements/",                    difficulty: "Medium", tag: "Heap"        },
-      { name: "K Closest Points to Origin",   link: "https://leetcode.com/problems/k-closest-points-to-origin/",                difficulty: "Medium", tag: "Heap"        },
+      { name: "K Closest Points to Origin",   link: "https://leetcode.com/problems/k-closest-points-to-origin/",                 difficulty: "Medium", tag: "Heap"        },
       { name: "Task Scheduler",               link: "https://leetcode.com/problems/task-scheduler/",                             difficulty: "Medium", tag: "Max-Heap"    },
       { name: "Reorganize String",            link: "https://leetcode.com/problems/reorganize-string/",                          difficulty: "Medium", tag: "Max-Heap"    },
       { name: "Design Twitter",               link: "https://leetcode.com/problems/design-twitter/",                             difficulty: "Medium", tag: "Heap+Design" },
-      { name: "Find Median from Data Stream", link: "https://leetcode.com/problems/find-median-from-data-stream/",              difficulty: "Hard",   tag: "Two Heaps"   },
+      { name: "Find Median from Data Stream", link: "https://leetcode.com/problems/find-median-from-data-stream/",               difficulty: "Hard",   tag: "Two Heaps"   },
       { name: "Smallest Range from K Lists",  link: "https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/",difficulty: "Hard", tag: "K-Way Heap" },
     ],
   },
@@ -524,21 +574,21 @@ const CURRICULUM = [
       "Code: Bitmask DP — Travelling Salesman on 15 nodes",
     ],
     practice: [
-      { name: "Climbing Stairs",               link: "https://leetcode.com/problems/climbing-stairs/",                         difficulty: "Easy",   tag: "1D DP"             },
-      { name: "House Robber",                  link: "https://leetcode.com/problems/house-robber/",                            difficulty: "Medium", tag: "1D DP"             },
-      { name: "House Robber II",               link: "https://leetcode.com/problems/house-robber-ii/",                         difficulty: "Medium", tag: "1D DP"             },
-      { name: "Coin Change",                   link: "https://leetcode.com/problems/coin-change/",                             difficulty: "Medium", tag: "Unbounded Knapsack" },
-      { name: "Longest Common Subsequence",    link: "https://leetcode.com/problems/longest-common-subsequence/",              difficulty: "Medium", tag: "2D DP"             },
-      { name: "Longest Increasing Subsequence",link: "https://leetcode.com/problems/longest-increasing-subsequence/",          difficulty: "Medium", tag: "LIS"               },
-      { name: "Unique Paths",                  link: "https://leetcode.com/problems/unique-paths/",                            difficulty: "Medium", tag: "2D DP"             },
-      { name: "Word Break",                    link: "https://leetcode.com/problems/word-break/",                              difficulty: "Medium", tag: "DP"                },
-      { name: "Edit Distance",                 link: "https://leetcode.com/problems/edit-distance/",                           difficulty: "Medium", tag: "2D DP"             },
-      { name: "Partition Equal Subset Sum",    link: "https://leetcode.com/problems/partition-equal-subset-sum/",              difficulty: "Medium", tag: "0/1 Knapsack"      },
-      { name: "Decode Ways",                   link: "https://leetcode.com/problems/decode-ways/",                             difficulty: "Medium", tag: "1D DP"             },
-      { name: "Burst Balloons",                link: "https://leetcode.com/problems/burst-balloons/",                          difficulty: "Hard",   tag: "Interval DP"       },
-      { name: "Regular Expression Matching",   link: "https://leetcode.com/problems/regular-expression-matching/",             difficulty: "Hard",   tag: "2D DP"             },
-      { name: "Distinct Subsequences",         link: "https://leetcode.com/problems/distinct-subsequences/",                  difficulty: "Hard",   tag: "2D DP"             },
-      { name: "Longest Valid Parentheses",     link: "https://leetcode.com/problems/longest-valid-parentheses/",              difficulty: "Hard",   tag: "Stack/DP"          },
+      { name: "Climbing Stairs",               link: "https://leetcode.com/problems/climbing-stairs/",                          difficulty: "Easy",   tag: "1D DP"              },
+      { name: "House Robber",                  link: "https://leetcode.com/problems/house-robber/",                             difficulty: "Medium", tag: "1D DP"              },
+      { name: "House Robber II",               link: "https://leetcode.com/problems/house-robber-ii/",                          difficulty: "Medium", tag: "1D DP"              },
+      { name: "Coin Change",                   link: "https://leetcode.com/problems/coin-change/",                              difficulty: "Medium", tag: "Unbounded Knapsack" },
+      { name: "Longest Common Subsequence",    link: "https://leetcode.com/problems/longest-common-subsequence/",               difficulty: "Medium", tag: "2D DP"              },
+      { name: "Longest Increasing Subsequence",link: "https://leetcode.com/problems/longest-increasing-subsequence/",           difficulty: "Medium", tag: "LIS"                },
+      { name: "Unique Paths",                  link: "https://leetcode.com/problems/unique-paths/",                             difficulty: "Medium", tag: "2D DP"              },
+      { name: "Word Break",                    link: "https://leetcode.com/problems/word-break/",                               difficulty: "Medium", tag: "DP"                 },
+      { name: "Edit Distance",                 link: "https://leetcode.com/problems/edit-distance/",                            difficulty: "Medium", tag: "2D DP"              },
+      { name: "Partition Equal Subset Sum",    link: "https://leetcode.com/problems/partition-equal-subset-sum/",               difficulty: "Medium", tag: "0/1 Knapsack"       },
+      { name: "Decode Ways",                   link: "https://leetcode.com/problems/decode-ways/",                              difficulty: "Medium", tag: "1D DP"              },
+      { name: "Burst Balloons",                link: "https://leetcode.com/problems/burst-balloons/",                           difficulty: "Hard",   tag: "Interval DP"        },
+      { name: "Regular Expression Matching",   link: "https://leetcode.com/problems/regular-expression-matching/",              difficulty: "Hard",   tag: "2D DP"              },
+      { name: "Distinct Subsequences",         link: "https://leetcode.com/problems/distinct-subsequences/",                    difficulty: "Hard",   tag: "2D DP"              },
+      { name: "Longest Valid Parentheses",     link: "https://leetcode.com/problems/longest-valid-parentheses/",                difficulty: "Hard",   tag: "Stack/DP"           },
     ],
   },
   {
@@ -572,17 +622,17 @@ const CURRICULUM = [
       "Practice: Explain pruning rationale out loud for each problem",
     ],
     practice: [
-      { name: "Subsets",                           link: "https://leetcode.com/problems/subsets/",                              difficulty: "Medium", tag: "Backtrack" },
-      { name: "Subsets II",                        link: "https://leetcode.com/problems/subsets-ii/",                           difficulty: "Medium", tag: "Backtrack" },
-      { name: "Permutations",                      link: "https://leetcode.com/problems/permutations/",                         difficulty: "Medium", tag: "Backtrack" },
-      { name: "Combination Sum",                   link: "https://leetcode.com/problems/combination-sum/",                      difficulty: "Medium", tag: "Backtrack" },
-      { name: "Combination Sum II",                link: "https://leetcode.com/problems/combination-sum-ii/",                   difficulty: "Medium", tag: "Backtrack" },
-      { name: "Generate Parentheses",              link: "https://leetcode.com/problems/generate-parentheses/",                 difficulty: "Medium", tag: "Backtrack" },
-      { name: "Letter Combinations Phone Number",  link: "https://leetcode.com/problems/letter-combinations-of-a-phone-number/",difficulty: "Medium", tag: "Backtrack" },
-      { name: "Palindrome Partitioning",           link: "https://leetcode.com/problems/palindrome-partitioning/",              difficulty: "Medium", tag: "Backtrack" },
-      { name: "Word Search",                       link: "https://leetcode.com/problems/word-search/",                          difficulty: "Medium", tag: "Backtrack" },
-      { name: "N-Queens",                          link: "https://leetcode.com/problems/n-queens/",                             difficulty: "Hard",   tag: "Backtrack" },
-      { name: "Sudoku Solver",                     link: "https://leetcode.com/problems/sudoku-solver/",                        difficulty: "Hard",   tag: "Backtrack" },
+      { name: "Subsets",                           link: "https://leetcode.com/problems/subsets/",                               difficulty: "Medium", tag: "Backtrack" },
+      { name: "Subsets II",                        link: "https://leetcode.com/problems/subsets-ii/",                            difficulty: "Medium", tag: "Backtrack" },
+      { name: "Permutations",                      link: "https://leetcode.com/problems/permutations/",                          difficulty: "Medium", tag: "Backtrack" },
+      { name: "Combination Sum",                   link: "https://leetcode.com/problems/combination-sum/",                       difficulty: "Medium", tag: "Backtrack" },
+      { name: "Combination Sum II",                link: "https://leetcode.com/problems/combination-sum-ii/",                    difficulty: "Medium", tag: "Backtrack" },
+      { name: "Generate Parentheses",              link: "https://leetcode.com/problems/generate-parentheses/",                  difficulty: "Medium", tag: "Backtrack" },
+      { name: "Letter Combinations Phone Number",  link: "https://leetcode.com/problems/letter-combinations-of-a-phone-number/", difficulty: "Medium", tag: "Backtrack" },
+      { name: "Palindrome Partitioning",           link: "https://leetcode.com/problems/palindrome-partitioning/",               difficulty: "Medium", tag: "Backtrack" },
+      { name: "Word Search",                       link: "https://leetcode.com/problems/word-search/",                           difficulty: "Medium", tag: "Backtrack" },
+      { name: "N-Queens",                          link: "https://leetcode.com/problems/n-queens/",                              difficulty: "Hard",   tag: "Backtrack" },
+      { name: "Sudoku Solver",                     link: "https://leetcode.com/problems/sudoku-solver/",                         difficulty: "Hard",   tag: "Backtrack" },
     ],
   },
   {
@@ -720,10 +770,10 @@ const CURRICULUM = [
       "Code: Zero-allocation string builder using unsafe",
     ],
     practice: [
-      { name: "Benchmark: Two Sum map vs sort variants",  link: "https://leetcode.com/problems/two-sum/",                                           difficulty: "Easy",   tag: "Profiling"  },
-      { name: "Zero-alloc: contains duplicate",           link: "https://leetcode.com/problems/contains-duplicate/",                               difficulty: "Easy",   tag: "Memory"     },
-      { name: "Pool: LRU allocation reduction",           link: "https://leetcode.com/problems/lru-cache/",                                         difficulty: "Medium", tag: "sync.Pool"  },
-      { name: "Stream: process large file lazily",        link: "https://leetcode.com/problems/read-n-characters-given-read4/",                    difficulty: "Easy",   tag: "io.Reader"  },
+      { name: "Benchmark: Two Sum map vs sort variants",  link: "https://leetcode.com/problems/two-sum/",                                      difficulty: "Easy",   tag: "Profiling"  },
+      { name: "Zero-alloc: contains duplicate",           link: "https://leetcode.com/problems/contains-duplicate/",                           difficulty: "Easy",   tag: "Memory"     },
+      { name: "Pool: LRU allocation reduction",           link: "https://leetcode.com/problems/lru-cache/",                                    difficulty: "Medium", tag: "sync.Pool"  },
+      { name: "Stream: process large file lazily",        link: "https://leetcode.com/problems/read-n-characters-given-read4/",                difficulty: "Easy",   tag: "io.Reader"  },
     ],
   },
   {
@@ -818,52 +868,56 @@ const CURRICULUM = [
       "Practice: 3 mock interviews on Pramp or interviewing.io",
     ],
     practice: [
-      { name: "Single Number",                  link: "https://leetcode.com/problems/single-number/",                         difficulty: "Easy",   tag: "XOR"         },
-      { name: "Number of 1 Bits",               link: "https://leetcode.com/problems/number-of-1-bits/",                      difficulty: "Easy",   tag: "Bits"        },
-      { name: "Counting Bits",                  link: "https://leetcode.com/problems/counting-bits/",                         difficulty: "Easy",   tag: "Bits+DP"     },
-      { name: "Reverse Bits",                   link: "https://leetcode.com/problems/reverse-bits/",                          difficulty: "Easy",   tag: "Bits"        },
-      { name: "Missing Number",                 link: "https://leetcode.com/problems/missing-number/",                        difficulty: "Easy",   tag: "XOR/Math"    },
-      { name: "Sum of Two Integers (no +)",     link: "https://leetcode.com/problems/sum-of-two-integers/",                  difficulty: "Medium", tag: "Bit Math"    },
-      { name: "Find the Duplicate Number",      link: "https://leetcode.com/problems/find-the-duplicate-number/",            difficulty: "Medium", tag: "Floyd/Bits"  },
-      { name: "Merge K Sorted Lists",           link: "https://leetcode.com/problems/merge-k-sorted-lists/",                 difficulty: "Hard",   tag: "Heap"        },
-      { name: "Find Median from Data Stream",   link: "https://leetcode.com/problems/find-median-from-data-stream/",         difficulty: "Hard",   tag: "Two Heaps"   },
-      { name: "Minimum Window Substring",       link: "https://leetcode.com/problems/minimum-window-substring/",             difficulty: "Hard",   tag: "Sliding Win" },
-      { name: "Trapping Rain Water",            link: "https://leetcode.com/problems/trapping-rain-water/",                  difficulty: "Hard",   tag: "Multi-Pattern"},
-      { name: "Median of Two Sorted Arrays",    link: "https://leetcode.com/problems/median-of-two-sorted-arrays/",          difficulty: "Hard",   tag: "Binary Search"},
+      { name: "Single Number",                  link: "https://leetcode.com/problems/single-number/",                          difficulty: "Easy",   tag: "XOR"         },
+      { name: "Number of 1 Bits",               link: "https://leetcode.com/problems/number-of-1-bits/",                       difficulty: "Easy",   tag: "Bits"        },
+      { name: "Counting Bits",                  link: "https://leetcode.com/problems/counting-bits/",                          difficulty: "Easy",   tag: "Bits+DP"     },
+      { name: "Reverse Bits",                   link: "https://leetcode.com/problems/reverse-bits/",                           difficulty: "Easy",   tag: "Bits"        },
+      { name: "Missing Number",                 link: "https://leetcode.com/problems/missing-number/",                         difficulty: "Easy",   tag: "XOR/Math"    },
+      { name: "Sum of Two Integers (no +)",     link: "https://leetcode.com/problems/sum-of-two-integers/",                    difficulty: "Medium", tag: "Bit Math"    },
+      { name: "Find the Duplicate Number",      link: "https://leetcode.com/problems/find-the-duplicate-number/",              difficulty: "Medium", tag: "Floyd/Bits"  },
+      { name: "Merge K Sorted Lists",           link: "https://leetcode.com/problems/merge-k-sorted-lists/",                   difficulty: "Hard",   tag: "Heap"        },
+      { name: "Find Median from Data Stream",   link: "https://leetcode.com/problems/find-median-from-data-stream/",           difficulty: "Hard",   tag: "Two Heaps"   },
+      { name: "Minimum Window Substring",       link: "https://leetcode.com/problems/minimum-window-substring/",               difficulty: "Hard",   tag: "Sliding Win" },
+      { name: "Trapping Rain Water",            link: "https://leetcode.com/problems/trapping-rain-water/",                    difficulty: "Hard",   tag: "Multi-Pattern"},
+      { name: "Median of Two Sorted Arrays",    link: "https://leetcode.com/problems/median-of-two-sorted-arrays/",            difficulty: "Hard",   tag: "Binary Search"},
     ],
   },
 ];
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
-const PHASE_ORDER = ["beginner", "intermediate", "advanced", "professional"];
+const PHASE_ORDER: PhaseId[] = ["beginner", "intermediate", "advanced", "professional"];
 
-function phaseOf(id) { return T.phases[id]; }
+function phaseOf(id: PhaseId): PhaseInfo { return T.phases[id]; }
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function GoProRoadmap() {
-  const [concepts,   setConcepts]   = useState({});
-  const [learns,     setLearns]     = useState({});
-  const [probs,      setProbs]      = useState({});
-  const [openStage,  setOpenStage]  = useState(1);
-  const [stageTabs,  setStageTabs]  = useState({});   // stage -> 'learn'|'concepts'|'practice'
-  const [phaseFilter,setPhaseFilter]= useState("all");
-  const [mainView,   setMainView]   = useState("roadmap"); // 'roadmap'|'stats'
+  const [concepts,   setConcepts]   = useState<Record<string, boolean>>({});
+  const [learns,     setLearns]     = useState<Record<string, boolean>>({});
+  const [probs,      setProbs]      = useState<Record<string, boolean>>({});
+  const [openStage,  setOpenStage]  = useState<number | null>(1);
+  const [stageTabs,  setStageTabs]  = useState<Record<number, TabType>>({});
+  const [phaseFilter,setPhaseFilter]= useState<PhaseId | "all">("all");
+  const [mainView,   setMainView]   = useState<ViewType>("roadmap");
 
   // Persist
   useEffect(() => {
     try {
       const c = localStorage.getItem("gp-c"); const l = localStorage.getItem("gp-l"); const p = localStorage.getItem("gp-p");
-      if (c) setConcepts(JSON.parse(c)); if (l) setLearns(JSON.parse(l)); if (p) setProbs(JSON.parse(p));
+      if (c) setConcepts(JSON.parse(c) as Record<string, boolean>); 
+      if (l) setLearns(JSON.parse(l) as Record<string, boolean>); 
+      if (p) setProbs(JSON.parse(p) as Record<string, boolean>);
     } catch {}
   }, []);
 
-  const save = useCallback((key, val) => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }, []);
+  const save = useCallback((key: string, val: Record<string, boolean>) => { 
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch {} 
+  }, []);
 
-  const toggleC = useCallback((s, i) => setConcepts(prev => { const n={...prev,[`${s}-c-${i}`]:!prev[`${s}-c-${i}`]}; save("gp-c",n); return n; }), [save]);
-  const toggleL = useCallback((s, i) => setLearns(prev => { const n={...prev,[`${s}-l-${i}`]:!prev[`${s}-l-${i}`]}; save("gp-l",n); return n; }), [save]);
-  const toggleP = useCallback((s, i) => setProbs(prev => { const n={...prev,[`${s}-p-${i}`]:!prev[`${s}-p-${i}`]}; save("gp-p",n); return n; }), [save]);
+  const toggleC = useCallback((s: number, i: number) => setConcepts(prev => { const n={...prev,[`${s}-c-${i}`]:!prev[`${s}-c-${i}`]}; save("gp-c",n); return n; }), [save]);
+  const toggleL = useCallback((s: number, i: number) => setLearns(prev => { const n={...prev,[`${s}-l-${i}`]:!prev[`${s}-l-${i}`]}; save("gp-l",n); return n; }), [save]);
+  const toggleP = useCallback((s: number, i: number) => setProbs(prev => { const n={...prev,[`${s}-p-${i}`]:!prev[`${s}-p-${i}`]}; save("gp-p",n); return n; }), [save]);
 
-  const stageStats = useCallback((st) => {
+  const stageStats = useCallback((st: Stage) => {
     const dc = st.concepts.filter((_,i) => concepts[`${st.stage}-c-${i}`]).length;
     const dl = st.learn.filter((_,i) => learns[`${st.stage}-l-${i}`]).length;
     const dp = st.practice.filter((_,i) => probs[`${st.stage}-p-${i}`]).length;
@@ -882,15 +936,18 @@ export default function GoProRoadmap() {
     return { allC,allL,allP, doneC,doneL,doneP, total, done, pct: Math.round((done/total)*100) };
   }, [stageStats]);
 
-  const isUnlocked = useCallback((_idx) => true, []);
+  const isUnlocked = useCallback((_idx: number) => true, []);
 
   const visible = phaseFilter==="all" ? CURRICULUM : CURRICULUM.filter(s=>s.phase===phaseFilter);
 
   const phaseData = useMemo(() => PHASE_ORDER.map(pid => {
-    const stages = CURRICULUM.filter(s=>s.phase===pid);
-    const done = stages.reduce((a,s)=>a+stageStats(s).done,0);
-    const total = stages.reduce((a,s)=>a+stageStats(s).total,0);
-    return { id:pid, ...phaseOf(pid), stages, done, total, pct: Math.round((done/total)*100) };
+    // Renamed 'stages' to 'phaseStages' to prevent overwriting the string property
+    const phaseStages = CURRICULUM.filter(s=>s.phase===pid);
+    const done = phaseStages.reduce((a,s)=>a+stageStats(s).done,0);
+    const total = phaseStages.reduce((a,s)=>a+stageStats(s).total,0);
+    
+    // Removed 'stages' from the return object so ...phaseOf(pid).stages (the string) is preserved
+    return { id:pid, ...phaseOf(pid), done, total, pct: Math.round((done/total)*100) };
   }), [stageStats]);
 
   return (
@@ -924,7 +981,7 @@ export default function GoProRoadmap() {
                 <span style={{ fontFamily:"'Epilogue',sans-serif", fontWeight:800, fontSize:"1.1rem", color:T.heading }}>{totals.pct}%</span>
                 <span style={{ fontSize:"0.62rem", color:T.subtle }}>{totals.done}/{totals.total}</span>
               </div>
-              {["roadmap","stats"].map(v=>(
+              {(["roadmap","stats"] as ViewType[]).map(v=>(
                 <button key={v} onClick={()=>setMainView(v)} style={{ padding:"0.35rem 0.7rem", borderRadius:7, border:mainView===v?`1px solid ${T.borderHi}`:`1px solid transparent`, background:mainView===v?T.raised:"transparent", color:mainView===v?T.strong:T.muted, fontSize:"0.68rem", letterSpacing:"0.06em" }}>
                   {v==="roadmap"?"📍 Roadmap":"📊 Stats"}
                 </button>
@@ -1042,9 +1099,9 @@ export default function GoProRoadmap() {
                     <div style={{ flex:1, height:1, background:`${ph.color}18` }}/>
                     <div style={{ display:"flex", alignItems:"center", gap:"0.4rem" }}>
                       <div style={{ width:40, height:3, background:T.border, borderRadius:99, overflow:"hidden" }}>
-                        <div style={{ height:"100%", width:`${pd.pct}%`, background:ph.color, borderRadius:99 }}/>
+                        <div style={{ height:"100%", width:`${pd?.pct || 0}%`, background:ph.color, borderRadius:99 }}/>
                       </div>
-                      <span style={{ fontSize:"0.65rem", fontWeight:700, color:ph.color }}>{pd.pct}%</span>
+                      <span style={{ fontSize:"0.65rem", fontWeight:700, color:ph.color }}>{pd?.pct || 0}%</span>
                     </div>
                   </div>
 
@@ -1107,7 +1164,11 @@ export default function GoProRoadmap() {
 
                               {/* Tab bar */}
                               <div style={{ display:"flex", gap:"0.25rem", padding:"0 1.05rem 0.55rem" }}>
-                                {[["learn",`🎯 Learn (${ss.dl}/${ss.tl})`],["concepts",`📖 Concepts (${ss.dc}/${ss.tc})`],["practice",`⚡ Problems (${ss.dp}/${ss.tp})`]].map(([t,label])=>(
+                                {([
+                                  ["learn",`🎯 Learn (${ss.dl}/${ss.tl})`],
+                                  ["concepts",`📖 Concepts (${ss.dc}/${ss.tc})`],
+                                  ["practice",`⚡ Problems (${ss.dp}/${ss.tp})`]
+                                ] as [TabType, string][]).map(([t,label])=>(
                                   <button key={t} onClick={()=>setStageTabs(p=>({...p,[st.stage]:t}))} style={{ padding:"0.28rem 0.7rem", borderRadius:6, border:tab===t?`1px solid ${ph.color}45`:`1px solid transparent`, background:tab===t?ph.color+"14":"transparent", color:tab===t?ph.color:T.subtle, fontSize:"0.67rem" }}>
                                     {label}
                                   </button>
@@ -1153,7 +1214,7 @@ export default function GoProRoadmap() {
                                       return (
                                         <div key={i} className="hov-row" onClick={()=>toggleP(st.stage,i)} style={{ display:"flex", alignItems:"center", gap:"0.6rem", padding:"0.5rem 0.65rem", borderRadius:8, background:done?ph.color+"07":T.raised, border:`1px solid ${done?ph.color+"25":T.border}`, cursor:"pointer", transition:"all .15s" }}>
                                           <Checkbox done={done} color={ph.color}/>
-                                          <a href={prob.link} target="_blank" rel="noreferrer" onClick={e=>e.stopPropagation()} style={{ flex:1, fontSize:"0.77rem", fontWeight:500, color:done?T.subtle:T.strong }} onMouseEnter={e=>e.currentTarget.style.color=ph.color} onMouseLeave={e=>e.currentTarget.style.color=done?T.subtle:T.strong}>
+                                          <a href={prob.link} target="_blank" rel="noreferrer" onClick={(e: React.MouseEvent<HTMLAnchorElement>)=>e.stopPropagation()} style={{ flex:1, fontSize:"0.77rem", fontWeight:500, color:done?T.subtle:T.strong }} onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>)=>e.currentTarget.style.color=ph.color} onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>)=>e.currentTarget.style.color=done?T.subtle:T.strong}>
                                             {prob.name} <span style={{ fontSize:"0.6rem", opacity:0.5 }}>↗</span>
                                           </a>
                                           <span style={{ fontSize:"0.58rem", padding:"0.1rem 0.4rem", borderRadius:99, background:T.raised, color:T.subtle, border:`1px solid ${T.border}`, whiteSpace:"nowrap", flexShrink:0 }}>{prob.tag}</span>
@@ -1184,7 +1245,7 @@ export default function GoProRoadmap() {
 }
 
 // ─── SUB-COMPONENTS ───────────────────────────────────────────────────────────
-function Checkbox({ done, color }) {
+function Checkbox({ done, color }: { done?: boolean; color: string }) {
   return (
     <div style={{ width:15, height:15, minWidth:15, borderRadius:4, border:`1.5px solid ${done?color:T.borderHi}`, background:done?color+"22":"transparent", display:"flex", alignItems:"center", justifyContent:"center", marginTop:2, transition:"all .15s", flexShrink:0 }}>
       {done && <span style={{ color, fontSize:"0.55rem", fontWeight:800, lineHeight:1 }}>✓</span>}
@@ -1192,6 +1253,6 @@ function Checkbox({ done, color }) {
   );
 }
 
-function SectionLabel({ children }) {
+function SectionLabel({ children }: { children: React.ReactNode }) {
   return <div style={{ fontSize:"0.62rem", color:T.muted, letterSpacing:"0.12em", textTransform:"uppercase", fontWeight:600 }}>{children}</div>;
 }
