@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-
+import Image from "next/image";
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 type PhaseId = "beginner" | "intermediate" | "advanced" | "professional";
 type Difficulty = "Easy" | "Medium" | "Hard";
@@ -971,7 +971,15 @@ export default function GoProRoadmap() {
           <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:"1rem", flexWrap:"wrap", marginBottom:"1rem" }}>
             {/* Brand */}
             <div style={{ display:"flex", alignItems:"center", gap:"0.75rem" }}>
-              <div style={{ width:36, height:36, borderRadius:8, background:`linear-gradient(135deg,${T.phases.beginner.color},${T.phases.professional.color})`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.1rem", flexShrink:0 }}>⚡</div>
+              <div style={{ width:36, height:36, borderRadius:8, background:`linear-gradient(135deg,${T.phases.beginner.color},${T.phases.professional.color})`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:"1.1rem", flexShrink:0 }}>
+                <Image 
+                src="/go.png"
+                alt="Go Image"
+                width={34}
+                height={36}
+                className="rounded-md"
+                />
+              </div>
               <div>
                 <div style={{ fontFamily:"'Epilogue',sans-serif", fontWeight:900, fontSize:"1.15rem", color:T.heading, letterSpacing:"-0.02em", lineHeight:1 }}>Go × DSA Roadmap</div>
                 <div style={{ fontSize:"0.62rem", color:T.muted, letterSpacing:"0.1em", marginTop:"0.2rem" }}>BEGINNER → PROFESSIONAL · 18 STAGES</div>
