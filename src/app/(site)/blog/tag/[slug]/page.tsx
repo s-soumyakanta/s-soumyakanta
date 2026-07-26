@@ -28,26 +28,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const resolvedParams = await params;
     const { slug } = resolvedParams;
 
-    const data = await request<TagPostsByPublicationQuery, TagPostsByPublicationQueryVariables>(
-        process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
-        TagPostsByPublicationDocument,
-        {
-            host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-            first: 1, // Only need publication name
-            tagSlug: slug,
-        },
-    );
+    try {
+        const data = await request<TagPostsByPublicationQuery, TagPostsByPublicationQueryVariables>(
+            process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
+            TagPostsByPublicationDocument,
+            {
+                host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+                first: 1, // Only need publication name
+                tagSlug: slug,
+            },
+        );
 
-    const publication = data.publication;
-    if (!publication) {
+        const publication = data.publication;
+        if (!publication) {
+            return {
+                title: `Tag - #${slug}`,
+            };
+        }
+
+        return {
+            title: `#${slug} - ${publication.title}`,
+        };
+    } catch (error) {
+        console.error('Error fetching tag metadata:', error);
         return {
             title: `Tag - #${slug}`,
         };
     }
-
-    return {
-        title: `#${slug} - ${publication.title}`,
-    };
 }
 
 // Main page component
@@ -56,43 +63,48 @@ export default async function TagPage({ params }: Props) {
     const resolvedParams = await params;
     const { slug } = resolvedParams;
 
-    const data = await request<TagPostsByPublicationQuery, TagPostsByPublicationQueryVariables>(
-        process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
-        TagPostsByPublicationDocument,
-        {
-            host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-            first: 20,
-            tagSlug: slug,
-        },
-    );
+    try {
+        const data = await request<TagPostsByPublicationQuery, TagPostsByPublicationQueryVariables>(
+            process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT!,
+            TagPostsByPublicationDocument,
+            {
+                host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+                first: 20,
+                tagSlug: slug,
+            },
+        );
 
-    const publication = data.publication;
-    if (!publication) {
+        const publication = data.publication;
+        if (!publication) {
+            notFound();
+        }
+
+        const posts = publication.posts.edges.map((edge) => edge.node);
+
+        return (
+            <AppProvider publication={publication}>
+                <Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
+                    <div className="flex flex-col gap-1 pt-5">
+                        <p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Tag</p>
+                        <h1 className="text-4xl font-bold text-slate-900 dark:text-neutral-50">#{slug}</h1>
+                        {/* Breadcrumb */}
+                        <Breadcrumb
+                            items={[
+                                { name: 'Home', href: '/' },
+                                { name: 'Blog', href: '/blog' },
+                                { name: 'Tag', href: '/blog/tag' },
+                                { name: `#${slug}` },
+                            ]}
+                        />
+                    </div>
+                    <MorePosts context="tag" posts={posts} />
+                </Container>
+            </AppProvider>
+        );
+    } catch (error) {
+        console.error('Error fetching tag posts:', error);
         notFound();
     }
-
-    const posts = publication.posts.edges.map((edge) => edge.node);
-
-    return (
-        <AppProvider publication={publication}>
-            <Container className="flex flex-col items-stretch gap-10 px-5 pb-10 mt-20">
-                <div className="flex flex-col gap-1 pt-5">
-                    <p className="font-bold uppercase text-slate-500 dark:text-neutral-400">Tag</p>
-                    <h1 className="text-4xl font-bold text-slate-900 dark:text-neutral-50">#{slug}</h1>
-                    {/* Breadcrumb */}
-                    <Breadcrumb
-                        items={[
-                            { name: 'Home', href: '/' },
-                            { name: 'Blog', href: '/blog' },
-                            { name: 'Tag', href: '/blog/tag' },
-                            { name: `#${slug}` },
-                        ]}
-                    />
-                </div>
-                <MorePosts context="tag" posts={posts} />
-            </Container>
-        </AppProvider>
-    );
 }
 
 // Generate static paths (equivalent to getStaticPaths)
