@@ -18,19 +18,44 @@ const SOCIALS = [
   { label: "YouTube", href: "https://youtube.com/@s-soumyakanta" },
 ];
 
+// Caps mirror the server schema in /api/send so a message that would be
+// rejected there fails here first, with a readable message instead of a 400.
+const MAX_NAME = 100;
+const MAX_EMAIL = 254;
+const MAX_MESSAGE = 5000;
+
 const schema = yup.object().shape({
-  name: yup.string().required("This field is required").min(1, "Minimum 1 character"),
-  email: yup.string().required("This field is required").email("Invalid email format"),
-  message: yup.string().required("This field is required").min(1, "Minimum 1 character"),
+  name: yup
+    .string()
+    .required("This field is required")
+    .min(1, "Minimum 1 character")
+    .max(MAX_NAME, `Maximum ${MAX_NAME} characters`),
+  email: yup
+    .string()
+    .required("This field is required")
+    .email("Invalid email format")
+    .max(MAX_EMAIL, `Maximum ${MAX_EMAIL} characters`),
+  message: yup
+    .string()
+    .required("This field is required")
+    .min(1, "Minimum 1 character")
+    .max(MAX_MESSAGE, `Maximum ${MAX_MESSAGE} characters`),
+  // Honeypot — kept out of view via CSS, not in the tab order. A real
+  // visitor never touches it; a bot filling every field in the DOM does.
+  company: yup.string().optional(),
 });
 
 interface ContactFormData {
   name: string;
   email: string;
   message: string;
+  company?: string;
 }
 
 type Status = "idle" | "success" | "error";
+
+const DEFAULT_ERROR_MESSAGE = "Something went wrong — please try again, or email me directly.";
+const RATE_LIMIT_MESSAGE = "You're sending messages too quickly. Please wait a bit and try again.";
 
 export default function SSContact() {
   const {
@@ -45,6 +70,7 @@ export default function SSContact() {
   });
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState(DEFAULT_ERROR_MESSAGE);
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [name, email, message] = watch(["name", "email", "message"]);
@@ -56,8 +82,9 @@ export default function SSContact() {
     };
   }, []);
 
-  const settleStatus = (next: Status) => {
+  const settleStatus = (next: Status, message?: string) => {
     setStatus(next);
+    if (next === "error") setErrorMessage(message ?? DEFAULT_ERROR_MESSAGE);
     if (resetTimer.current) clearTimeout(resetTimer.current);
     if (next !== "idle") {
       resetTimer.current = setTimeout(() => setStatus("idle"), STATUS_RESET_MS);
@@ -65,6 +92,14 @@ export default function SSContact() {
   };
 
   const onSubmit: SubmitHandler<ContactFormData> = async (data) => {
+    // The honeypot field is registered so a bot filling every input in the
+    // DOM populates it, but it's never rendered where a person can reach it.
+    if (data.company) {
+      reset();
+      settleStatus("success");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch("/api/send", {
@@ -78,6 +113,8 @@ export default function SSContact() {
       if (response.ok) {
         reset();
         settleStatus("success");
+      } else if (response.status === 429) {
+        settleStatus("error", RATE_LIMIT_MESSAGE);
       } else {
         settleStatus("error");
       }
@@ -119,6 +156,17 @@ export default function SSContact() {
                 </div>
               ) : (
                 <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+                  <div className={styles.honeypot} aria-hidden="true">
+                    <label htmlFor="company">Company</label>
+                    <input
+                      type="text"
+                      id="company"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      {...register("company")}
+                    />
+                  </div>
+
                   <div className={styles.field}>
                     <label className={styles.label} htmlFor="name">
                       Your name
@@ -126,6 +174,8 @@ export default function SSContact() {
                     <input
                       type="text"
                       id="name"
+                      maxLength={MAX_NAME}
+                      autoComplete="name"
                       aria-invalid={errors.name ? "true" : "false"}
                       className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
                       {...register("name")}
@@ -142,6 +192,8 @@ export default function SSContact() {
                     <input
                       type="email"
                       id="email"
+                      maxLength={MAX_EMAIL}
+                      autoComplete="email"
                       aria-invalid={errors.email ? "true" : "false"}
                       className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
                       {...register("email")}
@@ -157,6 +209,7 @@ export default function SSContact() {
                     </label>
                     <textarea
                       id="message"
+                      maxLength={MAX_MESSAGE}
                       aria-invalid={errors.message ? "true" : "false"}
                       className={`${styles.textarea} ${errors.message ? styles.invalid : ""}`}
                       {...register("message")}
@@ -177,7 +230,7 @@ export default function SSContact() {
 
                     {status === "error" && (
                       <span className={styles.formError} role="alert">
-                        Something went wrong — please try again, or email me directly.
+                        {errorMessage}
                       </span>
                     )}
                   </div>

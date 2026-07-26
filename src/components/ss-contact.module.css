@@ -111,6 +111,18 @@
     padding-top: clamp(0.9rem, 2.4vh, 1.6rem);
 }
 
+/* On a wide monitor the frame still runs to the viewport edges, but the content
+   inside it stops stretching and settles into a centred column — the form stays
+   in front of the reader instead of being flung out to the left edge. The head
+   rule above keeps its full-bleed border so the frame still reads as one piece. */
+@media (min-width: 1200px) {
+    .body {
+        width: 100%;
+        max-width: 1080px;
+        align-self: center;
+    }
+}
+
 .title {
     flex: none;
     margin: 0;
@@ -173,6 +185,16 @@
     display: flex;
     flex-direction: column;
     flex: none;
+}
+
+/* Honeypot: off-screen rather than display:none, since some bots skip
+   fields that never render at all. Real visitors never see or reach it. */
+.honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    left: -9999px;
 }
 
 /* The message field absorbs whatever vertical space is left over, which is what
