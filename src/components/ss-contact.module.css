@@ -155,6 +155,10 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
+    /* Claims the leftover vertical space in .cols (aside is flex: none)
+       so the message field below grows into it instead of that space
+       collecting as dead air under the aside column. */
+    flex: 1;
 }
 
 .form {
@@ -308,14 +312,15 @@
     outline: none;
 }
 
-/* Compact inline row on narrow screens, stacked list when there's room. */
+/* A tidy 2-column grid on narrow screens (an inline wrap left an orphaned
+   last item raggedly on its own line); a stacked list when there's room. */
 .socials {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem clamp(0.8rem, 3vw, 1.3rem);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 1rem;
 }
 
 .socialLink {
@@ -349,8 +354,8 @@
 
 @media (min-width: 820px) {
     .socials {
+        display: flex;
         flex-direction: column;
-        flex-wrap: nowrap;
         gap: 0;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
