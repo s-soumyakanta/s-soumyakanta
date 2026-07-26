@@ -20,7 +20,8 @@ export async function GET() {
             {
                 host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
                 postsCount: 20,
-                staticPagesCount: 50,
+                // This app has no route for Hashnode static pages, so don't list them.
+                staticPagesCount: 0,
             }
         );
 

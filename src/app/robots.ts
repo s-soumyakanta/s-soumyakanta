@@ -18,8 +18,8 @@ export default function robots(): MetadataRoute.Robots {
             },
         ],
         sitemap: [
-            'https://s-soumyakanta.com/sitemap.xml',
-            'https://s-soumyakanta.com/blog/sitemap.xml',
+            'https://www.s-soumyakanta.com/sitemap.xml',
+            'https://www.s-soumyakanta.com/blog/sitemap.xml',
         ],
     };
 }

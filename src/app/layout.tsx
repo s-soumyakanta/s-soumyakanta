@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter as FontSans } from "next/font/google";
+import { Inter as FontSans, JetBrains_Mono as FontMono } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import Navbar from "@/components/ss-navbar";
-import Footer from "@/components/ss-footer";
 import { GoogleTagManager } from "@next/third-parties/google";
-import Script from "next/script";
 
 // Configure font with display: swap for better loading performance
 const fontSans = FontSans({
@@ -16,6 +13,13 @@ const fontSans = FontSans({
   variable: "--font-sans",
   display: "swap", // Add display swap for better font loading
   preload: true,   // Ensure font preloading
+});
+
+const fontMono = FontMono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -45,7 +49,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={fontSans.variable}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn(fontSans.variable, fontMono.variable)}
+    >
       <head>
         <meta name="theme-color" content="#000000" />
         {/* Add preconnect hints for external resources */}
@@ -61,10 +69,6 @@ export default function RootLayout({
             body {
               min-height: var(--min-height-body);
             }
-            /* Reserve space for navbar and footer */
-            main {
-              min-height: calc(var(--min-height-body) - 160px);
-            }
           `
         }} />
       </head>
@@ -77,14 +81,11 @@ export default function RootLayout({
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
+          forcedTheme="dark" // Monochrome matte surface only — there is no light variant
+          enableSystem={false}
           disableTransitionOnChange // Add this to prevent flicker during theme transitions
         >
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </div>
+          {children}
           <Toaster />
         </ThemeProvider>
         <GoogleTagManager gtmId="GTM-NRMNQ5M5" />

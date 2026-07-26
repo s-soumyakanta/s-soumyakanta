@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import "../../styles/index.css";
+import "@/styles/index.css";
 import IframeResizer from './iframe-resizer';
 
 export const metadata: Metadata = {
