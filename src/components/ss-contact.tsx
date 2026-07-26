@@ -247,7 +247,7 @@ export default function SSContact() {
               </div>
 
               <div>
-                <span className={styles.label}>Elsewhere</span>
+                <span className={styles.label}>Socials</span>
                 <ul className={styles.socials}>
                   {SOCIALS.map((social) => (
                     <li key={social.href} className={styles.socialItem}>
