@@ -3,7 +3,6 @@ import type { MetadataRoute } from 'next';
 // Canonical host is www — next.config.ts permanently redirects the apex to it.
 const BASE_URL = 'https://www.s-soumyakanta.com';
 
-// Static routes only. Blog posts and tags live in /blog/sitemap.xml.
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
@@ -11,12 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date('2026-07-26T00:00:00+00:00'),
             changeFrequency: 'yearly',
             priority: 1.0,
-        },
-        {
-            url: `${BASE_URL}/blog`,
-            lastModified: new Date('2026-07-26T00:00:00+00:00'),
-            changeFrequency: 'daily',
-            priority: 0.9,
         },
         {
             url: `${BASE_URL}/contact`,

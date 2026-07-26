@@ -125,13 +125,6 @@
     gap: clamp(0.9rem, 2.4vw, 1.4rem);
 }
 
-/* Hairline divider, in keeping with the rest of the layout. */
-.sep {
-    width: 1px;
-    height: 0.8rem;
-    background: rgba(255, 255, 255, 0.2);
-}
-
 .link {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: clamp(0.6rem, 1.1vw, 0.72rem);

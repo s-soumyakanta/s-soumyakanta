@@ -24,10 +24,6 @@ export default function Landing() {
             </a>
 
             <nav className={styles.links} aria-label="Pages">
-              <Link className={styles.link} href="/blog">
-                Blog
-              </Link>
-              <span className={styles.sep} aria-hidden="true" />
               <Link className={styles.link} href="/contact">
                 Contact
               </Link>

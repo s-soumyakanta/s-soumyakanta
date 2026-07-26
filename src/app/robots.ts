@@ -17,9 +17,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: '/',
             },
         ],
-        sitemap: [
-            'https://www.s-soumyakanta.com/sitemap.xml',
-            'https://www.s-soumyakanta.com/blog/sitemap.xml',
-        ],
+        sitemap: 'https://www.s-soumyakanta.com/sitemap.xml',
     };
 }
