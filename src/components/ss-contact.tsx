@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
+import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import styles from "./ss-contact.module.css";
 
@@ -77,105 +78,118 @@ export default function SSContact() {
   };
 
   return (
-    <section className={styles.wrap}>
+    <div className={styles.root}>
       <div className={styles.grain} aria-hidden="true" />
 
-      <div className={styles.inner}>
-        <h1 className={styles.title}>Contact</h1>
-        <p className={styles.lede}>
-          Want to discuss a tech project or need a full-stack developer to create a
-          website for you? Let me know.
-        </p>
+      <div className={styles.stage}>
+        <span className={`${styles.tick} ${styles.tl}`} aria-hidden="true" />
+        <span className={`${styles.tick} ${styles.tr}`} aria-hidden="true" />
+        <span className={`${styles.tick} ${styles.bl}`} aria-hidden="true" />
+        <span className={`${styles.tick} ${styles.br}`} aria-hidden="true" />
 
-        <div className={styles.rule} aria-hidden="true" />
+        <div className={styles.head}>
+          <Link className={styles.brand} href="/">
+            S Soumyakanta
+          </Link>
+          <span className={styles.crumb}>Contact</span>
+        </div>
 
-        <div className={styles.cols}>
-          <div className={styles.aside}>
-            <div>
-              <span className={styles.label}>Email</span>
-              <a className={styles.value} href={`mailto:${EMAIL}`}>
-                {EMAIL}
-              </a>
+        <div className={styles.body}>
+          <h1 className={styles.title}>Contact</h1>
+
+          <div className={styles.cols}>
+            <div className={styles.formCol}>
+              <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="name">
+                    Your name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Jane Doe"
+                    aria-invalid={errors.name ? "true" : "false"}
+                    className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
+                    {...register("name")}
+                  />
+                  {errors.name && (
+                    <span className={styles.error}>{errors.name.message}</span>
+                  )}
+                </div>
+
+                <div className={styles.field}>
+                  <label className={styles.label} htmlFor="email">
+                    Your email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="jane@example.com"
+                    aria-invalid={errors.email ? "true" : "false"}
+                    className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
+                    {...register("email")}
+                  />
+                  {errors.email && (
+                    <span className={styles.error}>{errors.email.message}</span>
+                  )}
+                </div>
+
+                <div className={`${styles.field} ${styles.messageField}`}>
+                  <label className={styles.label} htmlFor="message">
+                    Your message
+                  </label>
+                  <textarea
+                    id="message"
+                    placeholder="Tell me about the project."
+                    aria-invalid={errors.message ? "true" : "false"}
+                    className={`${styles.textarea} ${errors.message ? styles.invalid : ""}`}
+                    {...register("message")}
+                  />
+                  {errors.message && (
+                    <span className={styles.error}>{errors.message.message}</span>
+                  )}
+                </div>
+
+                <div className={styles.actions}>
+                  <button type="submit" className={styles.submit} disabled={loading}>
+                    {loading ? "Sending..." : "Send message"}
+                  </button>
+                </div>
+              </form>
             </div>
 
-            <div>
-              <span className={styles.label}>Elsewhere</span>
-              <ul className={styles.socials}>
-                {SOCIALS.map((social) => (
-                  <li key={social.href} className={styles.socialItem}>
-                    <a
-                      className={styles.socialLink}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {social.label}
-                      <span className={styles.arrow} aria-hidden="true">
-                        &#8599;
-                      </span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.aside}>
+              <div>
+                <span className={styles.label}>Email</span>
+                <a className={styles.value} href={`mailto:${EMAIL}`}>
+                  {EMAIL}
+                </a>
+              </div>
+
+              <div>
+                <span className={styles.label}>Elsewhere</span>
+                <ul className={styles.socials}>
+                  {SOCIALS.map((social) => (
+                    <li key={social.href} className={styles.socialItem}>
+                      <a
+                        className={styles.socialLink}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {social.label}
+                        <span className={styles.arrow} aria-hidden="true">
+                          &#8599;
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
-
-          <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="name">
-                Your name
-              </label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Jane Doe"
-                aria-invalid={errors.name ? "true" : "false"}
-                className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
-                {...register("name")}
-              />
-              {errors.name && <span className={styles.error}>{errors.name.message}</span>}
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="email">
-                Your email
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="jane@example.com"
-                aria-invalid={errors.email ? "true" : "false"}
-                className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
-                {...register("email")}
-              />
-              {errors.email && <span className={styles.error}>{errors.email.message}</span>}
-            </div>
-
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="message">
-                Your message
-              </label>
-              <textarea
-                id="message"
-                rows={6}
-                placeholder="Tell me about the project."
-                aria-invalid={errors.message ? "true" : "false"}
-                className={`${styles.textarea} ${errors.message ? styles.invalid : ""}`}
-                {...register("message")}
-              />
-              {errors.message && (
-                <span className={styles.error}>{errors.message.message}</span>
-              )}
-            </div>
-
-            <div className={styles.actions}>
-              <button type="submit" className={styles.submit} disabled={loading}>
-                {loading ? "Sending..." : "Send message"}
-              </button>
-            </div>
-          </form>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

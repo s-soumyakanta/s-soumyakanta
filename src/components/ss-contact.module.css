@@ -1,11 +1,12 @@
-/* Contact surface — same matte, hairline-driven language as the landing page. */
+/* Contact surface — same matte, hairline-driven language as the landing page.
+   Locked to the viewport: no scrolling at any size. */
 
-.wrap {
-    position: relative;
-    min-height: calc(100vh - 8rem);
+.root {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
     background: #0a0a0a;
     isolation: isolate;
-    overflow: hidden;
 }
 
 .grain {
@@ -17,162 +18,196 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
 }
 
-.inner {
-    position: relative;
+.stage {
+    position: absolute;
+    inset: clamp(12px, 3vmin, 34px);
     z-index: 1;
-    max-width: 68rem;
-    margin: 0 auto;
-    padding: clamp(2.5rem, 8vh, 5rem) clamp(1.1rem, 5vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: clamp(0.85rem, 2.4vmin, 1.9rem);
 }
 
-/* ---------- header ---------- */
+.tick {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    pointer-events: none;
+}
+
+.tl {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.tr {
+    top: -1px;
+    right: -1px;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.bl {
+    bottom: -1px;
+    left: -1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.br {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- head ---------- */
+
+.head {
+    flex: none;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: clamp(0.6rem, 1.6vh, 1rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-size: clamp(0.95rem, min(2.4vw, 2.4vh), 1.35rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    color: #ededed;
+    text-decoration: none;
+}
+
+.brand:hover,
+.brand:focus-visible {
+    color: #fff;
+    outline: none;
+}
+
+.crumb {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: clamp(0.55rem, 1.1vw, 0.68rem);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- body ---------- */
+
+.body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.9rem, 2.4vh, 1.6rem);
+    padding-top: clamp(0.9rem, 2.4vh, 1.6rem);
+}
 
 .title {
+    flex: none;
     margin: 0;
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-    font-size: clamp(2.2rem, 8vw, 5rem);
+    font-size: clamp(1.5rem, min(7vw, 8.5vh), 4rem);
     font-weight: 600;
     line-height: 1;
     letter-spacing: -0.045em;
     color: #ededed;
 }
 
-.lede {
-    margin: clamp(0.9rem, 2vh, 1.4rem) 0 0;
-    max-width: 34rem;
-    font-size: clamp(0.9rem, 1.6vw, 1rem);
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.6);
-}
-
-.rule {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: clamp(1.8rem, 5vh, 3rem) 0;
-}
-
-/* ---------- two columns ---------- */
-
 .cols {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(2.2rem, 6vh, 3.5rem);
-}
-
-@media (min-width: 860px) {
-    .cols {
-        grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
-        gap: clamp(2.5rem, 5vw, 4.5rem);
-    }
-}
-
-.aside {
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: clamp(1.8rem, 4vh, 2.6rem);
+    gap: clamp(1rem, 3vh, 2rem);
 }
 
-.label {
-    display: block;
-    margin-bottom: 0.85rem;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.56);
-}
+/* Wide enough for two columns: form leads, details sit alongside. */
+@media (min-width: 820px) {
+    .cols {
+        flex-direction: row;
+        gap: clamp(2rem, 5vw, 4.5rem);
+    }
 
-.value {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(0.72rem, 1.5vw, 0.88rem);
-    letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.72);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-    padding-bottom: 0.25rem;
-    overflow-wrap: anywhere;
-}
+    .formCol {
+        flex: 1.5;
+        min-width: 0;
+    }
 
-.value:hover,
-.value:focus-visible {
-    color: #fff;
-    border-bottom-color: rgba(255, 255, 255, 0.6);
-    outline: none;
-}
-
-/* ---------- socials ---------- */
-
-.socials {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.socialItem {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.socialLink {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.8rem 0.1rem;
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.55);
-    text-decoration: none;
-}
-
-.socialLink:hover,
-.socialLink:focus-visible {
-    color: #fff;
-    outline: none;
-}
-
-.arrow {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.25);
-}
-
-.socialLink:hover .arrow,
-.socialLink:focus-visible .arrow {
-    color: rgba(255, 255, 255, 0.8);
+    .aside {
+        flex: 1;
+        min-width: 0;
+        max-width: 22rem;
+    }
 }
 
 /* ---------- form ---------- */
 
+.formCol {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
 .form {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.4rem, 3.5vh, 2rem);
+    gap: clamp(0.6rem, 1.8vh, 1.2rem);
+    min-height: 0;
+    flex: 1;
 }
 
 .field {
     display: flex;
     flex-direction: column;
+    flex: none;
+}
+
+/* The message field absorbs whatever vertical space is left over, which is what
+   keeps the page from ever needing to scroll — capped so it doesn't balloon on
+   tall screens. */
+.messageField {
+    flex: 1;
+    min-height: 0;
+    max-height: min(40vh, 15rem);
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: clamp(0.55rem, 1.1vw, 0.62rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.56);
 }
 
 .input,
 .textarea {
     width: 100%;
-    padding: 0.6rem 0 0.7rem;
+    padding: 0.35rem 0 0.5rem;
     border: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 0;
     background: transparent;
     font-family: inherit;
-    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
     color: #ededed;
 }
 
 .textarea {
-    resize: vertical;
-    min-height: 8rem;
-    line-height: 1.6;
+    flex: 1;
+    min-height: 2.5rem;
+    resize: none;
+    line-height: 1.5;
 }
 
 .input::placeholder,
@@ -193,10 +228,10 @@
 }
 
 .error {
-    margin-top: 0.55rem;
+    margin-top: 0.3rem;
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
+    font-size: clamp(0.55rem, 1.1vw, 0.65rem);
+    letter-spacing: 0.1em;
     color: #fff;
 }
 
@@ -206,17 +241,18 @@
 }
 
 .actions {
+    flex: none;
     display: flex;
     justify-content: flex-start;
 }
 
 .submit {
-    padding: 0.85rem 2.2rem;
+    padding: clamp(0.55rem, 1.5vh, 0.85rem) clamp(1.4rem, 4vw, 2.2rem);
     border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 0;
     background: transparent;
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.68rem;
+    font-size: clamp(0.58rem, 1.1vw, 0.68rem);
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #ededed;
@@ -234,4 +270,98 @@
 .submit:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+}
+
+/* ---------- aside ---------- */
+
+.aside {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.7rem, 2vh, 1.4rem);
+    padding-top: clamp(0.7rem, 2vh, 1.2rem);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 820px) {
+    .aside {
+        padding-top: 0;
+        border-top: 0;
+    }
+}
+
+.value {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: clamp(0.68rem, 1.4vw, 0.85rem);
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    padding-bottom: 0.2rem;
+    overflow-wrap: anywhere;
+}
+
+.value:hover,
+.value:focus-visible {
+    color: #fff;
+    border-bottom-color: rgba(255, 255, 255, 0.6);
+    outline: none;
+}
+
+/* Compact inline row on narrow screens, stacked list when there's room. */
+.socials {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem clamp(0.8rem, 3vw, 1.3rem);
+}
+
+.socialLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: clamp(0.55rem, 1.1vw, 0.68rem);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+}
+
+.socialLink:hover,
+.socialLink:focus-visible {
+    color: #fff;
+    outline: none;
+}
+
+.arrow {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.socialLink:hover .arrow,
+.socialLink:focus-visible .arrow {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@media (min-width: 820px) {
+    .socials {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .socialItem {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .socialLink {
+        display: flex;
+        justify-content: space-between;
+        padding: clamp(0.4rem, 1.2vh, 0.7rem) 0.1rem;
+    }
 }
