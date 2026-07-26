@@ -3,12 +3,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useToast } from "@/hooks/use-toast";
 import styles from "./ss-contact.module.css";
 
 const EMAIL = "contact@s-soumyakanta.com";
+const STATUS_RESET_MS = 3000;
 
 const SOCIALS = [
   { label: "GitHub", href: "https://github.com/s-soumyakanta" },
@@ -30,18 +30,39 @@ interface ContactFormData {
   message: string;
 }
 
+type Status = "idle" | "success" | "error";
+
 export default function SSContact() {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
   } = useForm<ContactFormData>({
     resolver: yupResolver(schema),
     mode: "onTouched",
   });
-  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [name, email, message] = watch(["name", "email", "message"]);
+  const isFilled = Boolean(name?.trim() && email?.trim() && message?.trim());
+
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
+
+  const settleStatus = (next: Status) => {
+    setStatus(next);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    if (next !== "idle") {
+      resetTimer.current = setTimeout(() => setStatus("idle"), STATUS_RESET_MS);
+    }
+  };
 
   const onSubmit: SubmitHandler<ContactFormData> = async (data) => {
     setLoading(true);
@@ -55,23 +76,13 @@ export default function SSContact() {
       });
 
       if (response.ok) {
-        toast({
-          description: "Your message has been sent.",
-        });
         reset();
+        settleStatus("success");
       } else {
-        toast({
-          variant: "destructive",
-          title: "Uh oh! Something went wrong.",
-          description: "Failed to send message.",
-        });
+        settleStatus("error");
       }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: `An error occurred. ${error}`,
-      });
+    } catch {
+      settleStatus("error");
     } finally {
       setLoading(false);
     }
@@ -99,60 +110,79 @@ export default function SSContact() {
 
           <div className={styles.cols}>
             <div className={styles.formCol}>
-              <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
-                <div className={styles.field}>
-                  <label className={styles.label} htmlFor="name">
-                    Your name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    aria-invalid={errors.name ? "true" : "false"}
-                    className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
-                    {...register("name")}
-                  />
-                  {errors.name && (
-                    <span className={styles.error}>{errors.name.message}</span>
-                  )}
+              {status === "success" ? (
+                <div className={styles.thanks} role="status" aria-live="polite">
+                  <p className={styles.thanksEyebrow}>Message sent</p>
+                  <p className={styles.thanksText}>
+                    Thank you — I&apos;ll get back to you soon.
+                  </p>
                 </div>
+              ) : (
+                <form className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
+                  <div className={styles.field}>
+                    <label className={styles.label} htmlFor="name">
+                      Your name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      aria-invalid={errors.name ? "true" : "false"}
+                      className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
+                      {...register("name")}
+                    />
+                    {errors.name && (
+                      <span className={styles.error}>{errors.name.message}</span>
+                    )}
+                  </div>
 
-                <div className={styles.field}>
-                  <label className={styles.label} htmlFor="email">
-                    Your email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    aria-invalid={errors.email ? "true" : "false"}
-                    className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <span className={styles.error}>{errors.email.message}</span>
-                  )}
-                </div>
+                  <div className={styles.field}>
+                    <label className={styles.label} htmlFor="email">
+                      Your email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      aria-invalid={errors.email ? "true" : "false"}
+                      className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
+                      {...register("email")}
+                    />
+                    {errors.email && (
+                      <span className={styles.error}>{errors.email.message}</span>
+                    )}
+                  </div>
 
-                <div className={`${styles.field} ${styles.messageField}`}>
-                  <label className={styles.label} htmlFor="message">
-                    Your message
-                  </label>
-                  <textarea
-                    id="message"
-                    aria-invalid={errors.message ? "true" : "false"}
-                    className={`${styles.textarea} ${errors.message ? styles.invalid : ""}`}
-                    {...register("message")}
-                  />
-                  {errors.message && (
-                    <span className={styles.error}>{errors.message.message}</span>
-                  )}
-                </div>
+                  <div className={`${styles.field} ${styles.messageField}`}>
+                    <label className={styles.label} htmlFor="message">
+                      Your message
+                    </label>
+                    <textarea
+                      id="message"
+                      aria-invalid={errors.message ? "true" : "false"}
+                      className={`${styles.textarea} ${errors.message ? styles.invalid : ""}`}
+                      {...register("message")}
+                    />
+                    {errors.message && (
+                      <span className={styles.error}>{errors.message.message}</span>
+                    )}
+                  </div>
 
-                <div className={styles.actions}>
-                  <button type="submit" className={styles.submit} disabled={loading}>
-                    {loading ? "Sending..." : "Send message"}
-                  </button>
-                </div>
-              </form>
+                  <div className={styles.actions}>
+                    <button
+                      type="submit"
+                      className={`${styles.submit} ${isFilled ? styles.active : ""}`}
+                      disabled={loading}
+                    >
+                      {loading ? "Sending..." : "Send message"}
+                    </button>
+
+                    {status === "error" && (
+                      <span className={styles.formError} role="alert">
+                        Something went wrong — please try again, or email me directly.
+                      </span>
+                    )}
+                  </div>
+                </form>
+              )}
             </div>
 
             <div className={styles.aside}>

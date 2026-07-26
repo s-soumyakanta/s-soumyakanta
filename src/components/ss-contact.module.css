@@ -247,7 +247,9 @@
 .actions {
     flex: none;
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
 }
 
 .submit {
@@ -264,7 +266,8 @@
 }
 
 .submit:hover:not(:disabled),
-.submit:focus-visible:not(:disabled) {
+.submit:focus-visible:not(:disabled),
+.submit.active:not(:disabled) {
     background: #ededed;
     color: #0a0a0a;
     border-color: #ededed;
@@ -274,6 +277,47 @@
 .submit:disabled {
     opacity: 0.45;
     cursor: not-allowed;
+}
+
+.formError {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: clamp(0.55rem, 1.1vw, 0.65rem);
+    letter-spacing: 0.1em;
+    color: #fff;
+}
+
+.formError::before {
+    content: "— ";
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- thank you (swaps in for the form on success) ---------- */
+
+.thanks {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+}
+
+.thanksEyebrow {
+    margin: 0;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: clamp(0.55rem, 1.1vw, 0.62rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.56);
+}
+
+.thanksText {
+    margin: 0;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #ededed;
 }
 
 /* ---------- aside ---------- */
@@ -312,24 +356,28 @@
     outline: none;
 }
 
-/* A tidy 2-column grid on narrow screens (an inline wrap left an orphaned
-   last item raggedly on its own line); a stacked list when there's room. */
+/* A single row at every width below the desktop breakpoint — font size,
+   tracking and gap all shrink together so five links never wrap. */
 .socials {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.6rem 1rem;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: clamp(0.25rem, 1.8vw, 0.9rem);
+    /* Guards against ever forcing page-level horizontal scroll if a
+       translated label is unexpectedly long — this row clips, the page doesn't. */
+    overflow: hidden;
 }
 
 .socialLink {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
     font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(0.55rem, 1.1vw, 0.68rem);
-    letter-spacing: 0.18em;
+    font-size: clamp(0.5rem, 2.3vw, 0.68rem);
+    letter-spacing: clamp(0.02em, 1vw, 0.18em);
     text-transform: uppercase;
     white-space: nowrap;
     color: rgba(255, 255, 255, 0.55);
@@ -340,6 +388,13 @@
 .socialLink:focus-visible {
     color: #fff;
     outline: none;
+}
+
+/* The arrow glyph is the first thing to go when space is tight. */
+@media (max-width: 420px) {
+    .arrow {
+        display: none;
+    }
 }
 
 .arrow {

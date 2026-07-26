@@ -4,7 +4,6 @@ import { Inter as FontSans, JetBrains_Mono as FontMono } from "next/font/google"
 
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
 import { GoogleTagManager } from "@next/third-parties/google";
 
 // Configure font with display: swap for better loading performance
@@ -86,7 +85,6 @@ export default function RootLayout({
           disableTransitionOnChange // Add this to prevent flicker during theme transitions
         >
           {children}
-          <Toaster />
         </ThemeProvider>
         <GoogleTagManager gtmId="GTM-NRMNQ5M5" />
       </body>
