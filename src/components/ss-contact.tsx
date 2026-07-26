@@ -107,7 +107,6 @@ export default function SSContact() {
                   <input
                     type="text"
                     id="name"
-                    placeholder="Jane Doe"
                     aria-invalid={errors.name ? "true" : "false"}
                     className={`${styles.input} ${errors.name ? styles.invalid : ""}`}
                     {...register("name")}
@@ -124,7 +123,6 @@ export default function SSContact() {
                   <input
                     type="email"
                     id="email"
-                    placeholder="jane@example.com"
                     aria-invalid={errors.email ? "true" : "false"}
                     className={`${styles.input} ${errors.email ? styles.invalid : ""}`}
                     {...register("email")}
@@ -140,7 +138,6 @@ export default function SSContact() {
                   </label>
                   <textarea
                     id="message"
-                    placeholder="Tell me about the project."
                     aria-invalid={errors.message ? "true" : "false"}
                     className={`${styles.textarea} ${errors.message ? styles.invalid : ""}`}
                     {...register("message")}
