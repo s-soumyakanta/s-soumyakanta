@@ -16,6 +16,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date('2026-07-26T00:00:00+00:00'),
             changeFrequency: 'yearly',
             priority: 0.7,
+        },{
+            url: `${BASE_URL}/projects`,
+            lastModified: new Date('2026-08-14T00:00:00+00:00'),
+            changeFrequency: 'yearly',
+            priority: 0.7,
         },
     ];
 }
