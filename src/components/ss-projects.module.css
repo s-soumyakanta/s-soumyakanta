@@ -191,25 +191,6 @@
     color: #ededed;
 }
 
-.badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0.2rem 0 0.3rem;
-    padding: 0;
-    list-style: none;
-}
-
-.badge {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: clamp(0.55rem, 1.1vw, 0.64rem);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.68);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    padding: 0.25rem 0.55rem;
-}
-
 .desc {
     margin: 0;
     max-width: 38rem;
@@ -275,10 +256,54 @@
     padding: clamp(0.6rem, 1.6vw, 1rem);
 }
 
-.certFrame svg {
+.certImage {
     display: block;
     width: 100%;
     height: auto;
+}
+
+.certActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.7rem;
+}
+
+.certBtn {
+    flex: 1 1 auto;
+    min-width: 9rem;
+    text-align: center;
+    padding: clamp(0.5rem, 1.4vh, 0.7rem) 1rem;
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: clamp(0.56rem, 1.1vw, 0.64rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.certBtnSecondary {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.certBtnSecondary:hover,
+.certBtnSecondary:focus-visible {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.5);
+    outline: none;
+}
+
+.certBtnPrimary {
+    color: #ededed;
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.certBtnPrimary:hover,
+.certBtnPrimary:focus-visible {
+    background: #ededed;
+    color: #0a0a0a;
+    border-color: #ededed;
+    outline: none;
 }
 
 /* ---------- back link ---------- */
