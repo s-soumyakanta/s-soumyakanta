@@ -247,7 +247,7 @@
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: clamp(0.55rem, 1.1vw, 0.62rem);
     letter-spacing: 0.22em;
-    text-transform: uppercase;
+    text-transform: lowercase;
     color: rgba(255, 255, 255, 0.56);
 }
 
