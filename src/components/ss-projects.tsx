@@ -26,8 +26,7 @@ export default function SSProjects() {
           <div>
             <h1 className={styles.title}>Projects</h1>
             <p className={styles.intro}>
-              Things I&apos;ve built and maintain. Currently one project,
-              live in production.
+              Things I&apos;ve built and maintain.
             </p>
           </div>
 
@@ -37,8 +36,8 @@ export default function SSProjects() {
               <h2 className={styles.projectName}>Touch Typing Online</h2>
 
               <p className={styles.desc}>
-                Learn to type, practice with real tests, and earn a free
-                certificate when you&apos;re done.
+                Learn to type, practice with real tests, and earn a free typing 
+                certificate.
               </p>
 
               <Link
@@ -55,7 +54,7 @@ export default function SSProjects() {
             </div>
 
             <div className={styles.certWrap}>
-              <p className={styles.certLabel}>Free certificate</p>
+              <p className={styles.certLabel}>touchtyping.online/certification</p>
               <div className={styles.certFrame}>
                 <Image
                   className={styles.certImage}
