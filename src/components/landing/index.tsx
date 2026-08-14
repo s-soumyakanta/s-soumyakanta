@@ -24,6 +24,9 @@ export default function Landing() {
             </a>
 
             <nav className={styles.links} aria-label="Pages">
+              <Link className={styles.link} href="/projects">
+                Projects 
+              </Link>
               <Link className={styles.link} href="/contact">
                 Contact
               </Link>
