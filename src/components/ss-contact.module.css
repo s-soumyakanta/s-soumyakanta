@@ -447,3 +447,88 @@
         padding: clamp(0.4rem, 1.2vh, 0.7rem) 0.1rem;
     }
 }
+/* ---------- landscape mobile (short viewport height) ---------- */
+/* Below ~500px of height, there isn't room to stack title → three
+   fields → aside the way portrait does. Force the two-column layout
+   by height instead of width, and tighten the vertical rhythm to fit. */
+@media (orientation: landscape) and (max-height: 500px) {
+    .stage {
+        inset: clamp(6px, 2vh, 14px);
+        padding: clamp(0.35rem, 1.4vh, 0.7rem);
+    }
+
+    .head {
+        padding-bottom: clamp(0.25rem, 1vh, 0.45rem);
+    }
+
+    .body {
+        gap: clamp(0.3rem, 1.2vh, 0.6rem);
+        padding-top: clamp(0.3rem, 1.2vh, 0.6rem);
+    }
+
+    .title {
+        font-size: clamp(1rem, 5vh, 1.6rem);
+    }
+
+    /* The main fix: side by side regardless of width. Without this the
+       aside stacks below the form and blows past a short viewport. */
+    .cols {
+        flex-direction: row;
+        gap: clamp(1rem, 4vw, 2.2rem);
+    }
+
+    .formCol {
+        flex: 1.5;
+    }
+
+    .aside {
+        flex: 1;
+        max-width: 13rem;
+        padding-top: 0;
+        border-top: 0;
+        gap: clamp(0.4rem, 1.6vh, 0.8rem);
+    }
+
+    .form {
+        gap: clamp(0.25rem, 1vh, 0.45rem);
+    }
+
+    .label {
+        margin-bottom: 0.2rem;
+    }
+
+    .input,
+    .textarea {
+        padding: 0.2rem 0 0.3rem;
+        /* iOS Safari zooms the page in on focus for inputs under 16px —
+           in a viewport this short, that zoom would force a scroll. */
+        font-size: 16px;
+    }
+
+    .textarea {
+        min-height: 1.3rem;
+    }
+
+    .actions {
+        gap: 0.4rem;
+    }
+
+    .submit {
+        padding: clamp(0.3rem, 1.2vh, 0.5rem) clamp(1rem, 3vw, 1.6rem);
+    }
+
+    /* Same reasoning as the >=820px rule, triggered by short height
+       instead of width — a vertical list of five links doesn't fit. */
+    .socials {
+        flex-direction: row;
+        border-top: 0;
+    }
+
+    .socialItem {
+        border-bottom: 0;
+    }
+
+    .socialLink {
+        padding: 0;
+    }
+}
