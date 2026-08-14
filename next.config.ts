@@ -54,6 +54,11 @@ const nextConfig = {
         destination: "https://www.s-soumyakanta.com/:path*",
         permanent: true,
       },
+      {
+      source: "/blog/:path*",
+      destination: "/",
+      permanent: true,
+    },
     ];
   },
 };
