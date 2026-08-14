@@ -59,7 +59,7 @@ export default function SSProjects() {
               <div className={styles.certFrame}>
                 <Image
                   className={styles.certImage}
-                  src="/ascert.png"
+                  src="/touch-typing-certificate-s-soumyakanta.png"
                   alt="Typing speed certificate from Touch Typing Online, showing words-per-minute and accuracy score, awarded free on completing a typing test"
                   loading="lazy"
                   width={392}
@@ -69,7 +69,7 @@ export default function SSProjects() {
               <div className={styles.certActions}>
                 <Link
                   className={`${styles.certBtn} ${styles.certBtnSecondary}`}
-                  href="/ascert.png"
+                  href="https://www.touchtyping.online/certificate/32df9b82-6d28-4658-a6c4-ae6549ff36d8"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -77,7 +77,7 @@ export default function SSProjects() {
                 </Link>
                 <Link
                   className={`${styles.certBtn} ${styles.certBtnPrimary}`}
-                  href={PROJECT_URL}
+                  href="https://www.touchtyping.online/certification"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
