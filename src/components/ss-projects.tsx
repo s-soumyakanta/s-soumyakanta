@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./ss-projects.module.css";
 
 const PROJECT_URL = "https://touchtyping.online";
@@ -26,8 +27,7 @@ export default function SSProjects() {
             <h1 className={styles.title}>Projects</h1>
             <p className={styles.intro}>
               Things I&apos;ve built and maintain. Currently one project,
-              running in production for aspirants preparing for Indian
-              government exams.
+              live in production.
             </p>
           </div>
 
@@ -36,26 +36,17 @@ export default function SSProjects() {
               <p className={styles.projectEyebrow}>01 — Web platform</p>
               <h2 className={styles.projectName}>Touch Typing Online</h2>
 
-              <ul className={styles.badges}>
-                <li className={styles.badge}>180+ free SSC CGL tests</li>
-                <li className={styles.badge}>Free certificate</li>
-                <li className={styles.badge}>SSC CHSL &amp; RRB NTPC</li>
-              </ul>
-
               <p className={styles.desc}>
-                A typing speed test platform built for Indian government
-                exam aspirants — SSC CGL, SSC CHSL, and RRB NTPC. Practice
-                against real exam-format passages, track words-per-minute
-                and accuracy against official thresholds, and download a
-                free typing certificate once you clear a test.
+                Learn to type, practice with real tests, and earn a free
+                certificate when you&apos;re done.
               </p>
 
-              <a
+              <Link
                 className={styles.cta}
                 href={PROJECT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-              >
+              />
                 Visit touchtyping.online
                 <span className={styles.arrow} aria-hidden="true">
                   &#8599;
@@ -66,7 +57,30 @@ export default function SSProjects() {
             <div className={styles.certWrap}>
               <p className={styles.certLabel}>Free certificate</p>
               <div className={styles.certFrame}>
-                <CertificatePreview />
+                <Image 
+                  className={styles.certImage}
+                  src="/ascert.png"
+                  alt="Typing speed certificate from Touch Typing Online, showing words-per-minute and accuracy score, awarded free on completing a typing test"
+                  loading="lazy"
+                />
+              </div>
+              <div className={styles.certActions}>
+                <Link
+                  className={`${styles.certBtn} ${styles.certBtnSecondary}`}
+                  href="/ascert.png"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Certificate
+                </Link>
+                <Link
+                  className={`${styles.certBtn} ${styles.certBtnPrimary}`}
+                  href={PROJECT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Get a Free Certificate
+                </Link>
               </div>
             </div>
           </article>
@@ -80,28 +94,7 @@ export default function SSProjects() {
       </div>
     </div>
   );
-}
-
-/* Placeholder certificate, drawn in the site's own hairline/mono language
-   rather than a screenshot — swap for a real exported certificate image
-   from touchtyping.online when you have one (see note below the file). */
-function CertificatePreview() {
-  return (
-    <svg
-      viewBox="0 0 420 300"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Sample typing speed certificate from Touch Typing Online, showing words per minute and accuracy score"
-    >
-      <rect
-        x="1"
-        y="1"
-        width="418"
-        height="298"
-        fill="none"
-        stroke="rgba(255,255,255,0.16)"
-      />
-      <rect
+}      <rect
         x="14"
         y="14"
         width="392"
