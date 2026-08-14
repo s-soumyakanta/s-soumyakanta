@@ -46,7 +46,7 @@ export default function SSProjects() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Visit touchtyping.online
+                Visit www.touchtyping.online
                 <span className={styles.arrow} aria-hidden="true">
                   &#8599;
                 </span>
