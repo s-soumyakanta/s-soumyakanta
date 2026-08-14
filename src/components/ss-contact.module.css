@@ -483,11 +483,15 @@
 
     .aside {
         flex: 1;
-        max-width: 13rem;
+        max-width: 15rem;
         padding-top: 0;
         border-top: 0;
         gap: clamp(0.4rem, 1.6vh, 0.8rem);
     }
+   .value {
+        font-size: clamp(0.6rem, 1.6vw, 0.72rem);
+        padding-bottom: 0.15rem;
+   }
 
     .form {
         gap: clamp(0.25rem, 1vh, 0.45rem);
@@ -517,11 +521,17 @@
         padding: clamp(0.3rem, 1.2vh, 0.5rem) clamp(1rem, 3vw, 1.6rem);
     }
 
-    /* Same reasoning as the >=820px rule, triggered by short height
-       instead of width — a vertical list of five links doesn't fit. */
+   
+
+    /* Five labels won't fit one row in a width-capped column, and a
+       single vertical list burns height we don't have — a 2-column
+       grid splits the difference. */
     .socials {
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.3rem 0.6rem;
         border-top: 0;
+        overflow: visible;
     }
 
     .socialItem {
@@ -530,5 +540,14 @@
 
     .socialLink {
         padding: 0;
+        font-size: clamp(0.5rem, 1.8vw, 0.6rem);
+        letter-spacing: 0.05em;
+        gap: 0.2rem;
+    }
+
+    /* Every glyph here is spend against a tight column — cut it,
+       same call as the existing <=420px rule already makes. */
+    .arrow {
+        display: none;
     }
 }
