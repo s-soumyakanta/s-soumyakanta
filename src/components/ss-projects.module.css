@@ -33,37 +33,37 @@
 
 .tick {
     position: absolute;
-    width: 9px;
-    height: 9px;
+    width: 13px;
+    height: 13px;
     pointer-events: none;
 }
 
 .tl {
     top: -1px;
     left: -1px;
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-left: 1.5px solid rgba(255, 255, 255, 0.45);
 }
 
 .tr {
     top: -1px;
     right: -1px;
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
-    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    border-top: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-right: 1.5px solid rgba(255, 255, 255, 0.45);
 }
 
 .bl {
     bottom: -1px;
     left: -1px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-left: 1.5px solid rgba(255, 255, 255, 0.45);
 }
 
 .br {
     bottom: -1px;
     right: -1px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-right: 1.5px solid rgba(255, 255, 255, 0.45);
 }
 
 /* ---------- head ---------- */
