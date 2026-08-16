@@ -23,73 +23,75 @@ export default function SSProjects() {
         </div>
 
         <div className={styles.body}>
-          <div>
+          <div className={styles.introBlock}>
             <h1 className={styles.title}>Projects</h1>
             <p className={styles.intro}>
               Things I&apos;ve built and maintain.
             </p>
           </div>
 
-          <article className={styles.project}>
-            <div className={styles.projectInfo}>
-              <p className={styles.projectEyebrow}>01 — Web platform</p>
-              <h2 className={styles.projectName}>Touch Typing Online</h2>
+          <div className={styles.scrollArea}>
+            <article className={styles.project}>
+              <div className={styles.projectInfo}>
+                <p className={styles.projectEyebrow}>01 — Web platform</p>
+                <h2 className={styles.projectName}>Touch Typing Online</h2>
 
-              <p className={styles.desc}>
-                Learn to type, practice with real tests, and earn a free typing 
-                certificate.
-              </p>
+                <p className={styles.desc}>
+                  Learn to type, practice with real tests, and earn a free typing
+                  certificate.
+                </p>
 
-              <Link
-                className={styles.cta}
-                href={PROJECT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Visit www.touchtyping.online
-                <span className={styles.arrow} aria-hidden="true">
-                  &#8599;
-                </span>
+                <Link
+                  className={styles.cta}
+                  href={PROJECT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Visit www.touchtyping.online
+                  <span className={styles.arrow} aria-hidden="true">
+                    &#8599;
+                  </span>
+                </Link>
+              </div>
+
+              <div className={styles.certWrap}>
+                <p className={styles.certLabel}>touchtyping.online/certification</p>
+                <div className={styles.certFrame}>
+                  <Image
+                    className={styles.certImage}
+                    src="/touch-typing-certificate-s-soumyakanta.png"
+                    alt="Typing speed certificate from Touch Typing Online, showing words-per-minute and accuracy score, awarded free on completing a typing test"
+                    loading="lazy"
+                    width={392}
+                    height={272}
+                  />
+                </div>
+                <div className={styles.certActions}>
+                  <Link
+                    className={`${styles.certBtn} ${styles.certBtnSecondary}`}
+                    href="https://www.touchtyping.online/certificate/32df9b82-6d28-4658-a6c4-ae6549ff36d8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Certificate
+                  </Link>
+                  <Link
+                    className={`${styles.certBtn} ${styles.certBtnPrimary}`}
+                    href="https://www.touchtyping.online/certification"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Get a Free Certificate
+                  </Link>
+                </div>
+              </div>
+            </article>
+
+            <div className={styles.back}>
+              <Link className={styles.backLink} href="/">
+                &larr; Back home
               </Link>
             </div>
-
-            <div className={styles.certWrap}>
-              <p className={styles.certLabel}>touchtyping.online/certification</p>
-              <div className={styles.certFrame}>
-                <Image
-                  className={styles.certImage}
-                  src="/touch-typing-certificate-s-soumyakanta.png"
-                  alt="Typing speed certificate from Touch Typing Online, showing words-per-minute and accuracy score, awarded free on completing a typing test"
-                  loading="lazy"
-                  width={392}
-                  height={272}
-                />
-              </div>
-              <div className={styles.certActions}>
-                <Link
-                  className={`${styles.certBtn} ${styles.certBtnSecondary}`}
-                  href="https://www.touchtyping.online/certificate/32df9b82-6d28-4658-a6c4-ae6549ff36d8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  View Certificate
-                </Link>
-                <Link
-                  className={`${styles.certBtn} ${styles.certBtnPrimary}`}
-                  href="https://www.touchtyping.online/certification"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Get a Free Certificate
-                </Link>
-              </div>
-            </div>
-          </article>
-
-          <div className={styles.back}>
-            <Link className={styles.backLink} href="/">
-              &larr; Back home
-            </Link>
           </div>
         </div>
       </div>
