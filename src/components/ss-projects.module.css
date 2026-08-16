@@ -1,10 +1,11 @@
 /* Projects showcase — same matte, hairline-driven language as the rest of
-   the site, but this page is allowed to scroll: it's expected to grow as
-   more projects get added, unlike the locked-viewport root/contact pages. */
+   the site. Border is locked to the viewport like root/contact; only the
+   content below the intro (project list + back link) scrolls internally. */
 
 .root {
     position: relative;
-    min-height: 100dvh;
+    height: 100dvh;
+    overflow: hidden;
     background: #0a0a0a;
     isolation: isolate;
 }
@@ -22,7 +23,8 @@
     position: relative;
     z-index: 1;
     margin: clamp(12px, 3vmin, 34px);
-    min-height: calc(100dvh - clamp(24px, 6vmin, 68px));
+    height: calc(100dvh - clamp(24px, 6vmin, 68px));
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -105,6 +107,7 @@
 
 .body {
     flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: clamp(1.4rem, 4vh, 2.4rem);
@@ -117,6 +120,37 @@
         max-width: 1080px;
         align-self: center;
     }
+}
+
+.introBlock {
+    flex: none;
+}
+
+.scrollArea {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.4rem, 4vh, 2.4rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+
+.scrollArea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollArea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollArea::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.scrollArea::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .title {
