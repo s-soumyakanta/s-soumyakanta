@@ -30,6 +30,9 @@ export default function Landing() {
               <Link className={styles.link} href="/contact">
                 Contact
               </Link>
+              <Link className={styles.link} href="/paribar">
+                Paribar
+              </Link>
             </nav>
           </div>
         </div>
